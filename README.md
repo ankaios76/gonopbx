@@ -1,5 +1,4 @@
-# Asterisk PBX GUI - Proof of Concept
-
+# Asterisk PBX GUI 
 Eine moderne Web-GUI für Asterisk PBX, entwickelt mit FastAPI (Backend) und React (Frontend).
 
 ## 🚀 Quick Start
