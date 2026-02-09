@@ -1,0 +1,180 @@
+body {
+  background: red !important;
+}
+
+/* --- UI Fix: remove divider between logo and navigation --- */
+.sidebar-header {
+  border-bottom: none !important;
+  padding-bottom: 1rem; /* etwas Luft statt Linie */
+}
+
+/* --- UI Alignment Fix: Header height sync (sidebar ↔ top widgets) --- */
+
+/* Einheitliche Header-Höhe */
+:root {
+  --app-header-height: 120px;
+}
+
+/* Sidebar Header exakt auf diese Höhe bringen */
+.sidebar-header {
+  height: var(--app-header-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Top Header Bereich im Content */
+.content > .header,
+.content-header {
+  height: var(--app-header-height);
+}
+
+/* Falls Header ein Grid/Flex mit Cards ist */
+.content-header > *,
+.header-cards > * {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Status-Karten optisch sauber zentrieren */
+.header-card {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* --- Dashboard header height alignment --- */
+:root {
+  --app-header-height: 120px;
+}
+
+/* Sidebar header already visually defines the height */
+.sidebar-header {
+  height: var(--app-header-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Dashboard top status cards */
+.dashboard-header {
+  height: var(--app-header-height);
+}
+
+/* Make each status card fill the header height */
+.dashboard-header > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Reduce padding so cards don't look oversized */
+.dashboard-header > div {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+/* --- UI Polish: rounded sidebar & logo area --- */
+
+/* Sidebar als Card wirken lassen */
+.sidebar {
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  overflow: hidden; /* wichtig für saubere Rundung */
+}
+
+/* Logo/Header Bereich weich abrunden */
+.sidebar-header {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+/* Footer unten ebenfalls abrunden */
+.sidebar-footer {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Navigation-Links nicht über die Rundung hinausragen */
+.nav-links {
+  padding-top: 1rem;
+}
+
+/* === FINAL UI FIX: visible rounded layout === */
+
+/* Body bekommt neutralen Hintergrund */
+body {
+  background: #f1f3f5;
+}
+
+/* Sidebar vom Rand lösen */
+.sidebar {
+  margin: 12px;
+  height: calc(100vh - 24px);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Header & Footer sauber mitrunden */
+.sidebar-header {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.sidebar-footer {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Content ebenfalls als Card darstellen */
+.content {
+  margin: 12px 12px 12px 0;
+  border-radius: 16px;
+  background: #f5f5f5;
+  padding: 1.5rem;
+  min-height: calc(100vh - 24px);
+}
+
+/* Verhindert harte Kanten bei Scroll */
+.app {
+  align-items: stretch;
+}
+
+/* === HARD FIX: make rounded layout actually work === */
+
+/* App bekommt Abstand zum Viewport */
+.app {
+  padding: 12px;
+  background: #f1f3f5;
+}
+
+/* Sidebar MUSS aus fixed raus */
+.sidebar {
+  position: relative !important;
+  height: auto !important;
+  min-height: calc(100vh - 24px);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+/* Content passt sich korrekt an */
+.content {
+  margin-left: 0 !important;
+  margin-left: 16px;
+  border-radius: 16px;
+  background: #f5f5f5;
+  padding: 1.5rem;
+  min-height: calc(100vh - 24px);
+}
+
+/* Sidebar Header/Footer abrunden */
+.sidebar-header {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.sidebar-footer {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}

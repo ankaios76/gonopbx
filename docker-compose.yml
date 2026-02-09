@@ -1,0 +1,90 @@
+services:
+  asterisk:
+    image: andrius/asterisk:18
+    container_name: pbx_asterisk
+    restart: unless-stopped
+    ports:
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "5038:5038/tcp"
+      - "10000-10100:10000-10100/udp"
+    volumes:
+      - ./asterisk/config:/etc/asterisk/custom
+      - asterisk_voicemail:/var/spool/asterisk/voicemail
+    healthcheck:
+      test: ["CMD", "asterisk", "-rx", "core show version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - pbx_network
+    command: >
+      sh -c "
+        cp /etc/asterisk/custom/*.conf /etc/asterisk/ 2>/dev/null || true;
+        /usr/sbin/asterisk -f
+      "
+
+  backend:
+    build: ./backend
+    container_name: pbx_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://asterisk:${DB_PASSWORD}@postgres:5432/asterisk_gui
+      - ASTERISK_HOST=asterisk
+      - ASTERISK_PORT=5038
+      - ASTERISK_USER=admin
+      - ASTERISK_PASSWORD=${AMI_PASSWORD}
+    volumes:
+      - ./asterisk/config:/etc/asterisk/custom
+      - ./backend:/app
+      - asterisk_voicemail:/var/spool/asterisk/voicemail
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      postgres:
+        condition: service_healthy
+      asterisk:
+        condition: service_healthy
+    networks:
+      - pbx_network
+
+  frontend:
+    build: ./frontend
+    container_name: pbx_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - pbx_network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: pbx_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=asterisk
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=asterisk_gui
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U asterisk"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pbx_network
+
+volumes:
+  postgres_data:
+  asterisk_voicemail:
+
+networks:
+  pbx_network:
+    driver: bridge

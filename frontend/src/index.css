@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ===== Layout polish: visible rounded sidebar ===== */
+
+body {
+  background-color: #f1f3f5;
+}
+
+/* App wrapper spacing */
+.app {
+  padding: 12px;
+}
+
+/* Sidebar as card */
+.sidebar {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+/* Sidebar header/footer rounding */
+.sidebar-header {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.sidebar-footer {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Content as card */
+.content {
+  border-radius: 16px;
+  margin-left: 16px;
+  background: #f5f5f5;
+  padding: 1.5rem;
+}
+
+/* ===== FIX: content offset for fixed sidebar ===== */
+
+/* Sidebar bleibt fixed */
+.sidebar {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+}
+
+/* Content MUSS Abstand zur Sidebar haben */
+.content {
+  margin-left: 304px; /* 280px sidebar + 2x 12px margin */
+}
+
+/* ================================
+   Sidebar Logo Styling (GonoPBX)
+   ================================ */
+
+/* Logo-Container sauber zentrieren */
+.sidebar .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Neues Logo */
+.sidebar-logo {
+  max-width: 160px;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Optional: dezenter Hover-Effekt */
+.sidebar .logo a:hover .sidebar-logo {
+  transform: scale(1.02);
+  opacity: 0.95;
+}
+
+/* Version unter Logo etwas ruhiger */
+.sidebar .version {
+  text-align: center;
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+/* Sidebar Header etwas kompakter */
+.sidebar-header {
+  padding-top: 1.25rem;
+  padding-bottom: 1rem;
+}
+
+/* =================================================
+   FINAL SIDEBAR LAYOUT (single source of truth)
+   ================================================= */
+
+/* Header: Logo-Bereich */
+.sidebar-header {
+  padding: 2rem 1.5rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: center;
+}
+
+/* Logo groß & dominant */
+.sidebar-logo {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Navigation startet sauber unter dem Header */
+.nav-links {
+  padding-top: 1.25rem;
+}
+
+/* Footer: Benutzer + Version */
+.sidebar-footer {
+  padding-top: 1.25rem;
+}
+
+/* Version ganz unten, ruhig */
+.sidebar-version {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+/* =================================================
+   FINAL TUNING: Logo size & divider position
+   ================================================= */
+
+/* Logo deutlich größer */
+.sidebar-logo {
+  max-width: 260px;   /* vorher zu klein */
+  width: 100%;
+  height: auto;
+}
+
+/* Header bekommt mehr Luft nach unten,
+   damit die Linie optisch richtig sitzt */
+.sidebar-header {
+  padding-bottom: 2rem;   /* Linie wandert nach unten */
+}
+
+/* Version enger ans Logo, gehört visuell dazu */
+.sidebar-header .version {
+  margin-top: 0.5rem;
+}
+
+/* =================================================
+   FINAL FIX: Sidebar width & logo dominance
+   ================================================= */
+
+/* Sidebar minimal breiter */
+.sidebar {
+  width: 320px;              /* vorher 280px */
+}
+
+/* Content entsprechend nach rechts schieben */
+.content {
+  margin-left: 344px;        /* 320px + 24px Abstand */
+}
+
+/* Logo darf jetzt wirklich wirken */
+.sidebar-logo {
+  width: 280px;              /* jetzt sichtbar größer */
+  max-width: none;           /* keine Begrenzung mehr */
+  margin: 0 auto;
+}
+
+/* ===== LOGO FIX: größer ohne Sidebar zu verbreitern ===== */
+
+/* Header weniger Padding → mehr Platz fürs Logo */
+.sidebar-header {
+  padding: 1.25rem 1rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Logo wirklich größer */
+.sidebar-logo {
+  width: 240px;        /* sichtbar größer */
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Version gehört visuell zum Logo */
+.sidebar-header .version {
+  margin-top: 0.25rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+/* ================================
+   FIX: Sidebar Icons sichtbar
+   ================================ */
+
+/* Links + Icons wieder dunkel */
+.nav-links a {
+  color: #1f2937; /* Tailwind gray-800 */
+}
+
+.nav-links a svg {
+  stroke: #1f2937;
+}
+
+/* Active-Link klar hervorheben */
+.nav-links a.active {
+  color: #2563eb; /* blue-600 */
+}
+
+.nav-links a.active svg {
+  stroke: #2563eb;
+}
+
+/* ================================
+   FIX: Logo wirklich größer
+   ================================ */
+
+/* Logo-Wrapper begrenzt NICHT mehr */
+.sidebar-header .logo {
+  width: 260px;
+  margin: 0 auto;
+}
+
+/* Logo nutzt den Platz */
+.sidebar-logo {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ================================
+   FIX: Navigation icons layout
+   ================================ */
+
+/* Nav-Link MUSS Flex sein */
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;           /* Platz zwischen Icon & Text */
+  padding-left: 1rem;    /* Luft links */
+}
+
+/* Icon bekommt festen Platz */
+.nav-links a svg {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;       /* verhindert "Zusammenfallen" */
+  flex-shrink: 0;
+  display: block;
+}

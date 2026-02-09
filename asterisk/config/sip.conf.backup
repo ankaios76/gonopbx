@@ -1,0 +1,36 @@
+[general]
+context=default
+allowoverlap=no
+bindport=5060
+bindaddr=0.0.0.0
+srvlookup=yes
+disallow=all
+allow=ulaw
+allow=alaw
+allow=gsm
+alwaysauthreject=yes
+canreinvite=no
+nat=force_rport,comedia
+session-timers=refuse
+localnet=172.0.0.0/8
+externip=0.0.0.0
+
+; Template für SIP-Peers (wird von GUI verwendet)
+[peer-template](!)
+type=friend
+host=dynamic
+context=internal
+dtmfmode=rfc2833
+disallow=all
+allow=ulaw
+allow=alaw
+allow=gsm
+
+; Beispiel-User (wird später von GUI verwaltet)
+[1000](peer-template)
+secret=test1000
+callerid="Test User 1000" <1000>
+
+[1001](peer-template)
+secret=test1001
+callerid="Test User 1001" <1001>

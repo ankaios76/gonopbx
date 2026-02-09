@@ -1,0 +1,199 @@
+"""
+Voicemail API Router
+Manage and play voicemail messages
+"""
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
+from typing import Dict, Any, List
+from datetime import datetime
+import os
+import logging
+
+logger = logging.getLogger(__name__)
+
+router = APIRouter()
+
+# Voicemail spool directory
+VOICEMAIL_PATH = "/var/spool/asterisk/voicemail/default"
+
+
+def parse_voicemail_info(info_file: str) -> Dict[str, Any]:
+    """Parse voicemail .txt info file"""
+    info = {}
+    try:
+        with open(info_file, 'r') as f:
+            for line in f:
+                if '=' in line:
+                    key, value = line.strip().split('=', 1)
+                    info[key] = value
+    except Exception as e:
+        logger.error(f"Error parsing voicemail info: {e}")
+    return info
+
+
+def get_voicemail_list(mailbox: str, folder: str = "INBOX") -> List[Dict[str, Any]]:
+    """Get list of voicemails for a mailbox"""
+    messages = []
+    mailbox_path = f"{VOICEMAIL_PATH}/{mailbox}/{folder}"
+    
+    if not os.path.exists(mailbox_path):
+        return messages
+    
+    for filename in os.listdir(mailbox_path):
+        if filename.startswith("msg") and filename.endswith(".txt"):
+            msg_id = filename.replace(".txt", "")
+            info_path = os.path.join(mailbox_path, filename)
+            info = parse_voicemail_info(info_path)
+            
+            audio_file = None
+            for ext in ['.wav', '.WAV', '.wav49']:
+                audio_path = os.path.join(mailbox_path, f"{msg_id}{ext}")
+                if os.path.exists(audio_path):
+                    audio_file = f"{msg_id}{ext}"
+                    break
+            
+            messages.append({
+                "id": msg_id,
+                "mailbox": mailbox,
+                "folder": folder,
+                "callerid": info.get("callerid", "Unknown"),
+                "origmailbox": info.get("origmailbox", ""),
+                "context": info.get("context", ""),
+                "origtime": info.get("origtime", ""),
+                "duration": info.get("duration", "0"),
+                "audio_file": audio_file,
+                "timestamp": datetime.fromtimestamp(int(info.get("origtime", 0))).isoformat() if info.get("origtime") else None
+            })
+    
+    messages.sort(key=lambda x: x.get("origtime", "0"), reverse=True)
+    return messages
+
+
+@router.get("/")
+async def list_all_voicemails():
+    """List all voicemails across all mailboxes"""
+    all_messages = []
+    
+    if not os.path.exists(VOICEMAIL_PATH):
+        return {"voicemails": [], "count": 0}
+    
+    for mailbox in os.listdir(VOICEMAIL_PATH):
+        mailbox_path = os.path.join(VOICEMAIL_PATH, mailbox)
+        if os.path.isdir(mailbox_path):
+            for folder in ["INBOX", "Old"]:
+                messages = get_voicemail_list(mailbox, folder)
+                all_messages.extend(messages)
+    
+    return {
+        "voicemails": all_messages,
+        "count": len(all_messages),
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+
+@router.get("/mailbox/{mailbox}")
+async def list_mailbox_voicemails(mailbox: str, folder: str = "INBOX"):
+    """List voicemails for a specific mailbox"""
+    messages = get_voicemail_list(mailbox, folder)
+    
+    return {
+        "mailbox": mailbox,
+        "folder": folder,
+        "voicemails": messages,
+        "count": len(messages),
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+
+@router.get("/mailboxes")
+async def list_mailboxes():
+    """List all mailboxes with voicemail counts"""
+    mailboxes = []
+    
+    if not os.path.exists(VOICEMAIL_PATH):
+        return {"mailboxes": [], "count": 0}
+    
+    for mailbox in os.listdir(VOICEMAIL_PATH):
+        mailbox_path = os.path.join(VOICEMAIL_PATH, mailbox)
+        if os.path.isdir(mailbox_path):
+            inbox_count = len(get_voicemail_list(mailbox, "INBOX"))
+            old_count = len(get_voicemail_list(mailbox, "Old"))
+            
+            mailboxes.append({
+                "mailbox": mailbox,
+                "new": inbox_count,
+                "old": old_count,
+                "total": inbox_count + old_count
+            })
+    
+    return {
+        "mailboxes": mailboxes,
+        "count": len(mailboxes),
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+
+@router.get("/play/{mailbox}/{folder}/{msg_id}")
+async def play_voicemail(mailbox: str, folder: str, msg_id: str):
+    """Get voicemail audio file for playback"""
+    
+    for ext in ['.wav', '.WAV', '.wav49']:
+        audio_path = f"{VOICEMAIL_PATH}/{mailbox}/{folder}/{msg_id}{ext}"
+        if os.path.exists(audio_path):
+            return FileResponse(
+                audio_path,
+                media_type="audio/wav",
+                filename=f"{mailbox}_{msg_id}.wav"
+            )
+    
+    raise HTTPException(status_code=404, detail="Voicemail audio not found")
+
+
+@router.delete("/{mailbox}/{folder}/{msg_id}")
+async def delete_voicemail(mailbox: str, folder: str, msg_id: str):
+    """Delete a voicemail message"""
+    
+    deleted_files = []
+    base_path = f"{VOICEMAIL_PATH}/{mailbox}/{folder}/{msg_id}"
+    
+    for ext in ['.txt', '.wav', '.WAV', '.wav49']:
+        file_path = f"{base_path}{ext}"
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            deleted_files.append(file_path)
+    
+    if not deleted_files:
+        raise HTTPException(status_code=404, detail="Voicemail not found")
+    
+    return {
+        "status": "deleted",
+        "mailbox": mailbox,
+        "msg_id": msg_id,
+        "deleted_files": len(deleted_files)
+    }
+
+
+@router.get("/stats")
+async def get_voicemail_stats():
+    """Get voicemail statistics"""
+    total = 0
+    unread = 0
+    by_mailbox = {}
+    
+    if not os.path.exists(VOICEMAIL_PATH):
+        return {"total": 0, "unread": 0, "by_mailbox": {}}
+    
+    for mailbox in os.listdir(VOICEMAIL_PATH):
+        mailbox_path = os.path.join(VOICEMAIL_PATH, mailbox)
+        if os.path.isdir(mailbox_path):
+            inbox_messages = get_voicemail_list(mailbox, "INBOX")
+            old_messages = get_voicemail_list(mailbox, "Old")
+            
+            mailbox_total = len(inbox_messages) + len(old_messages)
+            total += mailbox_total
+            unread += len(inbox_messages)
+            
+            if mailbox_total > 0:
+                by_mailbox[mailbox] = mailbox_total
+    
+    return {"total": total, "unread": unread, "by_mailbox": by_mailbox}

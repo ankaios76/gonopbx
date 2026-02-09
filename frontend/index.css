@@ -1,0 +1,40 @@
+
+/* ================================
+   Sidebar Header & Logo
+   ================================ */
+
+.sidebar-header {
+  padding: 1.75rem 1.5rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb; /* Trennlinie wieder korrekt */
+}
+
+/* Logo größer & dominant */
+.sidebar-logo {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ================================
+   Navigation Abstand nach Header
+   ================================ */
+
+.nav-links {
+  padding-top: 1.25rem;
+}
+
+/* ================================
+   Sidebar Footer & Version
+   ================================ */
+
+.sidebar-footer {
+  padding-top: 1rem;
+}
+
+.sidebar-version {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}

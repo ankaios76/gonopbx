@@ -1,0 +1,114 @@
+import { useState } from 'react'
+import { Phone, Users, History, Menu, X } from 'lucide-react'
+import Dashboard from './pages/Dashboard'
+import ExtensionsPage from './pages/ExtensionsPage'
+import CDRPage from './pages/CDRPage'
+
+type Page = 'dashboard' | 'extensions' | 'cdr'
+
+export default function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('dashboard')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const navigation = [
+    { id: 'dashboard' as Page, name: 'Dashboard', icon: Phone },
+    { id: 'extensions' as Page, name: 'Extensions', icon: Users },
+    { id: 'cdr' as Page, name: 'Anrufverlauf', icon: History },
+  ]
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <Dashboard />
+      case 'extensions':
+        return <ExtensionsPage />
+      case 'cdr':
+        return <CDRPage />
+      default:
+        return <Dashboard />
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-600 p-2 rounded-lg">
+                <Phone className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-gray-900">Asterisk PBX</span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-1">
+              {navigation.map((item) => {
+                const Icon = item.icon
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setCurrentPage(item.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      currentPage === item.id
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    {item.name}
+                  </button>
+                )
+              })}
+            </nav>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-gray-600" />
+              ) : (
+                <Menu className="w-6 h-6 text-gray-600" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t border-gray-200 bg-white">
+            {navigation.map((item) => {
+              const Icon = item.icon
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setCurrentPage(item.id)
+                    setMobileMenuOpen(false)
+                  }}
+                  className={`flex items-center gap-3 w-full px-4 py-3 ${
+                    currentPage === item.id
+                      ? 'bg-blue-50 text-blue-700'
+                      : 'text-gray-600'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  {item.name}
+                </button>
+              )
+            })}
+          </nav>
+        )}
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderPage()}
+      </main>
+    </div>
+  )
+}
