@@ -148,8 +148,7 @@ qualify_frequency=60
 [trunk-identify-{tid}]
 type=identify
 endpoint=trunk-ep-{tid}
-match=213.148.136.0/23
-match=62.206.200.0/22
+match={trunk.sip_server}
 """
 
     return config

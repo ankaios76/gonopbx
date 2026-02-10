@@ -27,6 +27,7 @@ class SIPTrunkBase(BaseModel):
     name: str
     provider: str
     auth_mode: str = "registration"
+    sip_server: str | None = None
     username: str | None = None
     password: str | None = None
     caller_id: str | None = None
@@ -78,18 +79,21 @@ def create_trunk(trunk: SIPTrunkCreate, current_user: User = Depends(get_current
     if existing:
         raise HTTPException(status_code=400, detail="Trunk name already exists")
 
-    if trunk.provider not in PROVIDER_SERVERS:
-        raise HTTPException(status_code=400, detail=f"Unknown provider: {trunk.provider}")
-
     if trunk.auth_mode == "registration" and (not trunk.username or not trunk.password):
         raise HTTPException(status_code=400, detail="Username and password required for registration auth")
 
-    sip_server = PROVIDER_SERVERS[trunk.provider]
+    # Determine SIP server: known provider or custom
+    if trunk.provider in PROVIDER_SERVERS:
+        sip_server = PROVIDER_SERVERS[trunk.provider]
+    elif trunk.sip_server:
+        sip_server = trunk.sip_server
+    else:
+        raise HTTPException(status_code=400, detail="SIP-Server muss angegeben werden")
 
-    db_trunk = SIPTrunk(
-        **trunk.model_dump(),
-        sip_server=sip_server,
-    )
+    trunk_data = trunk.model_dump()
+    trunk_data["sip_server"] = sip_server
+
+    db_trunk = SIPTrunk(**trunk_data)
     db.add(db_trunk)
     db.commit()
     db.refresh(db_trunk)
@@ -111,16 +115,21 @@ def update_trunk(trunk_id: int, trunk: SIPTrunkUpdate, current_user: User = Depe
         if existing:
             raise HTTPException(status_code=400, detail="Trunk name already exists")
 
-    if trunk.provider not in PROVIDER_SERVERS:
-        raise HTTPException(status_code=400, detail=f"Unknown provider: {trunk.provider}")
-
     if trunk.auth_mode == "registration" and (not trunk.username or not trunk.password):
         raise HTTPException(status_code=400, detail="Username and password required for registration auth")
+
+    # Determine SIP server: known provider or custom
+    if trunk.provider in PROVIDER_SERVERS:
+        sip_server = PROVIDER_SERVERS[trunk.provider]
+    elif trunk.sip_server:
+        sip_server = trunk.sip_server
+    else:
+        raise HTTPException(status_code=400, detail="SIP-Server muss angegeben werden")
 
     for key, value in trunk.model_dump().items():
         setattr(db_trunk, key, value)
 
-    db_trunk.sip_server = PROVIDER_SERVERS[trunk.provider]
+    db_trunk.sip_server = sip_server
     db_trunk.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(db_trunk)

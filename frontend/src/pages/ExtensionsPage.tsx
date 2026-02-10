@@ -33,6 +33,7 @@ interface SIPTrunk {
 const PROVIDERS: Record<string, { label: string; server: string; supportsIp: boolean }> = {
   plusnet_basic: { label: 'Plusnet IPfonie Basic/Extended', server: 'sip.ipfonie.de', supportsIp: false },
   plusnet_connect: { label: 'Plusnet IPfonie Extended Connect', server: 'sipconnect.ipfonie.de', supportsIp: true },
+  custom: { label: 'Anderer Provider', server: '', supportsIp: true },
 }
 
 export default function ExtensionsPage() {
@@ -60,6 +61,7 @@ export default function ExtensionsPage() {
     name: '',
     provider: 'plusnet_basic',
     auth_mode: 'registration',
+    sip_server: '',
     username: '',
     password: '',
     caller_id: '',
@@ -146,6 +148,7 @@ export default function ExtensionsPage() {
     try {
       const payload = {
         ...trunkForm,
+        sip_server: trunkForm.provider === 'custom' ? trunkForm.sip_server : null,
         username: trunkForm.auth_mode === 'registration' ? trunkForm.username : null,
         password: trunkForm.auth_mode === 'registration' ? trunkForm.password : null,
       }
@@ -169,6 +172,7 @@ export default function ExtensionsPage() {
       name: trunk.name,
       provider: trunk.provider,
       auth_mode: trunk.auth_mode,
+      sip_server: trunk.sip_server || '',
       username: trunk.username || '',
       password: trunk.password || '',
       caller_id: trunk.caller_id || '',
@@ -189,7 +193,7 @@ export default function ExtensionsPage() {
   }
 
   const resetTrunkForm = () => {
-    setTrunkForm({ name: '', provider: 'plusnet_basic', auth_mode: 'registration', username: '', password: '', caller_id: '', number_block: '', enabled: true })
+    setTrunkForm({ name: '', provider: 'plusnet_basic', auth_mode: 'registration', sip_server: '', username: '', password: '', caller_id: '', number_block: '', enabled: true })
   }
 
   const handleTrunkCancel = () => {
@@ -198,7 +202,10 @@ export default function ExtensionsPage() {
     resetTrunkForm()
   }
 
-  const providerLabel = (key: string) => PROVIDERS[key]?.label || key
+  const providerLabel = (key: string, server?: string) => {
+    if (key === 'custom') return server || 'Benutzerdefiniert'
+    return PROVIDERS[key]?.label || key
+  }
 
   const loading = activeTab === 'peers' ? loadingPeers : loadingTrunks
 
@@ -422,6 +429,7 @@ export default function ExtensionsPage() {
                         setTrunkForm({
                           ...trunkForm,
                           provider,
+                          sip_server: provider === 'custom' ? trunkForm.sip_server : '',
                           auth_mode: PROVIDERS[provider]?.supportsIp ? trunkForm.auth_mode : 'registration',
                         })
                       }}
@@ -431,10 +439,26 @@ export default function ExtensionsPage() {
                         <option key={key} value={key}>{label}</option>
                       ))}
                     </select>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Server: {PROVIDERS[trunkForm.provider]?.server}
-                    </p>
+                    {trunkForm.provider !== 'custom' && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Server: {PROVIDERS[trunkForm.provider]?.server}
+                      </p>
+                    )}
                   </div>
+
+                  {trunkForm.provider === 'custom' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">SIP-Server *</label>
+                      <input
+                        type="text"
+                        value={trunkForm.sip_server}
+                        onChange={(e) => setTrunkForm({...trunkForm, sip_server: e.target.value})}
+                        placeholder="z.B. sip.provider.de"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        required
+                      />
+                    </div>
+                  )}
 
                   {PROVIDERS[trunkForm.provider]?.supportsIp && (
                     <div>
@@ -560,7 +584,7 @@ export default function ExtensionsPage() {
                           <span className="font-medium">{trunk.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">{providerLabel(trunk.provider)}</td>
+                      <td className="px-6 py-4">{providerLabel(trunk.provider, trunk.sip_server)}</td>
                       <td className="px-6 py-4">
                         <span className="px-2 py-1 bg-gray-100 rounded text-sm">{trunk.sip_server}</span>
                       </td>
