@@ -60,10 +60,11 @@ class SIPPeer(Base):
     host = Column(String(50), default="dynamic")
     nat = Column(String(20), default="force_rport,comedia")
     type = Column(String(20), default="friend")
+    codecs = Column(String(200), nullable=True)  # NULL = use global codecs
     enabled = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
+
     # Relationships
     user = relationship("User", back_populates="sip_peers")
 

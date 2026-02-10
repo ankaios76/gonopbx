@@ -9,8 +9,8 @@ from pydantic import BaseModel
 from datetime import datetime
 import logging
 
-from database import get_db, SIPTrunk, SIPPeer, User
-from pjsip_config import write_pjsip_config, reload_asterisk
+from database import get_db, SIPTrunk, SIPPeer, User, SystemSettings
+from pjsip_config import write_pjsip_config, reload_asterisk, DEFAULT_CODECS
 from auth import get_current_user
 
 logger = logging.getLogger(__name__)
@@ -60,7 +60,9 @@ def regenerate_config(db: Session):
     try:
         all_peers = db.query(SIPPeer).all()
         all_trunks = db.query(SIPTrunk).all()
-        write_pjsip_config(all_peers, all_trunks)
+        setting = db.query(SystemSettings).filter(SystemSettings.key == "global_codecs").first()
+        global_codecs = setting.value if setting else DEFAULT_CODECS
+        write_pjsip_config(all_peers, all_trunks, global_codecs=global_codecs)
         reload_asterisk()
         logger.info(f"PJSIP config regenerated with {len(all_peers)} peers, {len(all_trunks)} trunks")
     except Exception as e:

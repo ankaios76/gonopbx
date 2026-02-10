@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ArrowLeft, Phone, Plus, Trash2, Server, PhoneForwarded, PhoneOutgoing, ToggleLeft, ToggleRight, Voicemail, Save, Play, Pause, Clock } from 'lucide-react'
+import { ArrowLeft, Phone, Plus, Trash2, Server, PhoneForwarded, PhoneOutgoing, ToggleLeft, ToggleRight, Voicemail, Save, Play, Pause, Clock, Volume2 } from 'lucide-react'
 import { api } from '../services/api'
 
 interface Props {
@@ -24,10 +24,17 @@ interface SIPTrunk {
   number_block: string | null
 }
 
+interface AvailableCodec {
+  id: string
+  name: string
+  description: string
+}
+
 interface SIPPeer {
   id: number
   extension: string
   caller_id: string | null
+  codecs: string | null
   enabled: boolean
 }
 
@@ -102,20 +109,41 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
   const [playingId, setPlayingId] = useState<number | null>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
 
+  // Codec state
+  const [availableCodecs, setAvailableCodecs] = useState<AvailableCodec[]>([])
+  const [globalCodecs, setGlobalCodecs] = useState<string[]>([])
+  const [useGlobalCodecs, setUseGlobalCodecs] = useState(true)
+  const [peerCodecs, setPeerCodecs] = useState<string[]>([])
+  const [savingCodecs, setSavingCodecs] = useState(false)
+
   useEffect(() => {
     fetchData()
   }, [extension])
 
   const fetchData = async () => {
     try {
-      const [peersData, routesData, trunksData, forwardsData, allRoutesData] = await Promise.all([
+      const [peersData, routesData, trunksData, forwardsData, allRoutesData, codecData] = await Promise.all([
         api.getSipPeers(),
         api.getRoutesByExtension(extension),
         api.getTrunks(),
         api.getCallForwards(extension),
         api.getRoutes(),
+        api.getCodecSettings(),
       ])
-      setPeer(peersData.find((p: SIPPeer) => p.extension === extension) || null)
+      const currentPeer = peersData.find((p: SIPPeer) => p.extension === extension) || null
+      setPeer(currentPeer)
+
+      // Codec setup
+      const gCodecs = (codecData.global_codecs || '').split(',').filter(Boolean)
+      setAvailableCodecs(codecData.available_codecs || [])
+      setGlobalCodecs(gCodecs)
+      if (currentPeer?.codecs) {
+        setUseGlobalCodecs(false)
+        setPeerCodecs(currentPeer.codecs.split(',').filter(Boolean))
+      } else {
+        setUseGlobalCodecs(true)
+        setPeerCodecs(gCodecs)
+      }
       setRoutes(routesData)
       setAllRoutes(allRoutesData || [])
       setTrunks(trunksData)
@@ -292,6 +320,37 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
     if (diffHours < 24) return `vor ${diffHours} Std.`
     if (diffDays < 7) return `vor ${diffDays} Tag${diffDays > 1 ? 'en' : ''}`
     return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+  }
+
+  // ==================== CODECS ====================
+  const handleToggleGlobalCodecs = (useGlobal: boolean) => {
+    setUseGlobalCodecs(useGlobal)
+    if (useGlobal) {
+      setPeerCodecs(globalCodecs)
+    }
+  }
+
+  const togglePeerCodec = (codecId: string) => {
+    setPeerCodecs(prev =>
+      prev.includes(codecId) ? prev.filter(c => c !== codecId) : [...prev, codecId]
+    )
+  }
+
+  const handleSaveCodecs = async () => {
+    if (!peer) return
+    if (!useGlobalCodecs && peerCodecs.length === 0) {
+      alert('Mindestens ein Codec muss ausgewählt sein')
+      return
+    }
+    setSavingCodecs(true)
+    try {
+      await api.updatePeerCodecs(peer.id, useGlobalCodecs ? null : peerCodecs.join(','))
+      fetchData()
+    } catch (error: any) {
+      alert(error.message || 'Fehler beim Speichern der Codec-Einstellungen')
+    } finally {
+      setSavingCodecs(false)
+    }
   }
 
   // Available forward types (exclude already configured ones)
@@ -622,6 +681,66 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
               Keine Rufumleitungen konfiguriert. Klicken Sie auf "Umleitung hinzufügen" um eine Weiterleitung einzurichten.
             </div>
           )}
+        </div>
+      </div>
+
+      {/* ==================== Audio-Codecs ==================== */}
+      <div className="bg-white rounded-lg shadow mb-8">
+        <div className="px-6 py-4 border-b flex items-center gap-2">
+          <Volume2 className="w-5 h-5 text-gray-600" />
+          <h2 className="text-lg font-semibold">Audio-Codecs</h2>
+        </div>
+
+        <div className="px-6 py-4">
+          <label className="flex items-center gap-3 mb-4 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={useGlobalCodecs}
+              onChange={(e) => handleToggleGlobalCodecs(e.target.checked)}
+              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <div>
+              <span className="text-sm font-medium text-gray-700">Globale Einstellungen verwenden</span>
+              <span className="block text-xs text-gray-500">
+                Aktuelle globale Codecs: {globalCodecs.join(', ') || 'keine'}
+              </span>
+            </div>
+          </label>
+
+          {!useGlobalCodecs && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+              {availableCodecs.map(codec => (
+                <label
+                  key={codec.id}
+                  className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition ${
+                    peerCodecs.includes(codec.id)
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={peerCodecs.includes(codec.id)}
+                    onChange={() => togglePeerCodec(codec.id)}
+                    className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <div>
+                    <div className="text-sm font-medium text-gray-800">{codec.name}</div>
+                    <div className="text-xs text-gray-500">{codec.description}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )}
+
+          <button
+            onClick={handleSaveCodecs}
+            disabled={savingCodecs}
+            className="flex items-center gap-2 bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition text-sm disabled:opacity-50"
+          >
+            <Save className="w-4 h-4" />
+            {savingCodecs ? 'Speichere...' : 'Codecs speichern'}
+          </button>
         </div>
       </div>
 

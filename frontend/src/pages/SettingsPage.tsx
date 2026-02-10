@@ -1,6 +1,12 @@
 import { useState, useEffect, FormEvent } from 'react'
-import { Save, Send, Eye, EyeOff, Mail } from 'lucide-react'
+import { Save, Send, Eye, EyeOff, Mail, Volume2 } from 'lucide-react'
 import { api } from '../services/api'
+
+interface AvailableCodec {
+  id: string
+  name: string
+  description: string
+}
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
@@ -19,10 +25,18 @@ export default function SettingsPage() {
     smtp_from: '',
   })
 
+  // Codec state
+  const [availableCodecs, setAvailableCodecs] = useState<AvailableCodec[]>([])
+  const [selectedCodecs, setSelectedCodecs] = useState<string[]>([])
+  const [savingCodecs, setSavingCodecs] = useState(false)
+
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const data = await api.getSettings()
+        const [data, codecData] = await Promise.all([
+          api.getSettings(),
+          api.getCodecSettings(),
+        ])
         setFormData({
           smtp_host: data.smtp_host || '',
           smtp_port: data.smtp_port || '587',
@@ -31,6 +45,8 @@ export default function SettingsPage() {
           smtp_password: data.smtp_password || '',
           smtp_from: data.smtp_from || '',
         })
+        setAvailableCodecs(codecData.available_codecs || [])
+        setSelectedCodecs((codecData.global_codecs || '').split(',').filter(Boolean))
       } catch {
         setError('Einstellungen konnten nicht geladen werden')
       } finally {
@@ -70,6 +86,30 @@ export default function SettingsPage() {
       setError(err.message || 'Test-E-Mail konnte nicht gesendet werden')
     } finally {
       setTesting(false)
+    }
+  }
+
+  const toggleCodec = (codecId: string) => {
+    setSelectedCodecs(prev =>
+      prev.includes(codecId) ? prev.filter(c => c !== codecId) : [...prev, codecId]
+    )
+  }
+
+  const handleSaveCodecs = async () => {
+    if (selectedCodecs.length === 0) {
+      setError('Mindestens ein Codec muss ausgewählt sein')
+      return
+    }
+    setError('')
+    setSuccess('')
+    setSavingCodecs(true)
+    try {
+      await api.updateCodecSettings({ global_codecs: selectedCodecs.join(',') })
+      setSuccess('Codec-Einstellungen gespeichert')
+    } catch (err: any) {
+      setError(err.message || 'Fehler beim Speichern der Codec-Einstellungen')
+    } finally {
+      setSavingCodecs(false)
     }
   }
 
@@ -211,6 +251,51 @@ export default function SettingsPage() {
             {testing ? 'Sende...' : 'Senden'}
           </button>
         </div>
+      </div>
+
+      {/* Audio Codecs Section */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <Volume2 className="w-5 h-5 text-gray-600" />
+          <h2 className="text-lg font-semibold text-gray-800">Audio-Codecs (Global)</h2>
+        </div>
+        <p className="text-sm text-gray-500 mb-6">
+          Wählen Sie die Codecs aus, die standardmäßig für alle Nebenstellen verwendet werden.
+          Einzelne Nebenstellen können diese Einstellung überschreiben.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+          {availableCodecs.map(codec => (
+            <label
+              key={codec.id}
+              className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition ${
+                selectedCodecs.includes(codec.id)
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedCodecs.includes(codec.id)}
+                onChange={() => toggleCodec(codec.id)}
+                className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <div>
+                <div className="text-sm font-medium text-gray-800">{codec.name}</div>
+                <div className="text-xs text-gray-500">{codec.description}</div>
+              </div>
+            </label>
+          ))}
+        </div>
+
+        <button
+          onClick={handleSaveCodecs}
+          disabled={savingCodecs || selectedCodecs.length === 0}
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg transition-colors"
+        >
+          <Save className="w-4 h-4" />
+          {savingCodecs ? 'Speichern...' : 'Codecs speichern'}
+        </button>
       </div>
     </div>
   )

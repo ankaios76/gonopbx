@@ -255,6 +255,25 @@ class ApiService {
       body: JSON.stringify({ to }),
     })
   }
+
+  // Codec Settings
+  async getCodecSettings() {
+    return this.request<any>('/api/settings/codecs')
+  }
+
+  async updateCodecSettings(data: { global_codecs: string }) {
+    return this.request<any>('/api/settings/codecs', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    })
+  }
+
+  async updatePeerCodecs(peerId: number, codecs: string | null) {
+    return this.request<any>(`/api/peers/${peerId}/codecs`, {
+      method: 'PATCH',
+      body: JSON.stringify({ codecs }),
+    })
+  }
 }
 
 export const api = new ApiService(API_BASE_URL)

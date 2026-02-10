@@ -9,8 +9,8 @@ from pydantic import BaseModel
 from datetime import datetime
 import logging
 
-from database import get_db, SIPPeer, SIPTrunk, User, VoicemailMailbox
-from pjsip_config import write_pjsip_config, reload_asterisk
+from database import get_db, SIPPeer, SIPTrunk, User, VoicemailMailbox, SystemSettings
+from pjsip_config import write_pjsip_config, reload_asterisk, DEFAULT_CODECS
 from voicemail_config import write_voicemail_config, reload_voicemail
 from auth import get_current_user
 
@@ -24,7 +24,12 @@ class SIPPeerBase(BaseModel):
     secret: str
     caller_id: str | None = None
     context: str = "internal"
+    codecs: str | None = None
     enabled: bool = True
+
+
+class PeerCodecUpdate(BaseModel):
+    codecs: str | None = None
 
 
 class SIPPeerCreate(SIPPeerBase):
@@ -60,7 +65,9 @@ def regenerate_pjsip_config(db: Session):
     try:
         all_peers = db.query(SIPPeer).all()
         all_trunks = db.query(SIPTrunk).all()
-        write_pjsip_config(all_peers, all_trunks)
+        setting = db.query(SystemSettings).filter(SystemSettings.key == "global_codecs").first()
+        global_codecs = setting.value if setting else DEFAULT_CODECS
+        write_pjsip_config(all_peers, all_trunks, global_codecs=global_codecs)
         reload_asterisk()
         logger.info(f"✓ PJSIP config regenerated with {len(all_peers)} peers")
     except Exception as e:
@@ -151,3 +158,19 @@ def delete_peer(peer_id: int, current_user: User = Depends(get_current_user), db
     regenerate_voicemail_config(db)
 
     return {"status": "deleted", "extension": extension}
+
+
+@router.patch("/{peer_id}/codecs")
+def update_peer_codecs(peer_id: int, data: PeerCodecUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_peer = db.query(SIPPeer).filter(SIPPeer.id == peer_id).first()
+    if not db_peer:
+        raise HTTPException(status_code=404, detail="Peer not found")
+
+    db_peer.codecs = data.codecs
+    db_peer.updated_at = datetime.utcnow()
+    db.commit()
+
+    logger.info(f"Updated codecs for peer {db_peer.extension}: {data.codecs or 'global'}")
+    regenerate_pjsip_config(db)
+
+    return {"status": "ok", "codecs": db_peer.codecs}

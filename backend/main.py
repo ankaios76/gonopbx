@@ -79,6 +79,19 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     logger.info("Database tables created/verified")
 
+    # Migrate: add codecs column to sip_peers if missing
+    try:
+        from sqlalchemy import text, inspect
+        inspector = inspect(engine)
+        columns = [c['name'] for c in inspector.get_columns('sip_peers')]
+        if 'codecs' not in columns:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE sip_peers ADD COLUMN codecs VARCHAR(200)"))
+                conn.commit()
+            logger.info("Migration: added codecs column to sip_peers")
+    except Exception as e:
+        logger.warning(f"Migration check for codecs column: {e}")
+
     # Seed admin user if not exists
     db = SessionLocal()
     try:
