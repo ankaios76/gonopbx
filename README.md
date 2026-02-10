@@ -23,6 +23,7 @@
   <a href="#-quick-start">Quick Start</a> •
   <a href="#-screenshots">Screenshots</a> •
   <a href="#-features">Features</a> •
+  <a href="#-changelog">Changelog</a> •
   <a href="https://buymeacoffee.com/ankaios">Support the Project</a>
 </p>
 
@@ -35,10 +36,11 @@
 ## ✨ Features
 
 - **📞 Extension Management** – Create, edit, and manage SIP extensions with caller ID, context, and activation status
-- **🔌 SIP Trunk Configuration** – Connect to SIP providers via registration or IP authentication, with built-in templates for Plusnet IPfonie
+- **🔌 SIP Trunk Configuration** – Connect to any SIP provider via registration or IP authentication, with built-in templates for Plusnet IPfonie and support for custom providers
 - **📠 DID Routing** – Flexibly assign incoming phone numbers to extensions with number block management per trunk
 - **🔄 Call Forwarding** – Unconditional, busy, and no-answer forwarding per extension, toggled with one click
 - **📩 Voicemail** – Per-extension voicemail boxes with PIN, email notifications, and built-in audio player
+- **📧 SMTP Email Configuration** – Configure your mail server for voicemail-to-email delivery, with built-in test email function
 - **📊 Call Detail Records** – Full CDR with filters by source, destination, and status, plus call statistics at a glance
 - **🔐 Multi-User & Roles** – Admin and user roles with JWT-based authentication
 - **📡 Real-Time Dashboard** – Live overview via WebSocket: Asterisk status, registered endpoints, active lines, and recent calls
@@ -93,22 +95,40 @@ The installer will automatically:
 | **Database** | PostgreSQL |
 | **Auth** | JWT + bcrypt |
 | **Real-Time** | WebSocket |
+| **Email** | msmtp (in Asterisk container) |
 | **Deployment** | Docker Compose |
-| **SSL** | Let's Encrypt (automatic) |
 
 ## 📁 Project Structure
 
 ```
 gonopbx/
-├── asterisk/config/    # Asterisk configuration templates
+├── asterisk/           # Asterisk Dockerfile + configuration templates
 ├── backend/            # FastAPI backend (API, WebSocket, Asterisk integration)
 ├── frontend/           # React frontend (Vite + Tailwind)
-├── database/           # SQL schema and migrations
-├── doks/               # Documentation
-├── releases/           # Release packages
 ├── docker-compose.yml  # Container orchestration
-└── install.sh          # Interactive installer
+├── install.sh          # Interactive installer
+└── CHANGELOG.md        # Version history
 ```
+
+## 📋 Changelog
+
+### v1.1.0 (2026-02-10)
+
+**New Features:**
+- SMTP email configuration for voicemail-to-email notifications (admin settings page with test email)
+- Per-extension voicemail mailbox management (PIN, email, enable/disable)
+- Support for custom SIP trunk providers (manual SIP server entry)
+
+**Improvements:**
+- Custom Asterisk Docker image with msmtp for email delivery
+- Hardened Docker Compose: backend, frontend, and AMI bound to localhost only
+- Dynamic PJSIP identify matching (replaces hardcoded IP ranges)
+
+### v1.0.0 (2026-02-09)
+
+Initial release with full PBX management: extensions, trunks, routing, call forwarding, voicemail, CDR, authentication, and real-time dashboard.
+
+See [CHANGELOG.md](CHANGELOG.md) for the full version history.
 
 ## 🤝 Contributing
 
@@ -128,7 +148,6 @@ Have an idea but no time to code? [Open an issue](https://github.com/ankaios76/g
 - [ ] IVR / auto attendant builder
 - [ ] Conference rooms
 - [ ] Phonebook with CallerID lookup
-- [ ] REST API documentation (Swagger/OpenAPI)
 - [ ] Multi-language support (EN/DE)
 - [ ] Backup & restore functionality
 
