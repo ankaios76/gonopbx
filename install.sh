@@ -59,10 +59,13 @@ fi
 echo ""
 
 # Admin password
-read -rp "Set admin password (leave empty to auto-generate): " ADMIN_PASSWORD
+printf "Set admin password (leave empty to auto-generate): "
+IFS= read -r ADMIN_PASSWORD
 if [ -z "$ADMIN_PASSWORD" ]; then
     ADMIN_PASSWORD=$(openssl rand -base64 16 | tr -d '/+=' | head -c 20)
-    echo "Generated admin password: $ADMIN_PASSWORD"
+    printf 'Generated admin password: %s\n' "$ADMIN_PASSWORD"
+else
+    printf 'Password set: %s\n' "$ADMIN_PASSWORD"
 fi
 
 # Generate secure random passwords
