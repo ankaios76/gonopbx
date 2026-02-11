@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.4.0] - 2026-02-11
+
+### Neue Features
+
+- **SIP-Passwort-Staerke-Pruefung**: Echtzeit-Bewertung der Passwortstaerke
+  beim Anlegen/Bearbeiten von Extensions (farbiger Balken rot/gelb/gruen).
+  Button zum Generieren sicherer 16-Zeichen-Passwoerter.
+  Uebersicht schwacher Passwoerter im Sicherheit-Tab.
+- **Audit-Log**: Protokollierung aller administrativen Aktionen (Erstellen,
+  Bearbeiten, Loeschen von Extensions, Trunks, Routen, Weiterleitungen,
+  Benutzern und Einstellungen). Neuer Audit-Log-Tab in den Einstellungen
+  mit farblich markierter Tabelle und Pagination.
+- **Fail2Ban-Status**: Live-Anzeige des Fail2Ban-Status im Sicherheit-Tab.
+  Zeigt aktive Bans, Jails, Bans der letzten 24h und eine Tabelle der
+  zuletzt gesperrten IP-Adressen. Liest direkt die Fail2Ban-SQLite-Datenbank.
+
 ## [1.3.0] - 2026-02-11
 
 ### Neue Features

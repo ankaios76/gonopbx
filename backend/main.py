@@ -24,6 +24,7 @@ from database import engine, Base
 from routers import peers, trunks, routes, dashboard, cdr, voicemail, callforward
 from routers import auth as auth_router, users as users_router
 from routers import settings as settings_router
+from routers import audit as audit_router
 from auth import get_password_hash, get_current_user
 from database import SessionLocal, User, SIPPeer, VoicemailMailbox, SystemSettings
 from voicemail_config import write_voicemail_config, reload_voicemail
@@ -104,6 +105,17 @@ async def lifespan(app: FastAPI):
             logger.info("Migration: added ring_timeout column to voicemail_mailboxes")
     except Exception as e:
         logger.warning(f"Migration check for ring_timeout column: {e}")
+
+    # Migrate: create audit_logs table if missing
+    try:
+        from sqlalchemy import text, inspect as sa_inspect2
+        al_inspector = sa_inspect2(engine)
+        if 'audit_logs' not in al_inspector.get_table_names():
+            from database import AuditLog
+            AuditLog.__table__.create(bind=engine)
+            logger.info("Migration: created audit_logs table")
+    except Exception as e:
+        logger.warning(f"Migration check for audit_logs table: {e}")
 
     # Seed admin user if not exists
     db = SessionLocal()
@@ -208,6 +220,7 @@ app.include_router(cdr.router, prefix="/api/cdr", tags=["Call Records"])
 app.include_router(voicemail.router, prefix="/api/voicemail", tags=["Voicemail"])
 app.include_router(callforward.router, prefix="/api/callforward", tags=["Call Forwarding"])
 app.include_router(settings_router.router, prefix="/api/settings", tags=["Settings"])
+app.include_router(audit_router.router, prefix="/api/audit", tags=["Audit"])
 
 
 # Root endpoint

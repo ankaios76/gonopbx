@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Edit2, Trash2, Phone, PhoneOff, Server } from 'lucide-react'
+import { Plus, Edit2, Trash2, Phone, PhoneOff, Server, RefreshCw } from 'lucide-react'
 import { api } from '../services/api'
 
 interface SIPPeer {
@@ -299,14 +299,64 @@ export default function ExtensionsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Passwort *</label>
-                    <input
-                      type="text"
-                      value={peerForm.secret}
-                      onChange={(e) => setPeerForm({...peerForm, secret: e.target.value})}
-                      placeholder="Sicheres Passwort"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                      required
-                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={peerForm.secret}
+                        onChange={(e) => setPeerForm({...peerForm, secret: e.target.value})}
+                        placeholder="Sicheres Passwort"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            const res = await api.generatePassword()
+                            setPeerForm({...peerForm, secret: res.password})
+                          } catch {}
+                        }}
+                        className="flex items-center gap-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm whitespace-nowrap"
+                        title="Passwort generieren"
+                      >
+                        <RefreshCw className="w-4 h-4" />
+                        Generieren
+                      </button>
+                    </div>
+                    {peerForm.secret && (() => {
+                      const pw = peerForm.secret
+                      const ext = peerForm.extension
+                      let score = 0
+                      const warnings: string[] = []
+                      if (pw.length >= 16) score += 30
+                      else if (pw.length >= 12) score += 20
+                      else if (pw.length >= 8) { score += 10; warnings.push('Mindestens 12 Zeichen empfohlen') }
+                      else warnings.push('Zu kurz')
+                      if (/[a-z]/.test(pw)) score += 15; else warnings.push('Kleinbuchstaben fehlen')
+                      if (/[A-Z]/.test(pw)) score += 15; else warnings.push('Großbuchstaben fehlen')
+                      if (/\d/.test(pw)) score += 15; else warnings.push('Ziffern fehlen')
+                      if (/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?/~`]/.test(pw)) score += 15; else warnings.push('Sonderzeichen fehlen')
+                      if (ext && pw.includes(ext)) { score = Math.max(0, score - 20); warnings.push('Enthält Extension') }
+                      if (pw.length >= 20) score = Math.min(100, score + 10)
+                      const level = score >= 70 ? 'strong' : score >= 40 ? 'medium' : 'weak'
+                      const color = level === 'strong' ? 'bg-green-500' : level === 'medium' ? 'bg-yellow-500' : 'bg-red-500'
+                      const label = level === 'strong' ? 'Stark' : level === 'medium' ? 'Mittel' : 'Schwach'
+                      return (
+                        <div className="mt-2">
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                              <div className={`h-full ${color} transition-all`} style={{ width: `${score}%` }} />
+                            </div>
+                            <span className={`text-xs font-medium ${level === 'strong' ? 'text-green-600' : level === 'medium' ? 'text-yellow-600' : 'text-red-600'}`}>
+                              {label}
+                            </span>
+                          </div>
+                          {warnings.length > 0 && level !== 'strong' && (
+                            <p className="text-xs text-gray-500 mt-1">{warnings.join(', ')}</p>
+                          )}
+                        </div>
+                      )
+                    })()}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Caller ID</label>

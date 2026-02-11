@@ -280,11 +280,52 @@ class ApiService {
     })
   }
 
+  // Server Management
+  async getServerInfo() {
+    return this.request<any>('/api/settings/server-info')
+  }
+
+  async checkUpdate() {
+    return this.request<any>('/api/settings/check-update')
+  }
+
+  async restartService(service: string) {
+    return this.request<any>('/api/settings/restart-service', {
+      method: 'POST',
+      body: JSON.stringify({ service }),
+    })
+  }
+
+  async rebootServer() {
+    return this.request<any>('/api/settings/reboot', {
+      method: 'POST',
+    })
+  }
+
   async updatePeerCodecs(peerId: number, codecs: string | null) {
     return this.request<any>(`/api/peers/${peerId}/codecs`, {
       method: 'PATCH',
       body: JSON.stringify({ codecs }),
     })
+  }
+
+  // Password Strength
+  async generatePassword() {
+    return this.request<{ password: string; strength: { score: number; level: string; warnings: string[] } }>('/api/peers/generate-password')
+  }
+
+  async getWeakPasswords() {
+    return this.request<any[]>('/api/peers/weak-passwords')
+  }
+
+  // Audit Log
+  async getAuditLogs(limit = 50, offset = 0) {
+    return this.request<{ total: number; logs: any[] }>(`/api/audit/?limit=${limit}&offset=${offset}`)
+  }
+
+  // Fail2Ban
+  async getFail2banStatus() {
+    return this.request<any>('/api/settings/fail2ban')
   }
 }
 

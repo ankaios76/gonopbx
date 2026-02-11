@@ -2,7 +2,7 @@
 Inbound Routes API Router
 Maps DID numbers to extensions and generates dialplan
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
@@ -12,6 +12,7 @@ import logging
 from database import get_db, InboundRoute, SIPTrunk, SIPPeer, User, CallForward, VoicemailMailbox
 from dialplan import write_extensions_config, reload_dialplan
 from auth import get_current_user
+from audit import log_action
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +70,7 @@ def list_routes_by_extension(extension: str, current_user: User = Depends(get_cu
 
 
 @router.post("/", response_model=InboundRouteResponse)
-def create_route(route: InboundRouteCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_route(route: InboundRouteCreate, request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     # Validate DID uniqueness
     existing = db.query(InboundRoute).filter(InboundRoute.did == route.did).first()
     if existing:
@@ -91,13 +92,15 @@ def create_route(route: InboundRouteCreate, current_user: User = Depends(get_cur
     db.refresh(db_route)
 
     logger.info(f"Created inbound route: {route.did} -> {route.destination_extension}")
+    log_action(db, current_user.username, "route_created", "route", route.did,
+               {"destination": route.destination_extension}, request.client.host if request.client else None)
     regenerate_dialplan(db)
 
     return db_route
 
 
 @router.put("/{route_id}", response_model=InboundRouteResponse)
-def update_route(route_id: int, route: InboundRouteUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def update_route(route_id: int, route: InboundRouteUpdate, request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_route = db.query(InboundRoute).filter(InboundRoute.id == route_id).first()
     if not db_route:
         raise HTTPException(status_code=404, detail="Route not found")
@@ -115,13 +118,15 @@ def update_route(route_id: int, route: InboundRouteUpdate, current_user: User = 
     db.refresh(db_route)
 
     logger.info(f"Updated inbound route: {route.did} -> {route.destination_extension}")
+    log_action(db, current_user.username, "route_updated", "route", route.did,
+               {"destination": route.destination_extension}, request.client.host if request.client else None)
     regenerate_dialplan(db)
 
     return db_route
 
 
 @router.delete("/{route_id}")
-def delete_route(route_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def delete_route(route_id: int, request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_route = db.query(InboundRoute).filter(InboundRoute.id == route_id).first()
     if not db_route:
         raise HTTPException(status_code=404, detail="Route not found")
@@ -131,6 +136,8 @@ def delete_route(route_id: int, current_user: User = Depends(get_current_user), 
     db.commit()
 
     logger.info(f"Deleted inbound route: {did}")
+    log_action(db, current_user.username, "route_deleted", "route", did,
+               None, request.client.host if request.client else None)
     regenerate_dialplan(db)
 
     return {"status": "deleted", "did": did}

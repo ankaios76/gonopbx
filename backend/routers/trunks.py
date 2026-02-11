@@ -2,7 +2,7 @@
 SIP Trunks API Router
 CRUD operations for SIP trunk management with PJSIP config generation
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
@@ -12,6 +12,7 @@ import logging
 from database import get_db, SIPTrunk, SIPPeer, User, SystemSettings
 from pjsip_config import write_pjsip_config, reload_asterisk, DEFAULT_CODECS
 from auth import get_current_user
+from audit import log_action
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +79,7 @@ def list_trunks(current_user: User = Depends(get_current_user), db: Session = De
 
 
 @router.post("/", response_model=SIPTrunkResponse)
-def create_trunk(trunk: SIPTrunkCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_trunk(trunk: SIPTrunkCreate, request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     existing = db.query(SIPTrunk).filter(SIPTrunk.name == trunk.name).first()
     if existing:
         raise HTTPException(status_code=400, detail="Trunk name already exists")
@@ -103,13 +104,15 @@ def create_trunk(trunk: SIPTrunkCreate, current_user: User = Depends(get_current
     db.refresh(db_trunk)
 
     logger.info(f"Created SIP trunk: {trunk.name}")
+    log_action(db, current_user.username, "trunk_created", "trunk", trunk.name,
+               {"provider": trunk.provider}, request.client.host if request.client else None)
     regenerate_config(db)
 
     return db_trunk
 
 
 @router.put("/{trunk_id}", response_model=SIPTrunkResponse)
-def update_trunk(trunk_id: int, trunk: SIPTrunkUpdate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def update_trunk(trunk_id: int, trunk: SIPTrunkUpdate, request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_trunk = db.query(SIPTrunk).filter(SIPTrunk.id == trunk_id).first()
     if not db_trunk:
         raise HTTPException(status_code=404, detail="Trunk not found")
@@ -139,13 +142,15 @@ def update_trunk(trunk_id: int, trunk: SIPTrunkUpdate, current_user: User = Depe
     db.refresh(db_trunk)
 
     logger.info(f"Updated SIP trunk: {trunk.name}")
+    log_action(db, current_user.username, "trunk_updated", "trunk", trunk.name,
+               {"provider": trunk.provider}, request.client.host if request.client else None)
     regenerate_config(db)
 
     return db_trunk
 
 
 @router.delete("/{trunk_id}")
-def delete_trunk(trunk_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def delete_trunk(trunk_id: int, request: Request, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_trunk = db.query(SIPTrunk).filter(SIPTrunk.id == trunk_id).first()
     if not db_trunk:
         raise HTTPException(status_code=404, detail="Trunk not found")
@@ -155,6 +160,8 @@ def delete_trunk(trunk_id: int, current_user: User = Depends(get_current_user), 
     db.commit()
 
     logger.info(f"Deleted SIP trunk: {name}")
+    log_action(db, current_user.username, "trunk_deleted", "trunk", name,
+               None, request.client.host if request.client else None)
     regenerate_config(db)
 
     return {"status": "deleted", "name": name}

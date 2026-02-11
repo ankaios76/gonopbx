@@ -44,6 +44,9 @@
 - **🎵 Music on Hold** – Pre-installed hold music in high-quality g722 format
 - **🎙️ German Voice Prompts** – Built-in German Asterisk sound pack for IVR and voicemail announcements
 - **🔒 IP Whitelist** – Restrict SIP registration to trusted IP addresses and CIDR networks
+- **🔑 SIP Password Strength** – Real-time password strength indicator, secure password generator, and weak password overview
+- **📝 Audit Log** – Full audit trail of all administrative actions with color-coded log viewer
+- **🛡️ Fail2Ban Integration** – Live Fail2Ban status with active bans, jail overview, and recent ban history
 - **🎛️ Codec Management** – Global and per-extension codec configuration with drag-and-drop priority ordering
 - **📊 Call Detail Records** – Full CDR with filters by source, destination, and status, plus call statistics at a glance
 - **🔐 Multi-User & Roles** – Admin and user roles with JWT-based authentication
@@ -115,6 +118,16 @@ gonopbx/
 ```
 
 ## 📋 Changelog
+
+### v1.4.0 (2026-02-11)
+
+**New Features:**
+- SIP password strength checker with real-time indicator (red/yellow/green bar)
+- Secure password generator (16 characters) with one-click button
+- Weak password overview in Security settings tab
+- Full audit log for all administrative actions (create, update, delete)
+- Audit Log tab in Settings with color-coded entries and pagination
+- Fail2Ban live status in Security tab (active bans, jails, recent bans)
 
 ### v1.3.0 (2026-02-11)
 

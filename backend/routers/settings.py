@@ -4,8 +4,15 @@ Settings Router - Admin-only system settings management
 
 import json
 import ipaddress
+import os
+import shutil
+import subprocess
+import logging
+import urllib.request
+import sqlite3
+import time
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import Optional, List
@@ -16,6 +23,10 @@ from email_config import write_msmtp_config, send_test_email
 from voicemail_config import write_voicemail_config, reload_voicemail
 from pjsip_config import write_pjsip_config, reload_asterisk, DEFAULT_CODECS
 from acl_config import write_acl_config, remove_acl_config, reload_acl
+from version import VERSION
+from audit import log_action
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Settings"])
 
@@ -71,6 +82,7 @@ def get_settings(
 @router.put("/")
 def update_settings(
     data: SettingsUpdate,
+    request: Request,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_admin),
 ):
@@ -108,6 +120,8 @@ def update_settings(
     write_voicemail_config(mailboxes, full_settings)
     reload_voicemail()
 
+    log_action(db, current_user.username, "settings_updated", "settings", "smtp",
+               None, request.client.host if request.client else None)
     return {"status": "ok"}
 
 
@@ -234,6 +248,7 @@ def get_ip_whitelist(
 @router.put("/ip-whitelist")
 def update_ip_whitelist(
     data: IpWhitelistUpdate,
+    request: Request,
     db: Session = Depends(get_db),
     current_user: User = Depends(require_admin),
 ):
@@ -273,4 +288,302 @@ def update_ip_whitelist(
     write_pjsip_config(all_peers, all_trunks, global_codecs=global_codecs, acl_enabled=data.enabled and len(clean_ips) > 0)
     reload_asterisk()
 
+    log_action(db, current_user.username, "whitelist_updated", "settings", "ip_whitelist",
+               {"enabled": data.enabled, "count": len(clean_ips)},
+               request.client.host if request.client else None)
     return {"status": "ok", "enabled": data.enabled, "ips": clean_ips}
+
+
+# --- Fail2Ban Status ---
+
+FAIL2BAN_DB_PATH = "/var/lib/fail2ban/fail2ban.sqlite3"
+
+
+def _get_fail2ban_status() -> dict:
+    """Read fail2ban status from its SQLite database."""
+    if not os.path.exists(FAIL2BAN_DB_PATH):
+        return {"available": False, "error": "Fail2Ban-Datenbank nicht gefunden"}
+
+    try:
+        conn = sqlite3.connect(f"file:{FAIL2BAN_DB_PATH}?mode=ro", uri=True)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        now = int(time.time())
+
+        # Get jails
+        jails = []
+        try:
+            cursor.execute("SELECT name, enabled FROM jails")
+            for row in cursor.fetchall():
+                jail_name = row["name"]
+                # Count active bans for this jail
+                cursor2 = conn.cursor()
+                cursor2.execute(
+                    "SELECT COUNT(*) as cnt FROM bans WHERE jail = ? AND (timeofban + bantime > ? OR bantime < 0)",
+                    (jail_name, now)
+                )
+                active_count = cursor2.fetchone()["cnt"]
+                jails.append({"name": jail_name, "enabled": bool(row["enabled"]), "active_bans": active_count})
+        except sqlite3.OperationalError:
+            pass
+
+        # Total bans ever
+        total_bans = 0
+        try:
+            cursor.execute("SELECT COUNT(*) as cnt FROM bans")
+            total_bans = cursor.fetchone()["cnt"]
+        except sqlite3.OperationalError:
+            pass
+
+        # Bans last 24h
+        bans_24h = 0
+        try:
+            cursor.execute("SELECT COUNT(*) as cnt FROM bans WHERE timeofban > ?", (now - 86400,))
+            bans_24h = cursor.fetchone()["cnt"]
+        except sqlite3.OperationalError:
+            pass
+
+        # Recent bans
+        recent_bans = []
+        try:
+            cursor.execute(
+                "SELECT jail, ip, timeofban, bantime FROM bans ORDER BY timeofban DESC LIMIT 20"
+            )
+            for row in cursor.fetchall():
+                from datetime import datetime as dt
+                recent_bans.append({
+                    "jail": row["jail"],
+                    "ip": row["ip"],
+                    "timestamp": dt.utcfromtimestamp(row["timeofban"]).isoformat(),
+                    "active": (row["timeofban"] + row["bantime"] > now) or row["bantime"] < 0,
+                })
+        except sqlite3.OperationalError:
+            pass
+
+        conn.close()
+
+        total_active = sum(j["active_bans"] for j in jails)
+
+        return {
+            "available": True,
+            "jails": jails,
+            "total_bans": total_bans,
+            "bans_24h": bans_24h,
+            "active_bans": total_active,
+            "recent_bans": recent_bans,
+        }
+    except Exception as e:
+        logger.error(f"Failed to read fail2ban DB: {e}")
+        return {"available": False, "error": str(e)}
+
+
+@router.get("/fail2ban")
+def get_fail2ban_status(
+    current_user: User = Depends(require_admin),
+):
+    """Get Fail2Ban status from its SQLite database."""
+    return _get_fail2ban_status()
+
+
+# --- Server Management ---
+
+GITHUB_REPO = "ankaios76/gonopbx"
+
+
+def _get_uptime() -> str:
+    """Get system uptime as human-readable string."""
+    try:
+        with open("/proc/uptime") as f:
+            seconds = int(float(f.read().split()[0]))
+        days = seconds // 86400
+        hours = (seconds % 86400) // 3600
+        mins = (seconds % 3600) // 60
+        parts = []
+        if days > 0:
+            parts.append(f"{days}d")
+        if hours > 0:
+            parts.append(f"{hours}h")
+        parts.append(f"{mins}m")
+        return " ".join(parts)
+    except Exception:
+        return "unbekannt"
+
+
+def _get_disk_usage() -> dict:
+    """Get disk usage for root partition."""
+    try:
+        usage = shutil.disk_usage("/")
+        return {
+            "total_gb": round(usage.total / (1024 ** 3), 1),
+            "used_gb": round(usage.used / (1024 ** 3), 1),
+            "free_gb": round(usage.free / (1024 ** 3), 1),
+            "percent": round(usage.used / usage.total * 100, 1),
+        }
+    except Exception:
+        return {"total_gb": 0, "used_gb": 0, "free_gb": 0, "percent": 0}
+
+
+def _get_memory_usage() -> dict:
+    """Get memory usage from /proc/meminfo."""
+    try:
+        info = {}
+        with open("/proc/meminfo") as f:
+            for line in f:
+                parts = line.split()
+                if parts[0] in ("MemTotal:", "MemAvailable:"):
+                    info[parts[0].rstrip(":")] = int(parts[1])
+        total = info.get("MemTotal", 0) / 1024
+        available = info.get("MemAvailable", 0) / 1024
+        used = total - available
+        return {
+            "total_mb": round(total),
+            "used_mb": round(used),
+            "free_mb": round(available),
+            "percent": round(used / total * 100, 1) if total > 0 else 0,
+        }
+    except Exception:
+        return {"total_mb": 0, "used_mb": 0, "free_mb": 0, "percent": 0}
+
+
+def _get_container_status() -> list:
+    """Get Docker container statuses."""
+    try:
+        result = subprocess.run(
+            ["docker", "compose", "ps", "--format", "json"],
+            capture_output=True, text=True, timeout=10,
+            cwd="/root/asterisk-pbx-gui"
+        )
+        if result.returncode != 0:
+            return []
+        containers = []
+        for line in result.stdout.strip().split("\n"):
+            if not line.strip():
+                continue
+            try:
+                c = json.loads(line)
+                containers.append({
+                    "name": c.get("Name", ""),
+                    "service": c.get("Service", ""),
+                    "state": c.get("State", ""),
+                    "status": c.get("Status", ""),
+                })
+            except json.JSONDecodeError:
+                continue
+        return containers
+    except Exception as e:
+        logger.warning(f"Failed to get container status: {e}")
+        return []
+
+
+@router.get("/server-info")
+def get_server_info(
+    current_user: User = Depends(require_admin),
+):
+    """Get server system information."""
+    f2b = _get_fail2ban_status()
+    f2b_summary = None
+    if f2b.get("available"):
+        f2b_summary = {"active_bans": f2b["active_bans"], "bans_24h": f2b["bans_24h"]}
+
+    return {
+        "version": VERSION,
+        "uptime": _get_uptime(),
+        "disk": _get_disk_usage(),
+        "memory": _get_memory_usage(),
+        "containers": _get_container_status(),
+        "fail2ban": f2b_summary,
+    }
+
+
+@router.get("/check-update")
+def check_update(
+    current_user: User = Depends(require_admin),
+):
+    """Check GitHub for a newer release."""
+    try:
+        url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
+        req = urllib.request.Request(url, headers={"Accept": "application/vnd.github.v3+json", "User-Agent": "GonoPBX"})
+        resp = urllib.request.urlopen(req, timeout=10)
+        data = json.loads(resp.read().decode())
+        latest_tag = data.get("tag_name", "").lstrip("v")
+        published = data.get("published_at", "")
+        body = data.get("body", "")
+        html_url = data.get("html_url", "")
+
+        update_available = latest_tag != VERSION and latest_tag > VERSION
+
+        return {
+            "current_version": VERSION,
+            "latest_version": latest_tag,
+            "update_available": update_available,
+            "published_at": published,
+            "release_notes": body,
+            "release_url": html_url,
+        }
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return {
+                "current_version": VERSION,
+                "latest_version": VERSION,
+                "update_available": False,
+                "published_at": "",
+                "release_notes": "",
+                "release_url": "",
+            }
+        raise HTTPException(status_code=502, detail=f"GitHub API Fehler: {e.code}")
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Konnte GitHub nicht erreichen: {str(e)}")
+
+
+class RestartServiceRequest(BaseModel):
+    service: str
+
+
+@router.post("/restart-service")
+def restart_service(
+    data: RestartServiceRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin),
+):
+    """Restart a specific Docker service."""
+    allowed = {"asterisk", "backend", "frontend"}
+    if data.service not in allowed:
+        raise HTTPException(status_code=400, detail=f"Ungültiger Service: {data.service}")
+
+    try:
+        result = subprocess.run(
+            ["docker", "compose", "restart", data.service],
+            capture_output=True, text=True, timeout=60,
+            cwd="/root/asterisk-pbx-gui"
+        )
+        if result.returncode != 0:
+            raise HTTPException(status_code=500, detail=f"Neustart fehlgeschlagen: {result.stderr}")
+        logger.info(f"Service {data.service} restarted by {current_user.username}")
+        log_action(db, current_user.username, "service_restarted", "service", data.service,
+                   None, request.client.host if request.client else None)
+        return {"status": "ok", "message": f"Service '{data.service}' wird neu gestartet"}
+    except subprocess.TimeoutExpired:
+        raise HTTPException(status_code=504, detail="Timeout beim Neustart")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/reboot")
+def reboot_server(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin),
+):
+    """Reboot the entire server."""
+    logger.warning(f"Server reboot initiated by {current_user.username}")
+    log_action(db, current_user.username, "server_reboot", "server", None,
+               None, request.client.host if request.client else None)
+    try:
+        subprocess.Popen(["sh", "-c", "sleep 2 && reboot"], start_new_session=True)
+        return {"status": "ok", "message": "Server wird in 2 Sekunden neu gestartet"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Reboot fehlgeschlagen: {str(e)}")

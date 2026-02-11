@@ -3,7 +3,7 @@ User Management Router
 Admin-only CRUD operations for users
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Optional
@@ -11,6 +11,7 @@ from datetime import datetime
 
 from database import get_db, User
 from auth import get_password_hash, require_admin
+from audit import log_action
 
 router = APIRouter()
 
@@ -46,6 +47,7 @@ def list_users(
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(
     user_data: UserCreate,
+    request: Request,
     admin: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ):
@@ -66,12 +68,15 @@ def create_user(
     db.add(user)
     db.commit()
     db.refresh(user)
+    log_action(db, admin.username, "user_created", "user", user_data.username,
+               {"role": user_data.role}, request.client.host if request.client else None)
     return user
 
 
 @router.delete("/{user_id}")
 def delete_user(
     user_id: int,
+    request: Request,
     admin: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ):
@@ -85,6 +90,9 @@ def delete_user(
             detail="Cannot delete the admin account",
         )
 
+    username = user.username
     db.delete(user)
     db.commit()
-    return {"message": f"User '{user.username}' deleted"}
+    log_action(db, admin.username, "user_deleted", "user", username,
+               None, request.client.host if request.client else None)
+    return {"message": f"User '{username}' deleted"}

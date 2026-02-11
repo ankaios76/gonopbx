@@ -2,7 +2,7 @@
 Call Forwarding API Router
 Manages call forwarding rules per extension
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
@@ -13,6 +13,7 @@ from database import get_db, CallForward, SIPPeer, User, VoicemailMailbox
 from dialplan import write_extensions_config, reload_dialplan
 from database import InboundRoute
 from auth import get_current_user
+from audit import log_action
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,7 @@ def get_forwards_by_extension(
 @router.post("/", response_model=CallForwardResponse)
 def create_forward(
     forward: CallForwardCreate,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -103,6 +105,9 @@ def create_forward(
     db.refresh(db_forward)
 
     logger.info(f"Created call forward: {forward.extension} ({forward.forward_type}) -> {forward.destination}")
+    log_action(db, current_user.username, "callforward_created", "callforward", forward.extension,
+               {"type": forward.forward_type, "destination": forward.destination},
+               request.client.host if request.client else None)
     regenerate_dialplan(db)
 
     return db_forward
@@ -112,6 +117,7 @@ def create_forward(
 def update_forward(
     forward_id: int,
     update: CallForwardUpdate,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -128,6 +134,8 @@ def update_forward(
     db.refresh(db_forward)
 
     logger.info(f"Updated call forward #{forward_id}")
+    log_action(db, current_user.username, "callforward_updated", "callforward", str(forward_id),
+               None, request.client.host if request.client else None)
     regenerate_dialplan(db)
 
     return db_forward
@@ -136,6 +144,7 @@ def update_forward(
 @router.delete("/{forward_id}")
 def delete_forward(
     forward_id: int,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -149,6 +158,8 @@ def delete_forward(
     db.commit()
 
     logger.info(f"Deleted call forward: {ext} ({ftype})")
+    log_action(db, current_user.username, "callforward_deleted", "callforward", ext,
+               {"type": ftype}, request.client.host if request.client else None)
     regenerate_dialplan(db)
 
     return {"status": "deleted"}

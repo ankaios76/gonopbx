@@ -42,6 +42,7 @@ services:
       - ./backend:/app
       - asterisk_voicemail:/var/spool/asterisk/voicemail
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/fail2ban/fail2ban.sqlite3:/var/lib/fail2ban/fail2ban.sqlite3:ro
     depends_on:
       postgres:
         condition: service_healthy
