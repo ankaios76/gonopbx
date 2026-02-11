@@ -1,7 +1,8 @@
 import { useState, useEffect, FormEvent } from 'react'
-import { Save, Send, Eye, EyeOff, Mail, Volume2, Shield, Plus, Trash2, AlertTriangle, ServerIcon, RefreshCw, Power, Download, HardDrive, Cpu, Clock, CheckCircle, XCircle, ArrowUpCircle, FileText, ShieldAlert, Ban, Unlock, Users } from 'lucide-react'
+import { Save, Send, Eye, EyeOff, Mail, Volume2, Shield, Plus, Trash2, AlertTriangle, ServerIcon, RefreshCw, Power, Download, HardDrive, Cpu, Clock, CheckCircle, XCircle, ArrowUpCircle, FileText, ShieldAlert, Ban, Unlock, Users, Phone, Server } from 'lucide-react'
 import { api } from '../services/api'
 import UsersPage from './UsersPage'
+import ExtensionsPage from './ExtensionsPage'
 
 interface AvailableCodec {
   id: string
@@ -26,9 +27,11 @@ interface UpdateInfo {
   release_url: string
 }
 
-type SettingsTab = 'users' | 'email' | 'audio' | 'security' | 'audit' | 'server'
+type SettingsTab = 'extensions' | 'trunks' | 'users' | 'email' | 'audio' | 'security' | 'audit' | 'server'
 
 const tabs: { id: SettingsTab; label: string; icon: typeof Mail }[] = [
+  { id: 'extensions', label: 'Nebenstellen', icon: Phone },
+  { id: 'trunks', label: 'Leitungen', icon: Server },
   { id: 'users', label: 'Benutzer', icon: Users },
   { id: 'email', label: 'E-Mail', icon: Mail },
   { id: 'audio', label: 'Audio', icon: Volume2 },
@@ -38,7 +41,7 @@ const tabs: { id: SettingsTab; label: string; icon: typeof Mail }[] = [
 ]
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<SettingsTab>('users')
+  const [activeTab, setActiveTab] = useState<SettingsTab>('extensions')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [testing, setTesting] = useState(false)
@@ -352,6 +355,12 @@ export default function SettingsPage() {
           })}
         </nav>
       </div>
+
+      {/* Extensions Tab */}
+      {activeTab === 'extensions' && <ExtensionsPage mode="peers" />}
+
+      {/* Trunks Tab */}
+      {activeTab === 'trunks' && <ExtensionsPage mode="trunks" />}
 
       {/* Users Tab */}
       {activeTab === 'users' && <UsersPage />}

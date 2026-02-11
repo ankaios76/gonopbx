@@ -37,6 +37,7 @@ interface SIPTrunk {
 const PROVIDERS: Record<string, { label: string; server: string; supportsIp: boolean }> = {
   plusnet_basic: { label: 'Plusnet IPfonie Basic/Extended', server: 'sip.ipfonie.de', supportsIp: false },
   plusnet_connect: { label: 'Plusnet IPfonie Extended Connect', server: 'sipconnect.ipfonie.de', supportsIp: true },
+  dusnet: { label: 'dus.net', server: 'sip.dus.net', supportsIp: false },
   custom: { label: 'Anderer Provider', server: '', supportsIp: true },
 }
 

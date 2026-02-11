@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Phone, PhoneIncoming, PhoneOutgoing, Users, Activity, CheckCircle, XCircle, AlertTriangle, Server, History, ArrowRight, ArrowDownLeft, ArrowUpRight, Repeat2, Clock } from 'lucide-react'
+import { Phone, PhoneIncoming, PhoneOutgoing, Activity, CheckCircle, XCircle, AlertTriangle, Server, History, ArrowRight, ArrowDownLeft, ArrowUpRight, Repeat2, Clock } from 'lucide-react'
 import { api } from '../services/api'
 
 interface SystemStatus {
@@ -25,6 +25,7 @@ interface SystemStatus {
 const PROVIDER_INFO: Record<string, { label: string; logo?: string }> = {
   plusnet_basic: { label: 'Plusnet IPfonie Basic/Extended', logo: '/logos/plusnet.svg' },
   plusnet_connect: { label: 'Plusnet IPfonie Extended Connect', logo: '/logos/plusnet.svg' },
+  dusnet: { label: 'dus.net', logo: '/logos/dusnet.svg' },
 }
 
 interface InboundRoute {
@@ -262,16 +263,66 @@ export default function Dashboard({ onExtensionClick, onTrunkClick, onNavigate }
         </div>
 
         {/* Endpoints */}
-        <div className="bg-white rounded-lg shadow px-6 h-full flex items-center justify-between">
-          <div>
+        <div className="bg-white rounded-lg shadow px-6 h-full flex items-center">
+          <div className="flex-1 min-w-0">
             <p className="text-sm text-gray-600">Endpoints Online</p>
             <p className="text-2xl font-bold text-gray-900">
               {onlineEndpoints} / {totalEndpoints}
             </p>
           </div>
-          <div className="p-3 rounded-full bg-purple-100">
-            <Users className="w-6 h-6 text-purple-600" />
-          </div>
+          {(() => {
+            const allEps = (status?.endpoints || [])
+              .sort((a, b) => (a.status === 'online' ? 0 : 1) - (b.status === 'online' ? 0 : 1))
+            if (allEps.length === 0) return null
+            const maxShow = allEps.length <= 4 ? 4 : allEps.length <= 6 ? 6 : 6
+            const visible = allEps.slice(0, maxShow)
+            const overflow = allEps.length - maxShow
+            const avatarSize = allEps.length <= 3 ? 'w-10 h-10 text-sm' : allEps.length <= 5 ? 'w-8 h-8 text-xs' : 'w-7 h-7 text-[10px]'
+            const overlap = allEps.length <= 3 ? '-space-x-2' : allEps.length <= 5 ? '-space-x-1.5' : '-space-x-1'
+            return (
+              <div className={`flex items-center ${overlap}`}>
+                {visible.map(ep => {
+                  const isOnline = ep.status === 'online'
+                  const opacity = isOnline ? '' : 'opacity-40'
+                  const statusDot = isOnline ? 'bg-green-500' : 'bg-gray-400'
+                  const isTrunk = ep.type === 'trunk'
+                  const providerKey = (ep as any).provider || ''
+                  const provider = PROVIDER_INFO[providerKey]
+                  return (
+                    <div key={ep.endpoint} className="relative" title={`${ep.user_name || ep.display_name || ep.endpoint} (${isOnline ? 'online' : 'offline'})`}>
+                      {isTrunk && provider?.logo ? (
+                        <img
+                          src={provider.logo}
+                          alt=""
+                          className={`${avatarSize} rounded-full object-contain bg-white ring-2 ring-white ${opacity}`}
+                        />
+                      ) : ep.avatar_url ? (
+                        <img
+                          src={ep.avatar_url}
+                          alt=""
+                          className={`${avatarSize} rounded-full object-cover ring-2 ring-white ${opacity}`}
+                        />
+                      ) : (
+                        <span className={`${avatarSize} rounded-full ${isTrunk ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'} flex items-center justify-center font-semibold ring-2 ring-white ${opacity}`}>
+                          {(ep.user_name || ep.display_name || ep.endpoint).charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                      <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ${statusDot} ring-2 ring-white`} />
+                    </div>
+                  )
+                })}
+                {overflow > 0 && (
+                  <button
+                    onClick={() => onNavigate?.('settings')}
+                    className={`${avatarSize} rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-semibold ring-2 ring-white hover:bg-gray-300 transition-colors cursor-pointer`}
+                    title="Alle Endpoints anzeigen"
+                  >
+                    +{overflow}
+                  </button>
+                )}
+              </div>
+            )
+          })()}
         </div>
 
         {/* System */}

@@ -1,16 +1,17 @@
 import { useState } from 'react'
-import { Phone, Users, History, Menu, X, LogOut, Settings, Server } from 'lucide-react'
+import { Phone, History, Menu, X, LogOut, Settings, HelpCircle, KeyRound } from 'lucide-react'
 import packageJson from '../package.json'
 import Dashboard from './pages/Dashboard'
-import ExtensionsPage from './pages/ExtensionsPage'
 import ExtensionDetailPage from './pages/ExtensionDetailPage'
 import TrunkDetailPage from './pages/TrunkDetailPage'
 import CDRPage from './pages/CDRPage'
 import LoginPage from './pages/LoginPage'
 import SettingsPage from './pages/SettingsPage'
+import FAQPage from './pages/FAQPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { api } from './services/api'
 
-type Page = 'dashboard' | 'nebenstellen' | 'leitungen' | 'extension-detail' | 'trunk-detail' | 'cdr' | 'settings'
+type Page = 'dashboard' | 'extension-detail' | 'trunk-detail' | 'cdr' | 'settings' | 'faq'
 
 function AppContent() {
   const { user, isAuthenticated, isLoading, logout } = useAuth()
@@ -18,6 +19,15 @@ function AppContent() {
   const [selectedExtension, setSelectedExtension] = useState<string>('')
   const [selectedTrunkId, setSelectedTrunkId] = useState<number>(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Password change modal
+  const [showPwModal, setShowPwModal] = useState(false)
+  const [currentPw, setCurrentPw] = useState('')
+  const [newPw, setNewPw] = useState('')
+  const [newPwRepeat, setNewPwRepeat] = useState('')
+  const [pwError, setPwError] = useState('')
+  const [pwSuccess, setPwSuccess] = useState('')
+  const [pwSaving, setPwSaving] = useState(false)
 
   const navigateToExtensionDetail = (ext: string) => {
     setSelectedExtension(ext)
@@ -27,6 +37,41 @@ function AppContent() {
   const navigateToTrunkDetail = (id: number) => {
     setSelectedTrunkId(id)
     setCurrentPage('trunk-detail')
+  }
+
+  const handleChangePassword = async () => {
+    setPwError('')
+    setPwSuccess('')
+    if (newPw.length < 6) {
+      setPwError('Das neue Passwort muss mindestens 6 Zeichen lang sein')
+      return
+    }
+    if (newPw !== newPwRepeat) {
+      setPwError('Die Passwörter stimmen nicht überein')
+      return
+    }
+    setPwSaving(true)
+    try {
+      await api.changeMyPassword(currentPw, newPw)
+      setPwSuccess('Passwort erfolgreich geändert')
+      setCurrentPw('')
+      setNewPw('')
+      setNewPwRepeat('')
+      setTimeout(() => setShowPwModal(false), 1500)
+    } catch (err: any) {
+      setPwError(err.message || 'Passwort konnte nicht geändert werden')
+    } finally {
+      setPwSaving(false)
+    }
+  }
+
+  const openPwModal = () => {
+    setShowPwModal(true)
+    setCurrentPw('')
+    setNewPw('')
+    setNewPwRepeat('')
+    setPwError('')
+    setPwSuccess('')
   }
 
   if (isLoading) {
@@ -43,9 +88,8 @@ function AppContent() {
 
   const navigation = [
     { id: 'dashboard' as Page, name: 'Dashboard', icon: Phone },
-    { id: 'nebenstellen' as Page, name: 'Nebenstellen', icon: Users },
-    { id: 'leitungen' as Page, name: 'Leitungen', icon: Server },
     { id: 'cdr' as Page, name: 'Anrufverlauf', icon: History },
+    { id: 'faq' as Page, name: 'FAQ', icon: HelpCircle },
     ...(user?.role === 'admin'
       ? [
           { id: 'settings' as Page, name: 'Einstellungen', icon: Settings },
@@ -57,16 +101,14 @@ function AppContent() {
     switch (currentPage) {
       case 'dashboard':
         return <Dashboard onExtensionClick={navigateToExtensionDetail} onTrunkClick={navigateToTrunkDetail} onNavigate={(page) => setCurrentPage(page as Page)} />
-      case 'nebenstellen':
-        return <ExtensionsPage mode="peers" />
-      case 'leitungen':
-        return <ExtensionsPage mode="trunks" />
       case 'extension-detail':
         return <ExtensionDetailPage extension={selectedExtension} onBack={() => setCurrentPage('dashboard')} />
       case 'trunk-detail':
         return <TrunkDetailPage trunkId={selectedTrunkId} onBack={() => setCurrentPage('dashboard')} />
       case 'cdr':
         return <CDRPage />
+      case 'faq':
+        return <FAQPage />
       case 'settings':
         return user?.role === 'admin' ? <SettingsPage /> : <Dashboard />
       default:
@@ -105,16 +147,30 @@ function AppContent() {
                 )
               })}
 
-              {/* User info & Logout */}
-              <div className="ml-4 pl-4 border-l border-gray-200 flex items-center gap-3">
-                <span className="text-sm text-gray-500">
-                  {user?.username}
+              {/* User info & actions */}
+              <div className="ml-4 pl-4 border-l border-gray-200 flex items-center gap-2">
+                <button
+                  onClick={openPwModal}
+                  className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 px-1 py-1 rounded-lg hover:bg-gray-100 transition-colors"
+                  title={`${user?.full_name || user?.username} – Passwort ändern`}
+                >
+                  {user?.avatar_url ? (
+                    <img
+                      src={user.avatar_url}
+                      alt=""
+                      className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200"
+                    />
+                  ) : (
+                    <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold ring-2 ring-gray-200">
+                      {(user?.full_name || user?.username || '?').charAt(0).toUpperCase()}
+                    </span>
+                  )}
                   {user?.role === 'admin' && (
-                    <span className="ml-1 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full">
+                    <span className="text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full">
                       Admin
                     </span>
                   )}
-                </span>
+                </button>
                 <button
                   onClick={logout}
                   className="flex items-center gap-1 text-gray-500 hover:text-red-600 transition-colors px-2 py-1 rounded-lg hover:bg-red-50"
@@ -163,6 +219,13 @@ function AppContent() {
               )
             })}
             <button
+              onClick={() => { openPwModal(); setMobileMenuOpen(false) }}
+              className="flex items-center gap-3 w-full px-4 py-3 text-gray-600 border-t border-gray-200"
+            >
+              <KeyRound className="w-5 h-5" />
+              Passwort ändern
+            </button>
+            <button
               onClick={logout}
               className="flex items-center gap-3 w-full px-4 py-3 text-red-600 border-t border-gray-200"
             >
@@ -182,6 +245,80 @@ function AppContent() {
       <footer className="text-center py-4 text-xs text-gray-400">
         GonoPBX v{packageJson.version} &mdash; &copy; {new Date().getFullYear()} Norbert Hengsteler. Alle Rechte vorbehalten.
       </footer>
+
+      {/* Password Change Modal */}
+      {showPwModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-800">Passwort ändern</h2>
+              <button onClick={() => setShowPwModal(false)} className="text-gray-400 hover:text-gray-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {pwError && (
+              <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm">
+                {pwError}
+              </div>
+            )}
+            {pwSuccess && (
+              <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-lg text-sm">
+                {pwSuccess}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Aktuelles Passwort</label>
+                <input
+                  type="password"
+                  value={currentPw}
+                  onChange={(e) => setCurrentPw(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Neues Passwort</label>
+                <input
+                  type="password"
+                  value={newPw}
+                  onChange={(e) => setNewPw(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="Mindestens 6 Zeichen"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Neues Passwort wiederholen</label>
+                <input
+                  type="password"
+                  value={newPwRepeat}
+                  onChange={(e) => setNewPwRepeat(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  onKeyDown={(e) => e.key === 'Enter' && handleChangePassword()}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end mt-6">
+              <button
+                onClick={() => setShowPwModal(false)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition-colors"
+              >
+                Abbrechen
+              </button>
+              <button
+                onClick={handleChangePassword}
+                disabled={pwSaving || !currentPw || !newPw || !newPwRepeat}
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                {pwSaving ? 'Speichern...' : 'Passwort ändern'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

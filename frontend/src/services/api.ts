@@ -48,6 +48,14 @@ class ApiService {
     }
   }
 
+  // Auth - self-service
+  async changeMyPassword(currentPassword: string, newPassword: string) {
+    return this.request<any>('/api/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
+    })
+  }
+
   // Health
   async getHealth() {
     return this.request<any>('/api/health')

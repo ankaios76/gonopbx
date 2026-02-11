@@ -52,12 +52,14 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 
 @router.get("/me")
 def get_me(current_user: User = Depends(get_current_user)):
+    avatar_url = f"/api/users/{current_user.id}/avatar" if current_user.avatar_url else None
     return {
         "id": current_user.id,
         "username": current_user.username,
         "role": current_user.role,
         "full_name": current_user.full_name,
         "email": current_user.email,
+        "avatar_url": avatar_url,
     }
 
 

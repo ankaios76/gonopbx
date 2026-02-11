@@ -244,8 +244,7 @@ def send_welcome_email(
           <div style="margin-top:30px; padding:16px; background:#fefce8; border:1px solid #fde68a; border-radius:8px;">
             <p style="margin:0; color:#92400e; font-size:13px; line-height:1.5;">
               <strong>Sicherheitshinweis:</strong> Bitte ändern Sie Ihr Passwort nach der ersten Anmeldung.
-              Sie können Ihr Passwort jederzeit über die Weboberfläche ändern unter
-              <strong>Einstellungen &rarr; Benutzer</strong> (Schlüssel-Symbol neben Ihrem Benutzernamen).
+              Klicken Sie dazu oben rechts auf Ihr Profilbild und geben Sie Ihr aktuelles sowie das neue Passwort ein.
             </p>
           </div>
         </td></tr>

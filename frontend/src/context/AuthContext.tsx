@@ -9,6 +9,7 @@ interface User {
   username: string
   role: string
   full_name: string | null
+  avatar_url: string | null
 }
 
 interface AuthContextType {

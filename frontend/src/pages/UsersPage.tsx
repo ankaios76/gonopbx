@@ -214,38 +214,45 @@ export default function UsersPage() {
         email: formData.email || undefined,
       } as any)
 
+      // From here on, user exists - collect warnings but don't fail
+      const warnings: string[] = []
+
       if (assignExtension) {
-        await api.assignExtensionToUser(newUser.id, assignExtension)
+        try { await api.assignExtensionToUser(newUser.id, assignExtension) } catch (e: any) { warnings.push(e.message) }
       }
 
       // Create outbound route first (so it gets lowest ID for dialplan)
       if (assignExtension && formDid && formTrunkId) {
-        await api.createRoute({
-          did: formDid,
-          trunk_id: parseInt(formTrunkId, 10),
-          destination_extension: assignExtension,
-          description: formData.full_name || formData.username,
-        })
+        try {
+          await api.createRoute({
+            did: formDid,
+            trunk_id: parseInt(formTrunkId, 10),
+            destination_extension: assignExtension,
+            description: formData.full_name || formData.username,
+          })
+        } catch (e: any) { warnings.push(e.message) }
       }
 
       // Create additional inbound routes
       if (assignExtension) {
         for (const d of formInboundDids) {
-          await api.createRoute({
-            did: d.did,
-            trunk_id: d.trunk_id,
-            destination_extension: assignExtension,
-            description: formData.full_name || formData.username,
-          })
+          try {
+            await api.createRoute({
+              did: d.did,
+              trunk_id: d.trunk_id,
+              destination_extension: assignExtension,
+              description: formData.full_name || formData.username,
+            })
+          } catch (e: any) { warnings.push(e.message) }
         }
       }
 
       // Upload avatar if selected
       if (createAvatarFile) {
-        await api.uploadUserAvatar(newUser.id, createAvatarFile)
+        try { await api.uploadUserAvatar(newUser.id, createAvatarFile) } catch (e: any) { warnings.push(e.message) }
       }
 
-      // Send welcome email (best-effort, don't block on failure)
+      // Send welcome email (best-effort)
       if (formData.email && !formData.email.endsWith('@gonopbx.local')) {
         try {
           await api.sendWelcomeEmail(newUser.id, formData.password)
@@ -264,6 +271,10 @@ export default function UsersPage() {
       setCreateAvatarPreview(null)
       setShowForm(false)
       fetchData()
+
+      if (warnings.length > 0) {
+        setError(`Benutzer erstellt, aber: ${warnings.join('; ')}`)
+      }
     } catch (err: any) {
       setError(err.message || 'Benutzer konnte nicht erstellt werden')
     }
