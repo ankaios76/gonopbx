@@ -91,7 +91,14 @@ def create_user(
         email=user_data.email or f"{user_data.username}@gonopbx.local",
     )
     db.add(user)
-    db.commit()
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Benutzer konnte nicht erstellt werden (evtl. Benutzername oder E-Mail bereits vergeben)",
+        )
     db.refresh(user)
     log_action(db, admin.username, "user_created", "user", user_data.username,
                {"role": user_data.role}, request.client.host if request.client else None)

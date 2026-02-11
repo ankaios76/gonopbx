@@ -119,6 +119,16 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"Migration check for avatar_url column: {e}")
 
+    # Migrate: drop unique constraint on users.email if it exists
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TABLE users DROP CONSTRAINT IF EXISTS users_email_key"))
+            conn.commit()
+        logger.info("Migration: dropped unique constraint on users.email")
+    except Exception as e:
+        logger.warning(f"Migration check for users.email unique constraint: {e}")
+
     # Migrate: create audit_logs table if missing
     try:
         from sqlalchemy import text, inspect as sa_inspect2
