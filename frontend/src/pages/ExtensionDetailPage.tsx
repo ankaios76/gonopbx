@@ -389,28 +389,28 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
       <div className="flex items-center gap-4 mb-6">
         <button
           onClick={onBack}
-          className="p-2 rounded-lg hover:bg-gray-100 transition"
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
+          <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
             {peer?.caller_id || extension}
           </h1>
-          <p className="text-gray-500">Nebenstelle {extension}</p>
+          <p className="text-gray-500 dark:text-gray-400">Nebenstelle {extension}</p>
         </div>
       </div>
 
       {/* Ausgehende Rufnummer - immer sichtbar wenn vorhanden */}
       {routes.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg px-6 py-4 mb-6 flex items-center gap-4">
-          <div className="p-2 bg-blue-100 rounded-full">
-            <PhoneOutgoing className="w-5 h-5 text-blue-600" />
+        <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg px-6 py-4 mb-6 flex items-center gap-4">
+          <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-full">
+            <PhoneOutgoing className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           </div>
           <div>
-            <div className="text-sm text-blue-600 font-medium">Ausgehende Rufnummer</div>
-            <div className="text-lg font-bold text-blue-900">{routes[0].did}</div>
-            <div className="text-xs text-blue-500">
+            <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">Ausgehende Rufnummer</div>
+            <div className="text-lg font-bold text-blue-900 dark:text-blue-200">{routes[0].did}</div>
+            <div className="text-xs text-blue-500 dark:text-blue-400">
               Wird bei ausgehenden Anrufen als Caller-ID gesendet (via {getTrunkName(routes[0].trunk_id)})
             </div>
           </div>
@@ -418,7 +418,7 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
       )}
 
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200 mb-6">
+      <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
         <nav className="flex gap-1" aria-label="Tabs">
           {detailTabs.map(tab => {
             const Icon = tab.icon
@@ -429,8 +429,8 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                   isActive
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-500'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -458,9 +458,9 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
 
       {/* ==================== Rufnummern Tab ==================== */}
       {activeTab === 'numbers' && (
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Zugeordnete Rufnummern</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Zugeordnete Rufnummern</h2>
             {!showRouteForm && trunks.length > 0 && (
               <button
                 onClick={() => setShowRouteForm(true)}
@@ -476,15 +476,15 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
             const selectedTrunk = trunks.find(t => t.id === routeFormData.trunk_id)
             const assignedDids = allRoutes.filter(r => r.trunk_id === routeFormData.trunk_id)
             return (
-            <div className="px-6 py-4 border-b bg-gray-50">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
               <form onSubmit={handleAddRoute} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Leitung *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Leitung *</label>
                     <select
                       value={routeFormData.trunk_id}
                       onChange={(e) => setRouteFormData({ ...routeFormData, trunk_id: Number(e.target.value) })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       required
                     >
                       {trunks.map(t => (
@@ -493,46 +493,46 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Rufnummer (DID) *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rufnummer (DID) *</label>
                     <input
                       type="text"
                       value={routeFormData.did}
                       onChange={(e) => setRouteFormData({ ...routeFormData, did: e.target.value })}
                       placeholder="z.B. +4922166980"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Beschreibung</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Beschreibung</label>
                     <input
                       type="text"
                       value={routeFormData.description}
                       onChange={(e) => setRouteFormData({ ...routeFormData, description: e.target.value })}
                       placeholder="z.B. Hauptnummer"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                 </div>
 
                 {selectedTrunk && (
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-700 mb-2">
+                  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Nummernblock von "{selectedTrunk.name}"
                     </div>
                     {selectedTrunk.number_block ? (
-                      <div className="text-sm text-gray-600 font-mono bg-gray-50 px-3 py-1.5 rounded inline-block">
+                      <div className="text-sm text-gray-600 dark:text-gray-400 font-mono bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded inline-block">
                         {selectedTrunk.number_block}
                       </div>
                     ) : (
-                      <div className="text-sm text-gray-400 italic">Kein Nummernblock hinterlegt</div>
+                      <div className="text-sm text-gray-400 dark:text-gray-500 italic">Kein Nummernblock hinterlegt</div>
                     )}
                     {assignedDids.length > 0 && (
                       <div className="mt-3">
-                        <div className="text-xs text-gray-500 mb-1">Bereits vergebene Nummern dieser Leitung:</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Bereits vergebene Nummern dieser Leitung:</div>
                         <div className="flex flex-wrap gap-2">
                           {assignedDids.map(r => (
-                            <span key={r.id} className="text-xs bg-orange-50 text-orange-700 border border-orange-200 px-2 py-1 rounded font-mono">
+                            <span key={r.id} className="text-xs bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800 px-2 py-1 rounded font-mono">
                               {r.did} → {r.destination_extension}
                             </span>
                           ))}
@@ -552,7 +552,7 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                       setShowRouteForm(false)
                       setRouteFormData({ did: '', trunk_id: trunks[0]?.id || 0, description: '' })
                     }}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm"
+                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm"
                   >
                     Abbrechen
                   </button>
@@ -562,39 +562,39 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
             )
           })()}
 
-          <div className="divide-y">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {routes.length > 0 ? (
               routes.map((route, index) => (
                 <div key={route.id} className="px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Phone className="w-5 h-5 text-green-500" />
                     <div>
-                      <div className="font-medium flex items-center gap-2">
+                      <div className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
                         {route.did}
-                        <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Eingehend</span>
+                        <span className="text-xs bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 px-1.5 py-0.5 rounded">Eingehend</span>
                         {index === 0 && (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Ausgehend</span>
+                          <span className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 rounded">Ausgehend</span>
                         )}
                       </div>
-                      <div className="text-sm text-gray-500 flex items-center gap-2">
+                      <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
                         <Server className="w-3 h-3" />
                         {getTrunkName(route.trunk_id)}
                         {route.description && (
-                          <span className="text-gray-400">— {route.description}</span>
+                          <span className="text-gray-400 dark:text-gray-500">— {route.description}</span>
                         )}
                       </div>
                     </div>
                   </div>
                   <button
                     onClick={() => handleDeleteRoute(route)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                    className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               ))
             ) : (
-              <div className="px-6 py-8 text-center text-gray-500">
+              <div className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                 {trunks.length > 0
                   ? 'Keine Rufnummern zugeordnet. Klicken Sie auf "Rufnummer zuordnen" um eine Nummer zuzuweisen.'
                   : 'Bitte zuerst eine Leitung unter dem Menüpunkt "Leitungen" anlegen.'}
@@ -606,9 +606,9 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
 
       {/* ==================== Rufumleitung Tab ==================== */}
       {activeTab === 'forwarding' && (
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Rufumleitungen</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Rufumleitungen</h2>
             {!showForwardForm && availableForwardTypes.length > 0 && (
               <button
                 onClick={() => {
@@ -624,48 +624,48 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
           </div>
 
           {showForwardForm && (
-            <div className="px-6 py-4 border-b bg-gray-50">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
               <form onSubmit={handleAddForward} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Typ *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Typ *</label>
                     <select
                       value={forwardFormData.forward_type}
                       onChange={(e) => setForwardFormData({ ...forwardFormData, forward_type: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       required
                     >
                       {availableForwardTypes.map(type => (
                         <option key={type} value={type}>{FORWARD_TYPE_LABELS[type]}</option>
                       ))}
                     </select>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       {FORWARD_TYPE_DESCRIPTIONS[forwardFormData.forward_type]}
                     </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Zielrufnummer *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Zielrufnummer *</label>
                     <input
                       type="text"
                       value={forwardFormData.destination}
                       onChange={(e) => setForwardFormData({ ...forwardFormData, destination: e.target.value })}
                       placeholder="z.B. +491701234567"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       required
                     />
                   </div>
                   {forwardFormData.forward_type === 'no_answer' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Klingelzeit (Sek.)</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Klingelzeit (Sek.)</label>
                       <input
                         type="number"
                         value={forwardFormData.ring_time}
                         onChange={(e) => setForwardFormData({ ...forwardFormData, ring_time: Number(e.target.value) })}
                         min={5}
                         max={120}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         Wie lange soll das Telefon klingeln bevor umgeleitet wird?
                       </p>
                     </div>
@@ -681,7 +681,7 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                       setShowForwardForm(false)
                       setForwardFormData({ forward_type: 'unconditional', destination: '', ring_time: 20 })
                     }}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 text-sm"
+                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 text-sm"
                   >
                     Abbrechen
                   </button>
@@ -690,23 +690,23 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
             </div>
           )}
 
-          <div className="divide-y">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {forwards.length > 0 ? (
               forwards.map(fwd => (
                 <div key={fwd.id} className="px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <PhoneForwarded className={`w-5 h-5 ${fwd.enabled ? 'text-orange-500' : 'text-gray-300'}`} />
+                    <PhoneForwarded className={`w-5 h-5 ${fwd.enabled ? 'text-orange-500 dark:text-orange-400' : 'text-gray-300 dark:text-gray-500'}`} />
                     <div>
-                      <div className="font-medium flex items-center gap-2">
+                      <div className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
                         {FORWARD_TYPE_LABELS[fwd.forward_type]}
                         {!fwd.enabled && (
-                          <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">Deaktiviert</span>
+                          <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded">Deaktiviert</span>
                         )}
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
                         Ziel: {fwd.destination}
                         {fwd.forward_type === 'no_answer' && (
-                          <span className="ml-2 text-gray-400">({fwd.ring_time}s Klingelzeit)</span>
+                          <span className="ml-2 text-gray-400 dark:text-gray-500">({fwd.ring_time}s Klingelzeit)</span>
                         )}
                       </div>
                     </div>
@@ -714,14 +714,14 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleToggleForward(fwd)}
-                      className={`p-2 rounded-lg transition ${fwd.enabled ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
+                      className={`p-2 rounded-lg transition ${fwd.enabled ? 'text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                       title={fwd.enabled ? 'Deaktivieren' : 'Aktivieren'}
                     >
                       {fwd.enabled ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
                     </button>
                     <button
                       onClick={() => handleDeleteForward(fwd)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                      className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -729,7 +729,7 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                 </div>
               ))
             ) : (
-              <div className="px-6 py-8 text-center text-gray-500">
+              <div className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                 Keine Rufumleitungen konfiguriert. Klicken Sie auf "Umleitung hinzufügen" um eine Weiterleitung einzurichten.
               </div>
             )}
@@ -741,12 +741,12 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
       {activeTab === 'voicemail' && (
         <div className="space-y-6">
           {/* Voicemail Config */}
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Voicemail-Einstellungen</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Voicemail-Einstellungen</h2>
               <button
                 onClick={() => setMailboxForm(f => ({ ...f, enabled: !f.enabled }))}
-                className={`p-2 rounded-lg transition ${mailboxForm.enabled ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
+                className={`p-2 rounded-lg transition ${mailboxForm.enabled ? 'text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30' : 'text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                 title={mailboxForm.enabled ? 'Deaktivieren' : 'Aktivieren'}
               >
                 {mailboxForm.enabled ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
@@ -756,46 +756,46 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
             <div className="px-6 py-4">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">PIN</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">PIN</label>
                   <input
                     type="text"
                     value={mailboxForm.pin}
                     onChange={(e) => setMailboxForm({ ...mailboxForm, pin: e.target.value })}
                     placeholder="1234"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
                   <input
                     type="text"
                     value={mailboxForm.name}
                     onChange={(e) => setMailboxForm({ ...mailboxForm, name: e.target.value })}
                     placeholder={extension}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail (optional)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail (optional)</label>
                   <input
                     type="email"
                     value={mailboxForm.email}
                     onChange={(e) => setMailboxForm({ ...mailboxForm, email: e.target.value })}
                     placeholder="user@example.com"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Klingeldauer (Sek.)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Klingeldauer (Sek.)</label>
                   <input
                     type="number"
                     value={mailboxForm.ring_timeout}
                     onChange={(e) => setMailboxForm({ ...mailboxForm, ring_timeout: Number(e.target.value) })}
                     min={5}
                     max={120}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Wie lange klingelt es bevor Voicemail annimmt?</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Wie lange klingelt es bevor Voicemail annimmt?</p>
                 </div>
               </div>
               <button
@@ -811,10 +811,10 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
 
           {/* Voicemail Messages */}
           {mailboxForm.enabled && (
-            <div className="bg-white rounded-lg shadow">
-              <div className="px-6 py-4 border-b">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+              <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold">Nachrichten</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Nachrichten</h2>
                   {unreadVoicemails > 0 && (
                     <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                       {unreadVoicemails} neu
@@ -825,28 +825,28 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
 
               <audio ref={audioRef} className="hidden" />
 
-              <div className="divide-y">
+              <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {voicemails.length > 0 ? (
                   voicemails.map(vm => (
                     <div
                       key={vm.id}
-                      className={`px-6 py-4 flex items-center justify-between ${!vm.is_read ? 'bg-blue-50' : ''}`}
+                      className={`px-6 py-4 flex items-center justify-between ${!vm.is_read ? 'bg-blue-50 dark:bg-blue-900/30' : ''}`}
                     >
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         <button
                           onClick={() => handlePlayVoicemail(vm)}
-                          className={`p-2 rounded-full transition flex-shrink-0 ${playingId === vm.id ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                          className={`p-2 rounded-full transition flex-shrink-0 ${playingId === vm.id ? 'bg-primary-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
                         >
                           {playingId === vm.id ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                         </button>
                         <div className="min-w-0">
-                          <div className="font-medium flex items-center gap-2">
+                          <div className="font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
                             <span className="truncate">{vm.caller_id || 'Unbekannt'}</span>
                             {!vm.is_read && (
                               <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded flex-shrink-0">Neu</span>
                             )}
                           </div>
-                          <div className="text-sm text-gray-500 flex items-center gap-3">
+                          <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-3">
                             <span className="flex items-center gap-1">
                               <Clock className="w-3 h-3" />
                               {formatDate(vm.date)}
@@ -857,14 +857,14 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                       </div>
                       <button
                         onClick={() => handleDeleteVoicemail(vm)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg flex-shrink-0"
+                        className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg flex-shrink-0"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   ))
                 ) : (
-                  <div className="px-6 py-8 text-center text-gray-500">
+                  <div className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                     Keine Voicemail-Nachrichten vorhanden.
                   </div>
                 )}
@@ -876,9 +876,9 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
 
       {/* ==================== Audio Tab ==================== */}
       {activeTab === 'audio' && (
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b">
-            <h2 className="text-lg font-semibold">Audio-Codecs</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Audio-Codecs</h2>
           </div>
 
           <div className="px-6 py-4">
@@ -887,11 +887,11 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                 type="checkbox"
                 checked={useGlobalCodecs}
                 onChange={(e) => handleToggleGlobalCodecs(e.target.checked)}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
               />
               <div>
-                <span className="text-sm font-medium text-gray-700">Globale Einstellungen verwenden</span>
-                <span className="block text-xs text-gray-500">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Globale Einstellungen verwenden</span>
+                <span className="block text-xs text-gray-500 dark:text-gray-400">
                   Aktuelle globale Codecs: {globalCodecs.join(', ') || 'keine'}
                 </span>
               </div>
@@ -904,19 +904,19 @@ export default function ExtensionDetailPage({ extension, onBack }: Props) {
                     key={codec.id}
                     className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition ${
                       peerCodecs.includes(codec.id)
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/30'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={peerCodecs.includes(codec.id)}
                       onChange={() => togglePeerCodec(codec.id)}
-                      className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                     />
                     <div>
-                      <div className="text-sm font-medium text-gray-800">{codec.name}</div>
-                      <div className="text-xs text-gray-500">{codec.description}</div>
+                      <div className="text-sm font-medium text-gray-800 dark:text-gray-200">{codec.name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{codec.description}</div>
                     </div>
                   </label>
                 ))}

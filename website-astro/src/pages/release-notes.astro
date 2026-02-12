@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Release Notes - GonoPBX">
+<Layout title="Release Notes - GonoPBX" description="Alle Versionen und Neuerungen von GonoPBX auf einen Blick. Changelog mit neuen Features, Bugfixes und Verbesserungen.">
 
   <!-- Navigation -->
   <nav class="nav">
@@ -34,6 +34,162 @@ import Layout from '../layouts/Layout.astro';
       <div class="section-header">
         <h1>Release Notes</h1>
         <p>Alle Ver&auml;nderungen und Neuerungen in GonoPBX auf einen Blick.</p>
+      </div>
+
+      <!-- v1.5.2 -->
+      <div class="release">
+        <div class="release-header">
+          <div class="release-version">v1.5.2</div>
+          <div class="release-date">12. Februar 2026</div>
+        </div>
+        <div class="release-body">
+          <h3>Neue Features</h3>
+          <ul>
+            <li>
+              <strong>Dark Mode</strong><br/>
+              Vollst&auml;ndiger Dark Mode f&uuml;r alle Seiten und Komponenten. Automatische Erkennung der Betriebssystem-Einstellung mit manuellem Toggle (Sonne/Mond-Icon im Header). Die Auswahl wird im Browser gespeichert.
+            </li>
+          </ul>
+          <h3>Verbesserungen</h3>
+          <ul>
+            <li>Provider-Logos in den Leitungs-Karten werden jetzt rund mit wei&szlig;em Hintergrund angezeigt</li>
+            <li>&bdquo;Made with &hearts; in Bremen&ldquo; im Footer erg&auml;nzt</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- v1.5.1 -->
+      <div class="release">
+        <div class="release-header">
+          <div class="release-version">v1.5.1</div>
+          <div class="release-date">12. Februar 2026</div>
+        </div>
+        <div class="release-body">
+          <h3>Verbesserungen</h3>
+          <ul>
+            <li>
+              <strong>Dashboard-Redesign</strong><br/>
+              Pers&ouml;nliche Begr&uuml;&szlig;ung (Moin/Hallo/Guten Abend) mit Benutzername, Wochentag und Datum. System-Health-Karte entfernt.
+            </li>
+            <li>
+              <strong>Versionsanzeige im Dashboard</strong><br/>
+              Backend liefert die aktuelle Version &uuml;ber die Dashboard-API. Anzeige unter dem GonoPBX-Status statt im Footer.
+            </li>
+            <li><strong>dus.net Server korrigiert</strong> &ndash; SIP-Server von <code>sip.dus.net</code> auf <code>proxy.dus.net</code> ge&auml;ndert</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- v1.5.0 -->
+      <div class="release">
+        <div class="release-header">
+          <div class="release-version">v1.5.0</div>
+          <div class="release-date">11. Februar 2026</div>
+        </div>
+        <div class="release-body">
+          <h3>Neue Features</h3>
+          <ul>
+            <li>
+              <strong>Benutzerprofile</strong><br/>
+              Vollst&auml;ndiger Name, Avatar-Upload und Nebenstellen-Zuweisung pro User.
+            </li>
+            <li>
+              <strong>Multi-DID-Routing</strong><br/>
+              Mehrere eingehende Rufnummern pro Extension konfigurierbar.
+            </li>
+            <li>
+              <strong>Willkommens-E-Mail</strong><br/>
+              Automatischer Versand der Zugangsdaten an neue Benutzer.
+            </li>
+            <li>
+              <strong>Self-Service Passwortwechsel</strong><br/>
+              Benutzer k&ouml;nnen ihr eigenes Passwort &auml;ndern.
+            </li>
+            <li>
+              <strong>FAQ-Seite</strong><br/>
+              H&auml;ufig gestellte Fragen direkt in der Weboberfl&auml;che.
+            </li>
+            <li>
+              <strong>Navigation &uuml;berarbeitet</strong><br/>
+              Extensions und Trunks unter Settings zusammengefasst f&uuml;r eine aufger&auml;umtere Struktur.
+            </li>
+            <li>
+              <strong>One-Click Update</strong><br/>
+              System-Update direkt aus der Web-Oberfl&auml;che per Klick installieren.
+            </li>
+          </ul>
+          <h3>Bugfixes</h3>
+          <ul>
+            <li>User-Erstellung korrigiert (Unique-Email-Constraint entfernt)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- v1.4.0 -->
+      <div class="release">
+        <div class="release-header">
+          <div class="release-version">v1.4.0</div>
+          <div class="release-date">11. Februar 2026</div>
+        </div>
+        <div class="release-body">
+          <h3>Neue Features</h3>
+          <ul>
+            <li>
+              <strong>SIP-Passwort-St&auml;rke-Pr&uuml;fung</strong><br/>
+              Echtzeit-Bewertung der Passwortst&auml;rke beim Anlegen/Bearbeiten von Extensions (farbiger Balken rot/gelb/gr&uuml;n). Button zum Generieren sicherer 16-Zeichen-Passw&ouml;rter. &Uuml;bersicht schwacher Passw&ouml;rter im Sicherheit-Tab.
+            </li>
+            <li>
+              <strong>Audit-Log</strong><br/>
+              Protokollierung aller administrativen Aktionen (Erstellen, Bearbeiten, L&ouml;schen von Extensions, Trunks, Routen, Weiterleitungen, Benutzern und Einstellungen). Neuer Audit-Log-Tab mit farblich markierter Tabelle und Pagination.
+            </li>
+            <li>
+              <strong>Fail2Ban-Status</strong><br/>
+              Live-Anzeige des Fail2Ban-Status im Sicherheit-Tab. Zeigt aktive Bans, Jails und eine Tabelle der zuletzt gesperrten IP-Adressen.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- v1.3.0 -->
+      <div class="release">
+        <div class="release-header">
+          <div class="release-version">v1.3.0</div>
+          <div class="release-date">11. Februar 2026</div>
+        </div>
+        <div class="release-body">
+          <h3>Neue Features</h3>
+          <ul>
+            <li>
+              <strong>IP-Whitelist f&uuml;r SIP-Registrierung</strong><br/>
+              Beschr&auml;nkt die Registrierung auf bestimmte IP-Adressen oder CIDR-Netzwerke. Konfigurierbar &uuml;ber die Admin-Einstellungsseite.
+            </li>
+            <li>
+              <strong>Music on Hold</strong><br/>
+              Vorinstallierte Wartemusik im g722-Format wird automatisch bereitgestellt.
+            </li>
+            <li>
+              <strong>HTML Voicemail-E-Mails</strong><br/>
+              Professionell formatierte HTML-E-Mails f&uuml;r Voicemail-Benachrichtigungen.
+            </li>
+            <li>
+              <strong>Klingeldauer pro Extension</strong><br/>
+              Individuelle Ring-Timeout-Einstellung (5&ndash;120 Sekunden), bevor die Voicemail annimmt.
+            </li>
+            <li>
+              <strong>Deutsche Sprachansagen</strong><br/>
+              Asterisk-Prompt-Paket (de) wird automatisch installiert.
+            </li>
+          </ul>
+          <h3>Verbesserungen</h3>
+          <ul>
+            <li>Externe IP Auto-Erkennung &uuml;ber mehrere Services</li>
+            <li>SMTP Port 465 Support (implizites TLS)</li>
+            <li>Dialplan: Device-State-Pr&uuml;fung vor Dial, Early Answer f&uuml;r Inbound-Trunk-Calls</li>
+            <li>DID-Extraktion aus SIP To-Header als Fallback</li>
+            <li>Duplikat-Identify-Schutz f&uuml;r Multi-Trunk-Setups</li>
+            <li>Installer: Docker-Berechtigung wird vor Start gepr&uuml;ft</li>
+          </ul>
+        </div>
       </div>
 
       <!-- v1.2.0 -->

@@ -194,6 +194,25 @@
   color: #d32f2f;
 }
 
+/* ===== Dark Mode ===== */
+.dark .voicemail-player { background: #374151; }
+.dark .control-btn { color: #e5e7eb; }
+.dark .control-btn:hover { background: rgba(255, 255, 255, 0.1); }
+.dark .play-btn { background: #2563eb; color: white; }
+.dark .play-btn:hover { background: #1d4ed8; }
+.dark .time-label { color: #9ca3af; }
+.dark .timeline-slider { background: #4b5563; }
+.dark .timeline-slider::-webkit-slider-thumb { background: #60a5fa; }
+.dark .timeline-slider::-moz-range-thumb { background: #60a5fa; }
+.dark .player-actions { border-top-color: #4b5563; }
+.dark .speed-label { color: #9ca3af; }
+.dark .speed-btn { background: #1f2937; border-color: #4b5563; color: #9ca3af; }
+.dark .speed-btn:hover { background: #374151; border-color: #6b7280; }
+.dark .speed-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+.dark .delete-btn { background: #1f2937; border-color: #4b5563; color: #f87171; }
+.dark .delete-btn:hover { background: #451a1a; border-color: #f87171; }
+.dark .delete-btn svg { color: #f87171; }
+
 /* Responsive */
 @media (max-width: 640px) {
   .player-actions {

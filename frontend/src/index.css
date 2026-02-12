@@ -24,6 +24,43 @@ body {
   background-color: #f1f3f5;
 }
 
+.dark body,
+html.dark body {
+  background-color: #111827;
+}
+
+/* Dark mode: sidebar & content */
+.dark .sidebar {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.dark .content {
+  background: #1f2937;
+}
+
+.dark .sidebar-header {
+  border-bottom-color: #374151;
+}
+
+.dark .nav-links a {
+  color: #d1d5db;
+}
+.dark .nav-links a svg {
+  stroke: #d1d5db;
+}
+.dark .nav-links a.active {
+  color: #60a5fa;
+}
+.dark .nav-links a.active svg {
+  stroke: #60a5fa;
+}
+
+.dark .sidebar .version,
+.dark .sidebar-version,
+.dark .sidebar-header .version {
+  color: #6b7280;
+}
+
 /* App wrapper spacing */
 .app {
   padding: 12px;

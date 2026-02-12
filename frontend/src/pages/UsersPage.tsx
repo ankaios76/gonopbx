@@ -436,7 +436,7 @@ export default function UsersPage() {
   }
 
   if (loading) {
-    return <div className="text-center py-12 text-gray-500">Lade Benutzer...</div>
+    return <div className="text-center py-12 text-gray-500 dark:text-gray-400">Lade Benutzer...</div>
   }
 
   // DID pools for create form
@@ -460,14 +460,14 @@ export default function UsersPage() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
           {error}
         </div>
       )}
 
       {showForm && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Neuen Benutzer anlegen</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Neuen Benutzer anlegen</h2>
           <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
             {/* Avatar upload for create form */}
@@ -484,7 +484,7 @@ export default function UsersPage() {
                       className="w-16 h-16 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 flex items-center justify-center">
                       <Upload className="w-6 h-6" />
                     </div>
                   )}
@@ -492,7 +492,7 @@ export default function UsersPage() {
                     <Upload className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
                   {createAvatarFile ? createAvatarFile.name : 'Foto hochladen (optional)'}
                 </div>
                 <input
@@ -506,56 +506,56 @@ export default function UsersPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Benutzername</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Benutzername</label>
               <input
                 type="text"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="benutzername"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Passwort</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Passwort</label>
               <input
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="Passwort"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
               <input
                 type="text"
                 value={formData.full_name}
                 onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="Vor- und Nachname"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail</label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="email@example.com"
               />
-              <p className="mt-1 text-xs text-amber-600">
+              <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
                 An diese Adresse werden die Zugangsdaten gesendet.
               </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Rolle</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rolle</label>
               <select
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
@@ -565,14 +565,14 @@ export default function UsersPage() {
             {/* Extension: toggle between existing and new */}
             <div className="md:col-span-3">
               <div className="flex items-center gap-3 mb-2">
-                <label className="block text-sm font-medium text-gray-700">Nebenstelle</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nebenstelle</label>
                 <button
                   type="button"
                   onClick={() => { setCreateNewExt(!createNewExt); setFormData({ ...formData, extension: '' }); setNewExtData({ extension: '', secret: '', caller_id: '' }) }}
                   className={`flex items-center gap-1 text-xs px-2 py-1 rounded-full transition-colors ${
                     createNewExt
-                      ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/60'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   <Plus className="w-3 h-3" />
@@ -584,7 +584,7 @@ export default function UsersPage() {
                 <select
                   value={formData.extension}
                   onChange={(e) => setFormData({ ...formData, extension: e.target.value })}
-                  className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full md:w-1/3 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
                   <option value="">-- keine --</option>
                   {getAvailableExtensions().map(p => (
@@ -594,26 +594,26 @@ export default function UsersPage() {
                   ))}
                 </select>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Extension-Nr.</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Extension-Nr.</label>
                     <input
                       type="text"
                       value={newExtData.extension}
                       onChange={(e) => setNewExtData({ ...newExtData, extension: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       placeholder="z.B. 1001"
                       required={createNewExt}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">SIP-Passwort</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SIP-Passwort</label>
                     <div className="flex gap-2">
                       <input
                         type="text"
                         value={newExtData.secret}
                         onChange={(e) => setNewExtData({ ...newExtData, secret: e.target.value })}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none font-mono text-sm"
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none font-mono text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                         placeholder="SIP-Passwort"
                         required={createNewExt}
                       />
@@ -621,20 +621,20 @@ export default function UsersPage() {
                         type="button"
                         onClick={handleGeneratePassword}
                         disabled={generatingPw}
-                        className="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-lg transition-colors"
+                        className="px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg transition-colors"
                         title="Sicheres Passwort generieren"
                       >
-                        <RefreshCw className={`w-4 h-4 text-gray-600 ${generatingPw ? 'animate-spin' : ''}`} />
+                        <RefreshCw className={`w-4 h-4 text-gray-600 dark:text-gray-400 ${generatingPw ? 'animate-spin' : ''}`} />
                       </button>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Caller-ID (optional)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Caller-ID (optional)</label>
                     <input
                       type="text"
                       value={newExtData.caller_id}
                       onChange={(e) => setNewExtData({ ...newExtData, caller_id: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       placeholder="Wird aus Name übernommen"
                     />
                   </div>
@@ -645,12 +645,12 @@ export default function UsersPage() {
             {/* Rufnummern section */}
             {getFormExtension() && (availableDids.length > 0) && (
               <div className="md:col-span-3">
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg space-y-4">
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg space-y-4">
                   {/* Ausgehende Rufnummer */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <PhoneOutgoing className="w-4 h-4 text-blue-600" />
-                      <label className="text-sm font-medium text-gray-700">Ausgehende Rufnummer</label>
+                      <PhoneOutgoing className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Ausgehende Rufnummer</label>
                     </div>
                     <select
                       value={formDid ? `${formTrunkId}:${formDid}` : ''}
@@ -665,7 +665,7 @@ export default function UsersPage() {
                           setFormDid(didParts.join(':'))
                         }
                       }}
-                      className="w-full md:w-2/3 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                      className="w-full md:w-2/3 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     >
                       <option value="">-- keine Rufnummer --</option>
                       {createDidsPool.map(group => (
@@ -682,14 +682,14 @@ export default function UsersPage() {
                   {createInboundPool.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <PhoneIncoming className="w-4 h-4 text-green-600" />
-                        <label className="text-sm font-medium text-gray-700">Eingehende Rufnummern</label>
-                        <span className="text-xs text-gray-500">(weitere Rufnummern, die bei dieser Nebenstelle klingeln)</span>
+                        <PhoneIncoming className="w-4 h-4 text-green-600 dark:text-green-400" />
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Eingehende Rufnummern</label>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">(weitere Rufnummern, die bei dieser Nebenstelle klingeln)</span>
                       </div>
                       <div className="space-y-2">
                         {createInboundPool.map(group => (
-                          <div key={group.trunk_id} className="bg-white rounded-lg border border-gray-200 p-3">
-                            <div className="text-xs font-medium text-gray-500 mb-2">{group.trunk_name}</div>
+                          <div key={group.trunk_id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{group.trunk_name}</div>
                             <div className="flex flex-wrap gap-2">
                               {group.dids.map(did => {
                                 const checked = isDidSelected(formInboundDids, group.trunk_id, did)
@@ -697,7 +697,7 @@ export default function UsersPage() {
                                   <label
                                     key={did}
                                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono cursor-pointer transition-colors ${
-                                      checked ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
+                                      checked ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 border border-green-300 dark:border-green-700' : 'bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
                                     }`}
                                   >
                                     <input
@@ -730,7 +730,7 @@ export default function UsersPage() {
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg transition-colors"
+                className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg transition-colors"
               >
                 Abbrechen
               </button>
@@ -739,19 +739,19 @@ export default function UsersPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
             <tr>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Benutzer</th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">E-Mail</th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Nebenstelle</th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Rufnummern</th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Rolle</th>
-              <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">Aktionen</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Benutzer</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">E-Mail</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nebenstelle</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Rufnummern</th>
+              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Rolle</th>
+              <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Aktionen</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {users.map((u) => {
               const ext = getUserExtension(u.id)
               const extRoutes = ext ? getRoutesForExtension(ext) : []
@@ -761,7 +761,7 @@ export default function UsersPage() {
               return (
                 <tr
                   key={u.id}
-                  className="hover:bg-gray-50 cursor-pointer"
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
                   onClick={() => openEditModal(u)}
                 >
                   <td className="px-6 py-4">
@@ -773,50 +773,50 @@ export default function UsersPage() {
                           className="w-8 h-8 rounded-full object-cover"
                         />
                       ) : (
-                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 flex items-center justify-center text-sm font-semibold">
                           {getInitial(u)}
                         </div>
                       )}
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{u.full_name || u.username}</div>
-                        <div className="text-xs text-gray-500">{u.username}</div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{u.full_name || u.username}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{u.username}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{u.email || '-'}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{u.email || '-'}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                     {ext ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-mono">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-mono">
                         {ext}
                       </span>
                     ) : (
-                      <span className="text-gray-400">-</span>
+                      <span className="text-gray-400 dark:text-gray-500">-</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
+                  <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
                     {outboundRoute ? (
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-50 text-green-700 text-xs font-mono">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-mono">
                           <PhoneOutgoing className="w-3 h-3" />
                           {outboundRoute.did}
                         </span>
                         {inboundCount > 0 && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs">
                             <PhoneIncoming className="w-3 h-3" />
                             +{inboundCount}
                           </span>
                         )}
                       </div>
                     ) : (
-                      <span className="text-gray-400">-</span>
+                      <span className="text-gray-400 dark:text-gray-500">-</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         u.role === 'admin'
-                          ? 'bg-purple-100 text-purple-800'
-                          : 'bg-gray-100 text-gray-800'
+                          ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
                       }`}
                     >
                       {u.role}
@@ -826,14 +826,14 @@ export default function UsersPage() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => openEditModal(u)}
-                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
                         title="Bearbeiten"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => { setPasswordUserId(u.id); setPasswordUsername(u.username); setNewPassword('') }}
-                        className="text-blue-500 hover:text-blue-700 transition-colors"
+                        className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
                         title="Passwort ändern"
                       >
                         <KeyRound className="w-4 h-4" />
@@ -841,7 +841,7 @@ export default function UsersPage() {
                       {u.username !== 'admin' && (
                         <button
                           onClick={() => handleDelete(u.id, u.username)}
-                          className="text-red-500 hover:text-red-700 transition-colors"
+                          className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
                           title="Löschen"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -855,19 +855,19 @@ export default function UsersPage() {
           </tbody>
         </table>
         {users.length === 0 && (
-          <div className="text-center py-8 text-gray-500">Keine Benutzer vorhanden</div>
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">Keine Benutzer vorhanden</div>
         )}
       </div>
 
       {/* Edit User Modal */}
       {editUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 Benutzer bearbeiten: {editUser.username}
               </h2>
-              <button onClick={() => setEditUser(null)} className="text-gray-400 hover:text-gray-600">
+              <button onClick={() => setEditUser(null)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -885,7 +885,7 @@ export default function UsersPage() {
                     className="w-16 h-16 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-semibold">
+                  <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 flex items-center justify-center text-xl font-semibold">
                     {getInitial(editUser)}
                   </div>
                 )}
@@ -893,7 +893,7 @@ export default function UsersPage() {
                   <Upload className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
-              <div className="text-sm text-gray-500">Klicken zum Ändern</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Klicken zum Ändern</div>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -905,36 +905,36 @@ export default function UsersPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
                 <input
                   type="text"
                   value={editData.full_name}
                   onChange={(e) => setEditData({ ...editData, full_name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail</label>
                 <input
                   type="email"
                   value={editData.email}
                   onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rolle</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rolle</label>
                 <select
                   value={editData.role}
                   onChange={(e) => setEditData({ ...editData, role: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nebenstelle</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nebenstelle</label>
                 <select
                   value={editExtension}
                   onChange={(e) => {
@@ -960,7 +960,7 @@ export default function UsersPage() {
                       setEditInboundRouteMap(new Map())
                     }
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
                   <option value="">-- keine --</option>
                   {getAvailableExtensions(editUser.id).map(p => (
@@ -973,12 +973,12 @@ export default function UsersPage() {
 
               {/* Rufnummern im Edit-Modal */}
               {editExtension && (
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg space-y-4">
+                <div className="p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg space-y-4">
                   {/* Ausgehende Rufnummer */}
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <PhoneOutgoing className="w-4 h-4 text-blue-600" />
-                      <label className="text-sm font-medium text-gray-700">Ausgehende Rufnummer</label>
+                      <PhoneOutgoing className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Ausgehende Rufnummer</label>
                     </div>
                     <select
                       value={editDid ? `${editTrunkId}:${editDid}` : ''}
@@ -993,7 +993,7 @@ export default function UsersPage() {
                           setEditDid(didParts.join(':'))
                         }
                       }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     >
                       <option value="">-- keine Rufnummer --</option>
                       {/* Show currently assigned outbound DID */}
@@ -1018,14 +1018,14 @@ export default function UsersPage() {
                   {editInboundPool.length > 0 && (
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <PhoneIncoming className="w-4 h-4 text-green-600" />
-                        <label className="text-sm font-medium text-gray-700">Eingehende Rufnummern</label>
-                        <span className="text-xs text-gray-500">(weitere)</span>
+                        <PhoneIncoming className="w-4 h-4 text-green-600 dark:text-green-400" />
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Eingehende Rufnummern</label>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">(weitere)</span>
                       </div>
                       <div className="space-y-2">
                         {editInboundPool.map(group => (
-                          <div key={group.trunk_id} className="bg-white rounded-lg border border-gray-200 p-3">
-                            <div className="text-xs font-medium text-gray-500 mb-2">{group.trunk_name}</div>
+                          <div key={group.trunk_id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">{group.trunk_name}</div>
                             <div className="flex flex-wrap gap-2">
                               {group.dids.map(did => {
                                 const checked = isDidSelected(editInboundDids, group.trunk_id, did)
@@ -1033,7 +1033,7 @@ export default function UsersPage() {
                                   <label
                                     key={did}
                                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono cursor-pointer transition-colors ${
-                                      checked ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-gray-50 text-gray-600 border border-gray-200 hover:bg-gray-100'
+                                      checked ? 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 border border-green-300 dark:border-green-700' : 'bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
                                     }`}
                                   >
                                     <input
@@ -1059,7 +1059,7 @@ export default function UsersPage() {
             <div className="flex gap-3 justify-end mt-6">
               <button
                 onClick={() => setEditUser(null)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition-colors"
+                className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors"
               >
                 Abbrechen
               </button>
@@ -1077,8 +1077,8 @@ export default function UsersPage() {
       {/* Password Change Modal */}
       {passwordUserId !== null && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
               Passwort ändern: {passwordUsername}
             </h2>
             <input
@@ -1086,14 +1086,14 @@ export default function UsersPage() {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Neues Passwort (min. 6 Zeichen)"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-4"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-4 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               autoFocus
               onKeyDown={(e) => e.key === 'Enter' && handlePasswordChange()}
             />
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => { setPasswordUserId(null); setNewPassword('') }}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition-colors"
+                className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors"
               >
                 Abbrechen
               </button>

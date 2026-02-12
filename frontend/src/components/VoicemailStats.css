@@ -191,6 +191,27 @@
   color: #f57c00;
 }
 
+/* ===== Dark Mode ===== */
+.dark .voicemail-stats-card { background: #1f2937; border-color: #374151; }
+.dark .card-header { border-bottom-color: #374151; }
+.dark .card-header h3 { color: #e5e7eb; }
+.dark .view-all-link { color: #60a5fa; }
+.dark .view-all-link:hover { color: #93bbfd; }
+.dark .card-content.loading, .dark .card-content.error { color: #9ca3af; }
+.dark .spinner-small { border-color: #374151; border-top-color: #60a5fa; }
+.dark .stat-item { background: #374151; }
+.dark .stat-item.primary { background: #1e3a5f; }
+.dark .stat-item.highlight { background: #451a03; }
+.dark .stat-value { color: #e5e7eb; }
+.dark .stat-label { color: #9ca3af; }
+.dark .section-title { color: #9ca3af; }
+.dark .mailbox-label { color: #d1d5db; }
+.dark .mailbox-count { color: #60a5fa; }
+.dark .progress-bar { background: #4b5563; }
+.dark .progress-fill { background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%); }
+.dark .alert-banner { background: #451a03; border-color: #92400e; color: #fbbf24; }
+.dark .alert-banner svg { color: #f59e0b; }
+
 /* Responsive */
 @media (max-width: 640px) {
   .stats-grid {

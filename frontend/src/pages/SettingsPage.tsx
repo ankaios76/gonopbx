@@ -315,26 +315,26 @@ export default function SettingsPage() {
   }, [activeTab])
 
   if (loading) {
-    return <div className="text-center py-12 text-gray-500">Lade Einstellungen...</div>
+    return <div className="text-center py-12 text-gray-500 dark:text-gray-400">Lade Einstellungen...</div>
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Einstellungen</h1>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Einstellungen</h1>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg text-sm">
           {error}
         </div>
       )}
       {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg text-sm">
           {success}
         </div>
       )}
 
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <nav className="flex gap-1" aria-label="Tabs">
           {tabs.map(tab => {
             const Icon = tab.icon
@@ -345,8 +345,8 @@ export default function SettingsPage() {
                 onClick={() => { setActiveTab(tab.id); setError(''); setSuccess('') }}
                 className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                   isActive
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -369,70 +369,70 @@ export default function SettingsPage() {
       {/* Email Tab */}
       {activeTab === 'email' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">SMTP-Konfiguration</h2>
-            <p className="text-sm text-gray-500 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">SMTP-Konfiguration</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
               Konfigurieren Sie den SMTP-Server für den Versand von Voicemail-Benachrichtigungen per E-Mail.
             </p>
 
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">SMTP-Server</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SMTP-Server</label>
                   <input
                     type="text"
                     value={formData.smtp_host}
                     onChange={(e) => setFormData({ ...formData, smtp_host: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     placeholder="mail.example.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Port</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Port</label>
                   <input
                     type="text"
                     value={formData.smtp_port}
                     onChange={(e) => setFormData({ ...formData, smtp_port: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     placeholder="587"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Benutzername</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Benutzername</label>
                   <input
                     type="text"
                     value={formData.smtp_user}
                     onChange={(e) => setFormData({ ...formData, smtp_user: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     placeholder="user@example.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Passwort</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Passwort</label>
                   <div className="relative">
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={formData.smtp_password}
                       onChange={(e) => setFormData({ ...formData, smtp_password: e.target.value })}
-                      className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                      className="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       placeholder="Passwort"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Absender-Adresse</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Absender-Adresse</label>
                   <input
                     type="email"
                     value={formData.smtp_from}
                     onChange={(e) => setFormData({ ...formData, smtp_from: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     placeholder="voicemail@example.com"
                   />
                 </div>
@@ -442,14 +442,14 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={formData.smtp_tls === 'true'}
                       onChange={(e) => setFormData({ ...formData, smtp_tls: e.target.checked ? 'true' : 'false' })}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                     />
-                    <span className="text-sm font-medium text-gray-700">TLS verwenden</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">TLS verwenden</span>
                   </label>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-gray-200 flex gap-3">
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 flex gap-3">
                 <button
                   type="submit"
                   disabled={saving}
@@ -462,9 +462,9 @@ export default function SettingsPage() {
             </form>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">Test-E-Mail senden</h2>
-            <p className="text-sm text-gray-500 mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Test-E-Mail senden</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
               Senden Sie eine Test-E-Mail, um die SMTP-Konfiguration zu überprüfen.
             </p>
             <div className="flex gap-3">
@@ -472,7 +472,7 @@ export default function SettingsPage() {
                 type="email"
                 value={testEmail}
                 onChange={(e) => setTestEmail(e.target.value)}
-                className="flex-1 max-w-md px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="flex-1 max-w-md px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="empfaenger@example.com"
               />
               <button
@@ -490,9 +490,9 @@ export default function SettingsPage() {
 
       {/* Audio Tab */}
       {activeTab === 'audio' && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-2">Audio-Codecs (Global)</h2>
-          <p className="text-sm text-gray-500 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Audio-Codecs (Global)</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
             Wählen Sie die Codecs aus, die standardmäßig für alle Nebenstellen verwendet werden.
             Einzelne Nebenstellen können diese Einstellung überschreiben.
           </p>
@@ -503,19 +503,19 @@ export default function SettingsPage() {
                 key={codec.id}
                 className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition ${
                   selectedCodecs.includes(codec.id)
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
                 <input
                   type="checkbox"
                   checked={selectedCodecs.includes(codec.id)}
                   onChange={() => toggleCodec(codec.id)}
-                  className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
                 />
                 <div>
-                  <div className="text-sm font-medium text-gray-800">{codec.name}</div>
-                  <div className="text-xs text-gray-500">{codec.description}</div>
+                  <div className="text-sm font-medium text-gray-800 dark:text-gray-200">{codec.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{codec.description}</div>
                 </div>
               </label>
             ))}
@@ -536,17 +536,17 @@ export default function SettingsPage() {
       {activeTab === 'security' && (
         <div className="space-y-6">
           {/* IP Whitelist */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">IP-Whitelist für Registrierung</h2>
-            <p className="text-sm text-gray-500 mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">IP-Whitelist für Registrierung</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
               Beschränken Sie die SIP-Registrierung auf bestimmte IP-Adressen oder Netzwerke (CIDR).
               Wenn aktiviert, werden alle anderen IPs blockiert.
             </p>
 
             {whitelistEnabled && (
-              <div className="flex items-start gap-2 mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-amber-800">
+              <div className="flex items-start gap-2 mb-4 p-3 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg">
+                <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                <span className="text-sm text-amber-800 dark:text-amber-300">
                   Achtung: Stellen Sie sicher, dass Ihre eigene IP-Adresse in der Liste enthalten ist,
                   bevor Sie die Whitelist aktivieren.
                 </span>
@@ -558,7 +558,7 @@ export default function SettingsPage() {
                 <div
                   onClick={() => setWhitelistEnabled(!whitelistEnabled)}
                   className={`relative w-11 h-6 rounded-full transition-colors ${
-                    whitelistEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                    whitelistEnabled ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
                   }`}
                 >
                   <div
@@ -567,7 +567,7 @@ export default function SettingsPage() {
                     }`}
                   />
                 </div>
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Whitelist {whitelistEnabled ? 'aktiviert' : 'deaktiviert'}
                 </span>
               </label>
@@ -580,12 +580,12 @@ export default function SettingsPage() {
                   value={newIp}
                   onChange={(e) => setNewIp(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addIp())}
-                  className="flex-1 max-w-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="flex-1 max-w-sm px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   placeholder="z.B. 203.0.113.5 oder 10.0.0.0/24"
                 />
                 <button
                   onClick={addIp}
-                  className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-colors"
+                  className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   Hinzufügen
@@ -597,12 +597,12 @@ export default function SettingsPage() {
                   {whitelistIps.map((ip) => (
                     <div
                       key={ip}
-                      className="flex items-center justify-between px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg"
+                      className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg"
                     >
-                      <span className="text-sm font-mono text-gray-800">{ip}</span>
+                      <span className="text-sm font-mono text-gray-800 dark:text-gray-200">{ip}</span>
                       <button
                         onClick={() => removeIp(ip)}
-                        className="text-red-400 hover:text-red-600 transition-colors"
+                        className="text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -610,7 +610,7 @@ export default function SettingsPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-400">Keine IPs konfiguriert</p>
+                <p className="text-sm text-gray-400 dark:text-gray-500">Keine IPs konfiguriert</p>
               )}
             </div>
 
@@ -625,38 +625,38 @@ export default function SettingsPage() {
           </div>
 
           {/* Weak Passwords */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <ShieldAlert className="w-5 h-5 text-orange-500" />
-                <h2 className="text-lg font-semibold text-gray-800">Schwache SIP-Passwörter</h2>
+                <ShieldAlert className="w-5 h-5 text-orange-500 dark:text-orange-400" />
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Schwache SIP-Passwörter</h2>
               </div>
-              <button onClick={fetchWeakPasswords} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+              <button onClick={fetchWeakPasswords} className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center gap-1">
                 <RefreshCw className={`w-4 h-4 ${loadingWeak ? 'animate-spin' : ''}`} />
                 Aktualisieren
               </button>
             </div>
             {weakPasswords.length === 0 ? (
-              <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm text-green-800">Alle SIP-Passwörter sind ausreichend stark</span>
+              <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
+                <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                <span className="text-sm text-green-800 dark:text-green-300">Alle SIP-Passwörter sind ausreichend stark</span>
               </div>
             ) : (
               <div className="space-y-2">
                 {weakPasswords.map((pw: any) => (
-                  <div key={pw.id} className="flex items-center justify-between px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <div key={pw.id} className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg">
                     <div>
-                      <span className="font-medium text-gray-800">{pw.extension}</span>
-                      {pw.caller_id && <span className="text-sm text-gray-500 ml-2">({pw.caller_id})</span>}
+                      <span className="font-medium text-gray-800 dark:text-gray-200">{pw.extension}</span>
+                      {pw.caller_id && <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">({pw.caller_id})</span>}
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-20 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                         <div
                           className={`h-full ${pw.strength.level === 'medium' ? 'bg-yellow-500' : 'bg-red-500'}`}
                           style={{ width: `${pw.strength.score}%` }}
                         />
                       </div>
-                      <span className={`text-xs font-medium ${pw.strength.level === 'medium' ? 'text-yellow-600' : 'text-red-600'}`}>
+                      <span className={`text-xs font-medium ${pw.strength.level === 'medium' ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400'}`}>
                         {pw.strength.level === 'medium' ? 'Mittel' : 'Schwach'}
                       </span>
                     </div>
@@ -667,24 +667,24 @@ export default function SettingsPage() {
           </div>
 
           {/* Fail2Ban Status */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Ban className="w-5 h-5 text-red-500" />
-                <h2 className="text-lg font-semibold text-gray-800">Fail2Ban-Status</h2>
+                <Ban className="w-5 h-5 text-red-500 dark:text-red-400" />
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Fail2Ban-Status</h2>
               </div>
-              <button onClick={fetchFail2ban} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+              <button onClick={fetchFail2ban} className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center gap-1">
                 <RefreshCw className={`w-4 h-4 ${loadingF2b ? 'animate-spin' : ''}`} />
                 Aktualisieren
               </button>
             </div>
 
             {!fail2ban ? (
-              <div className="text-center py-4 text-gray-500">Lade Fail2Ban-Status...</div>
+              <div className="text-center py-4 text-gray-500 dark:text-gray-400">Lade Fail2Ban-Status...</div>
             ) : !fail2ban.available ? (
-              <div className="flex items-start gap-2 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                <AlertTriangle className="w-4 h-4 text-gray-500 mt-0.5" />
-                <span className="text-sm text-gray-600">
+              <div className="flex items-start gap-2 p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <AlertTriangle className="w-4 h-4 text-gray-500 dark:text-gray-400 mt-0.5" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
                   Fail2Ban ist nicht verfügbar. {fail2ban.error || 'Stellen Sie sicher, dass Fail2Ban installiert ist.'}
                 </span>
               </div>
@@ -692,32 +692,32 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 {/* Summary */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-red-700">{fail2ban.active_bans}</div>
-                    <div className="text-xs text-red-600">Aktive Bans</div>
+                  <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-red-700 dark:text-red-400">{fail2ban.active_bans}</div>
+                    <div className="text-xs text-red-600 dark:text-red-400">Aktive Bans</div>
                   </div>
-                  <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-orange-700">{fail2ban.bans_24h}</div>
-                    <div className="text-xs text-orange-600">Bans (24h)</div>
+                  <div className="p-3 bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-800 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-orange-700 dark:text-orange-400">{fail2ban.bans_24h}</div>
+                    <div className="text-xs text-orange-600 dark:text-orange-400">Bans (24h)</div>
                   </div>
-                  <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-center">
-                    <div className="text-2xl font-bold text-gray-700">{fail2ban.total_bans}</div>
-                    <div className="text-xs text-gray-600">Bans gesamt</div>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg text-center">
+                    <div className="text-2xl font-bold text-gray-700 dark:text-gray-300">{fail2ban.total_bans}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Bans gesamt</div>
                   </div>
                 </div>
 
                 {/* Jails */}
                 {fail2ban.jails && fail2ban.jails.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-700 mb-2">Jails</h3>
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jails</h3>
                     <div className="space-y-2">
                       {fail2ban.jails.map((jail: any) => (
-                        <div key={jail.name} className="flex items-center justify-between px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div key={jail.name} className="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg">
                           <div className="flex items-center gap-2">
-                            {jail.enabled ? <CheckCircle className="w-4 h-4 text-green-500" /> : <XCircle className="w-4 h-4 text-gray-400" />}
-                            <span className="text-sm font-medium text-gray-800">{jail.name}</span>
+                            {jail.enabled ? <CheckCircle className="w-4 h-4 text-green-500 dark:text-green-400" /> : <XCircle className="w-4 h-4 text-gray-400 dark:text-gray-500" />}
+                            <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{jail.name}</span>
                           </div>
-                          <span className={`text-sm font-medium ${jail.active_bans > 0 ? 'text-red-600' : 'text-gray-500'}`}>
+                          <span className={`text-sm font-medium ${jail.active_bans > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>
                             {jail.active_bans} aktiv
                           </span>
                         </div>
@@ -729,26 +729,26 @@ export default function SettingsPage() {
                 {/* Recent bans */}
                 {fail2ban.recent_bans && fail2ban.recent_bans.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-700 mb-2">Letzte Bans</h3>
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Letzte Bans</h3>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm">
-                        <thead className="bg-gray-50">
+                        <thead className="bg-gray-50 dark:bg-gray-700">
                           <tr>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">IP</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jail</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Zeitpunkt</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aktion</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">IP</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Jail</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Zeitpunkt</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Aktion</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                           {fail2ban.recent_bans.map((ban: any, i: number) => (
                             <tr key={i}>
-                              <td className="px-3 py-2 font-mono text-gray-800">{ban.ip}</td>
-                              <td className="px-3 py-2 text-gray-600">{ban.jail}</td>
-                              <td className="px-3 py-2 text-gray-600">{new Date(ban.timestamp).toLocaleString('de-DE')}</td>
+                              <td className="px-3 py-2 font-mono text-gray-800 dark:text-gray-200">{ban.ip}</td>
+                              <td className="px-3 py-2 text-gray-600 dark:text-gray-400">{ban.jail}</td>
+                              <td className="px-3 py-2 text-gray-600 dark:text-gray-400">{new Date(ban.timestamp).toLocaleString('de-DE')}</td>
                               <td className="px-3 py-2">
-                                <span className={`px-2 py-0.5 rounded text-xs font-medium ${ban.active ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'}`}>
+                                <span className={`px-2 py-0.5 rounded text-xs font-medium ${ban.active ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'}`}>
                                   {ban.active ? 'Aktiv' : 'Abgelaufen'}
                                 </span>
                               </td>
@@ -764,7 +764,7 @@ export default function SettingsPage() {
                                         alert(e.message || 'Entbannung fehlgeschlagen')
                                       }
                                     }}
-                                    className="text-xs text-orange-600 hover:text-orange-800 flex items-center gap-1"
+                                    className="text-xs text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 flex items-center gap-1"
                                   >
                                     <Unlock className="w-3.5 h-3.5" />
                                     Entbannen
@@ -786,16 +786,16 @@ export default function SettingsPage() {
 
       {/* Audit Log Tab */}
       {activeTab === 'audit' && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <FileText className="w-5 h-5 text-gray-600" />
-              <h2 className="text-lg font-semibold text-gray-800">Audit-Log</h2>
-              <span className="text-sm text-gray-500">({auditTotal} Einträge)</span>
+              <FileText className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Audit-Log</h2>
+              <span className="text-sm text-gray-500 dark:text-gray-400">({auditTotal} Einträge)</span>
             </div>
             <button
               onClick={() => fetchAuditLogs(0)}
-              className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
+              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center gap-1"
             >
               <RefreshCw className={`w-4 h-4 ${loadingAudit ? 'animate-spin' : ''}`} />
               Aktualisieren
@@ -803,25 +803,25 @@ export default function SettingsPage() {
           </div>
 
           {auditLogs.length === 0 && !loadingAudit ? (
-            <div className="text-center py-8 text-gray-500">Keine Audit-Log-Einträge vorhanden</div>
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">Keine Audit-Log-Einträge vorhanden</div>
           ) : (
             <>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Zeitpunkt</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Benutzer</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aktion</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ressource</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Zeitpunkt</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Benutzer</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Aktion</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Ressource</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Details</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {auditLogs.map((log: any) => {
                       const isDelete = log.action?.includes('deleted')
                       const isCreate = log.action?.includes('created')
-                      const actionColor = isDelete ? 'text-red-600 bg-red-50' : isCreate ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50'
+                      const actionColor = isDelete ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30' : isCreate ? 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30' : 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30'
                       const actionLabel: Record<string, string> = {
                         peer_created: 'Extension erstellt',
                         peer_updated: 'Extension bearbeitet',
@@ -843,21 +843,21 @@ export default function SettingsPage() {
                         server_reboot: 'Server-Neustart',
                       }
                       return (
-                        <tr key={log.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
+                        <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                          <td className="px-4 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">
                             {log.timestamp ? new Date(log.timestamp).toLocaleString('de-DE') : '-'}
                           </td>
-                          <td className="px-4 py-3 font-medium text-gray-800">{log.username}</td>
+                          <td className="px-4 py-3 font-medium text-gray-800 dark:text-gray-200">{log.username}</td>
                           <td className="px-4 py-3">
                             <span className={`px-2 py-1 rounded text-xs font-medium ${actionColor}`}>
                               {actionLabel[log.action] || log.action}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-gray-600">
-                            {log.resource_type && <span className="text-gray-500">{log.resource_type}: </span>}
+                          <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
+                            {log.resource_type && <span className="text-gray-500 dark:text-gray-400">{log.resource_type}: </span>}
                             {log.resource_id || '-'}
                           </td>
-                          <td className="px-4 py-3 text-gray-500 text-xs">
+                          <td className="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                             {log.details ? Object.entries(log.details).map(([k, v]) => `${k}: ${v}`).join(', ') : '-'}
                           </td>
                         </tr>
@@ -872,7 +872,7 @@ export default function SettingsPage() {
                   <button
                     onClick={() => fetchAuditLogs(auditOffset + 50)}
                     disabled={loadingAudit}
-                    className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm transition-colors"
+                    className="px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm transition-colors"
                   >
                     {loadingAudit ? 'Lade...' : 'Mehr laden'}
                   </button>
@@ -887,12 +887,12 @@ export default function SettingsPage() {
       {activeTab === 'server' && (
         <div className="space-y-6">
           {/* System Info */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-800">System-Information</h2>
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">System-Information</h2>
               <button
                 onClick={fetchServerInfo}
-                className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
                 Aktualisieren
@@ -903,55 +903,55 @@ export default function SettingsPage() {
               <div className="space-y-6">
                 {/* Version & Uptime */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <ServerIcon className="w-5 h-5 text-blue-600" />
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-lg">
+                      <ServerIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Version</div>
-                      <div className="text-lg font-semibold text-gray-800">v{serverInfo.version}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Version</div>
+                      <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">v{serverInfo.version}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <Clock className="w-5 h-5 text-green-600" />
+                  <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-lg">
+                      <Clock className="w-5 h-5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Uptime</div>
-                      <div className="text-lg font-semibold text-gray-800">{serverInfo.uptime}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Uptime</div>
+                      <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">{serverInfo.uptime}</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Disk & Memory */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
-                      <HardDrive className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-medium text-gray-700">Festplatte</span>
+                      <HardDrive className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Festplatte</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1">
                       <div
                         className={`h-2.5 rounded-full ${serverInfo.disk.percent > 90 ? 'bg-red-500' : serverInfo.disk.percent > 70 ? 'bg-yellow-500' : 'bg-green-500'}`}
                         style={{ width: `${serverInfo.disk.percent}%` }}
                       />
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       {serverInfo.disk.used_gb} GB / {serverInfo.disk.total_gb} GB belegt ({serverInfo.disk.percent}%)
                     </div>
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
-                      <Cpu className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-medium text-gray-700">Arbeitsspeicher</span>
+                      <Cpu className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Arbeitsspeicher</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mb-1">
                       <div
                         className={`h-2.5 rounded-full ${serverInfo.memory.percent > 90 ? 'bg-red-500' : serverInfo.memory.percent > 70 ? 'bg-yellow-500' : 'bg-green-500'}`}
                         style={{ width: `${serverInfo.memory.percent}%` }}
                       />
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       {serverInfo.memory.used_mb} MB / {serverInfo.memory.total_mb} MB belegt ({serverInfo.memory.percent}%)
                     </div>
                   </div>
@@ -960,26 +960,26 @@ export default function SettingsPage() {
                 {/* Container Status */}
                 {serverInfo.containers.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-700 mb-3">Container-Status</h3>
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Container-Status</h3>
                     <div className="space-y-2">
                       {serverInfo.containers.map(c => (
-                        <div key={c.name} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg">
+                        <div key={c.name} className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                           <div className="flex items-center gap-3">
                             {c.state === 'running' ? (
-                              <CheckCircle className="w-4 h-4 text-green-500" />
+                              <CheckCircle className="w-4 h-4 text-green-500 dark:text-green-400" />
                             ) : (
-                              <XCircle className="w-4 h-4 text-red-500" />
+                              <XCircle className="w-4 h-4 text-red-500 dark:text-red-400" />
                             )}
                             <div>
-                              <div className="text-sm font-medium text-gray-800">{c.service}</div>
-                              <div className="text-xs text-gray-500">{c.status}</div>
+                              <div className="text-sm font-medium text-gray-800 dark:text-gray-200">{c.service}</div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">{c.status}</div>
                             </div>
                           </div>
                           {['asterisk', 'backend', 'frontend'].includes(c.service) && (
                             <button
                               onClick={() => handleRestartService(c.service)}
                               disabled={restartingService === c.service}
-                              className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 disabled:text-gray-400 transition-colors"
+                              className="flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 disabled:text-gray-400 dark:disabled:text-gray-500 transition-colors"
                             >
                               <RefreshCw className={`w-3.5 h-3.5 ${restartingService === c.service ? 'animate-spin' : ''}`} />
                               {restartingService === c.service ? 'Startet...' : 'Neustart'}
@@ -992,29 +992,29 @@ export default function SettingsPage() {
                 )}
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500">Lade System-Informationen...</div>
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">Lade System-Informationen...</div>
             )}
           </div>
 
           {/* Update Check */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Download className="w-5 h-5 text-gray-600" />
-              <h2 className="text-lg font-semibold text-gray-800">Updates</h2>
+              <Download className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Updates</h2>
             </div>
 
             {updateInfo?.update_available && (
-              <div className="flex items-start gap-3 p-4 mb-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <ArrowUpCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="flex items-start gap-3 p-4 mb-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <ArrowUpCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                 <div className="flex-1">
-                  <div className="text-sm font-medium text-blue-800">
+                  <div className="text-sm font-medium text-blue-800 dark:text-blue-300">
                     Neue Version verfügbar: v{updateInfo.latest_version}
                   </div>
-                  <div className="text-xs text-blue-600 mt-1">
+                  <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
                     Aktuelle Version: v{updateInfo.current_version}
                   </div>
                   {updateInfo.release_notes && (
-                    <pre className="text-xs text-blue-700 mt-2 whitespace-pre-wrap font-sans max-h-40 overflow-y-auto">
+                    <pre className="text-xs text-blue-700 dark:text-blue-300 mt-2 whitespace-pre-wrap font-sans max-h-40 overflow-y-auto">
                       {updateInfo.release_notes}
                     </pre>
                   )}
@@ -1023,7 +1023,7 @@ export default function SettingsPage() {
                       href={updateInfo.release_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-700 hover:text-blue-900 mt-2 underline"
+                      className="inline-flex items-center gap-1 text-xs text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mt-2 underline"
                     >
                       Release auf GitHub ansehen
                     </a>
@@ -1054,11 +1054,11 @@ export default function SettingsPage() {
             )}
 
             {installingUpdate && (
-              <div className="flex items-center gap-3 p-4 mb-4 bg-amber-50 border border-amber-200 rounded-lg">
-                <RefreshCw className="w-5 h-5 text-amber-600 animate-spin flex-shrink-0" />
+              <div className="flex items-center gap-3 p-4 mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg">
+                <RefreshCw className="w-5 h-5 text-amber-600 dark:text-amber-400 animate-spin flex-shrink-0" />
                 <div>
-                  <div className="text-sm font-medium text-amber-800">Update wird installiert...</div>
-                  <div className="text-xs text-amber-600 mt-1">
+                  <div className="text-sm font-medium text-amber-800 dark:text-amber-300">Update wird installiert...</div>
+                  <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
                     Die Container werden neu gebaut. Die Seite wird automatisch neu geladen.
                   </div>
                 </div>
@@ -1066,9 +1066,9 @@ export default function SettingsPage() {
             )}
 
             {updateInfo && !updateInfo.update_available && (
-              <div className="flex items-center gap-2 p-3 mb-4 bg-green-50 border border-green-200 rounded-lg">
-                <CheckCircle className="w-4 h-4 text-green-600" />
-                <span className="text-sm text-green-800">GonoPBX v{updateInfo.current_version} ist aktuell</span>
+              <div className="flex items-center gap-2 p-3 mb-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg">
+                <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                <span className="text-sm text-green-800 dark:text-green-300">GonoPBX v{updateInfo.current_version} ist aktuell</span>
               </div>
             )}
 
@@ -1083,12 +1083,12 @@ export default function SettingsPage() {
           </div>
 
           {/* Server Reboot */}
-          <div className="bg-white rounded-xl shadow-sm border border-red-100 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-red-100 dark:border-red-900 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Power className="w-5 h-5 text-red-500" />
-              <h2 className="text-lg font-semibold text-gray-800">Server neu starten</h2>
+              <Power className="w-5 h-5 text-red-500 dark:text-red-400" />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Server neu starten</h2>
             </div>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
               Startet den gesamten Server neu. Alle aktiven Verbindungen und Gespräche werden getrennt.
             </p>
             <button

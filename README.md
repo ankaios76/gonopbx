@@ -51,6 +51,7 @@
 - **📊 Call Detail Records** – Full CDR with filters by source, destination, and status, plus call statistics at a glance
 - **🔐 Multi-User & Roles** – Admin and user roles with JWT-based authentication
 - **📡 Real-Time Dashboard** – Live overview via WebSocket: Asterisk status, registered endpoints, active lines, and recent calls
+- **🌙 Dark Mode** – System-wide dark theme with OS preference detection, manual toggle, and localStorage persistence
 - **🐳 Docker Deployment** – Full system up and running in minutes with `docker compose up`
 
 ## 📸 Screenshots
@@ -118,6 +119,13 @@ gonopbx/
 ```
 
 ## 📋 Changelog
+
+### v1.5.2 (2026-02-12)
+
+**New Features:**
+- **Dark Mode** – Full dark mode with automatic OS preference detection and manual toggle (Sun/Moon icon in header). Persists via localStorage
+- Provider logos in trunk cards now displayed as round avatars with white background
+- "Made with ❤️ in Bremen" added to footer
 
 ### v1.5.1 (2026-02-12)
 

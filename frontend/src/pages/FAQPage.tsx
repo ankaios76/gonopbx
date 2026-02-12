@@ -98,14 +98,14 @@ export default function FAQPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Häufig gestellte Fragen</h1>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Häufig gestellte Fragen</h1>
 
       {faqSections.map((section, si) => (
-        <div key={si} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-700">{section.title}</h2>
+        <div key={si} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300">{section.title}</h2>
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {section.items.map((item, qi) => {
               const key = `${si}-${qi}`
               const isOpen = openItems.has(key)
@@ -113,18 +113,18 @@ export default function FAQPage() {
                 <div key={qi}>
                   <button
                     onClick={() => toggleItem(key)}
-                    className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                   >
-                    <span className="text-sm font-medium text-gray-800 pr-4">{item.question}</span>
+                    <span className="text-sm font-medium text-gray-800 dark:text-gray-200 pr-4">{item.question}</span>
                     {isOpen ? (
-                      <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                     ) : (
-                      <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                     )}
                   </button>
                   {isOpen && (
                     <div className="px-6 pb-4">
-                      <p className="text-sm text-gray-600 leading-relaxed">{item.answer}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.answer}</p>
                     </div>
                   )}
                 </div>

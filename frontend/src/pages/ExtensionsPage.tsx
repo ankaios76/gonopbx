@@ -226,10 +226,10 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
             {activeTab === 'peers' ? 'Nebenstellen' : 'Leitungen'}
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
             {activeTab === 'peers' ? 'SIP-Nebenstellen anlegen und bearbeiten' : 'SIP-Trunks anlegen und bearbeiten'}
           </p>
         </div>
@@ -258,33 +258,33 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
       {activeTab === 'peers' && (
         <>
           {showPeerForm && (
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 {editingPeer ? 'Nebenstelle bearbeiten' : 'Neue Nebenstelle anlegen'}
               </h2>
               <form onSubmit={handlePeerSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nebenstelle (Rufnummer) *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nebenstelle (Rufnummer) *</label>
                     <input
                       type="text"
                       value={peerForm.extension}
                       onChange={(e) => setPeerForm({...peerForm, extension: e.target.value})}
                       placeholder="z.B. 1002"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       required
                       disabled={!!editingPeer}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Passwort *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Passwort *</label>
                     <div className="flex gap-2">
                       <input
                         type="text"
                         value={peerForm.secret}
                         onChange={(e) => setPeerForm({...peerForm, secret: e.target.value})}
                         placeholder="Sicheres Passwort"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                         required
                       />
                       <button
@@ -295,7 +295,7 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                             setPeerForm({...peerForm, secret: res.password})
                           } catch {}
                         }}
-                        className="flex items-center gap-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm whitespace-nowrap"
+                        className="flex items-center gap-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm whitespace-nowrap"
                         title="Passwort generieren"
                       >
                         <RefreshCw className="w-4 h-4" />
@@ -323,36 +323,36 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                       return (
                         <div className="mt-2">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                               <div className={`h-full ${color} transition-all`} style={{ width: `${score}%` }} />
                             </div>
-                            <span className={`text-xs font-medium ${level === 'strong' ? 'text-green-600' : level === 'medium' ? 'text-yellow-600' : 'text-red-600'}`}>
+                            <span className={`text-xs font-medium ${level === 'strong' ? 'text-green-600 dark:text-green-400' : level === 'medium' ? 'text-yellow-600' : 'text-red-600 dark:text-red-400'}`}>
                               {label}
                             </span>
                           </div>
                           {warnings.length > 0 && level !== 'strong' && (
-                            <p className="text-xs text-gray-500 mt-1">{warnings.join(', ')}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{warnings.join(', ')}</p>
                           )}
                         </div>
                       )
                     })()}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Caller ID</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Caller ID</label>
                     <input
                       type="text"
                       value={peerForm.caller_id}
                       onChange={(e) => setPeerForm({...peerForm, caller_id: e.target.value})}
                       placeholder="Max Mustermann"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Context</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Context</label>
                     <select
                       value={peerForm.context}
                       onChange={(e) => setPeerForm({...peerForm, context: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     >
                       <option value="internal">internal</option>
                       <option value="default">default</option>
@@ -367,13 +367,13 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                     onChange={(e) => setPeerForm({...peerForm, enabled: e.target.checked})}
                     className="w-4 h-4 text-primary-500 rounded"
                   />
-                  <label htmlFor="peer-enabled" className="text-sm text-gray-700">Nebenstelle aktiviert</label>
+                  <label htmlFor="peer-enabled" className="text-sm text-gray-700 dark:text-gray-300">Nebenstelle aktiviert</label>
                 </div>
                 <div className="flex gap-3 pt-4">
                   <button type="submit" className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
                     {editingPeer ? 'Speichern' : 'Anlegen'}
                   </button>
-                  <button type="button" onClick={handlePeerCancel} className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                  <button type="button" onClick={handlePeerCancel} className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
                     Abbrechen
                   </button>
                 </div>
@@ -381,51 +381,51 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
             </div>
           )}
 
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b">
-              <h2 className="text-lg font-semibold">Aktive Nebenstellen ({peers.length})</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Aktive Nebenstellen ({peers.length})</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 dark:bg-gray-700">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nebenstelle</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Caller ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Context</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aktionen</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nebenstelle</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Caller ID</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Context</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Aktionen</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {peers.map((peer) => (
-                    <tr key={peer.id} className="hover:bg-gray-50">
+                    <tr key={peer.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <Phone className="w-4 h-4 text-gray-400" />
-                          <span className="font-medium">{peer.extension}</span>
+                          <Phone className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <span className="font-medium text-gray-900 dark:text-gray-100">{peer.extension}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">{peer.caller_id || '-'}</td>
+                      <td className="px-6 py-4 text-gray-900 dark:text-gray-100">{peer.caller_id || '-'}</td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-1 bg-gray-100 rounded text-sm">{peer.context}</span>
+                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded text-sm">{peer.context}</span>
                       </td>
                       <td className="px-6 py-4">
                         {peer.enabled ? (
-                          <span className="flex items-center gap-1 text-green-600">
+                          <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
                             <Phone className="w-4 h-4" /> Aktiv
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1 text-gray-400">
+                          <span className="flex items-center gap-1 text-gray-400 dark:text-gray-500">
                             <PhoneOff className="w-4 h-4" /> Deaktiviert
                           </span>
                         )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
-                          <button onClick={() => handlePeerEdit(peer)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
+                          <button onClick={() => handlePeerEdit(peer)} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg">
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handlePeerDelete(peer)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                          <button onClick={() => handlePeerDelete(peer)} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -443,14 +443,14 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
       {activeTab === 'trunks' && (
         <>
           {showTrunkForm && (
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 {editingTrunk ? 'Leitung bearbeiten' : 'Neue Leitung anlegen'}
               </h2>
               <form onSubmit={handleTrunkSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Provider *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Provider *</label>
                     <select
                       value={trunkForm.provider}
                       onChange={(e) => {
@@ -462,14 +462,14 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                           auth_mode: PROVIDERS[provider]?.supportsIp ? trunkForm.auth_mode : 'registration',
                         })
                       }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     >
                       {Object.entries(PROVIDERS).map(([key, { label }]) => (
                         <option key={key} value={key}>{label}</option>
                       ))}
                     </select>
                     {trunkForm.provider !== 'custom' && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         Server: {PROVIDERS[trunkForm.provider]?.server}
                       </p>
                     )}
@@ -477,13 +477,13 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
 
                   {trunkForm.provider === 'custom' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">SIP-Server *</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SIP-Server *</label>
                       <input
                         type="text"
                         value={trunkForm.sip_server}
                         onChange={(e) => setTrunkForm({...trunkForm, sip_server: e.target.value})}
                         placeholder="z.B. sip.provider.de"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                         required
                       />
                     </div>
@@ -491,11 +491,11 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
 
                   {PROVIDERS[trunkForm.provider]?.supportsIp && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Auth-Modus *</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Auth-Modus *</label>
                       <select
                         value={trunkForm.auth_mode}
                         onChange={(e) => setTrunkForm({...trunkForm, auth_mode: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       >
                         <option value="registration">Registrierung (Username/Passwort)</option>
                         <option value="ip">Fix-IP Authentifizierung</option>
@@ -504,13 +504,13 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                   )}
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name *</label>
                     <input
                       type="text"
                       value={trunkForm.name}
                       onChange={(e) => setTrunkForm({...trunkForm, name: e.target.value})}
                       placeholder="z.B. Plusnet Hauptanschluss"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       required
                     />
                   </div>
@@ -518,24 +518,24 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                   {trunkForm.auth_mode === 'registration' && (
                     <>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username *</label>
                         <input
                           type="text"
                           value={trunkForm.username}
                           onChange={(e) => setTrunkForm({...trunkForm, username: e.target.value})}
                           placeholder="SIP-Username"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Passwort *</label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Passwort *</label>
                         <input
                           type="password"
                           value={trunkForm.password}
                           onChange={(e) => setTrunkForm({...trunkForm, password: e.target.value})}
                           placeholder="SIP-Passwort"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                           required
                         />
                       </div>
@@ -543,24 +543,24 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                   )}
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Rufnummernblock</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rufnummernblock</label>
                     <input
                       type="text"
                       value={trunkForm.number_block}
                       onChange={(e) => setTrunkForm({...trunkForm, number_block: e.target.value})}
                       placeholder="z.B. +492216698"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Caller-ID</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Caller-ID</label>
                     <input
                       type="text"
                       value={trunkForm.caller_id}
                       onChange={(e) => setTrunkForm({...trunkForm, caller_id: e.target.value})}
                       placeholder="Ausgehende Rufnummer"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                 </div>
@@ -573,14 +573,14 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                     onChange={(e) => setTrunkForm({...trunkForm, enabled: e.target.checked})}
                     className="w-4 h-4 text-primary-500 rounded"
                   />
-                  <label htmlFor="trunk-enabled" className="text-sm text-gray-700">Leitung aktiviert</label>
+                  <label htmlFor="trunk-enabled" className="text-sm text-gray-700 dark:text-gray-300">Leitung aktiviert</label>
                 </div>
 
                 <div className="flex gap-3 pt-4">
                   <button type="submit" className="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
                     {editingTrunk ? 'Speichern' : 'Anlegen'}
                   </button>
-                  <button type="button" onClick={handleTrunkCancel} className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                  <button type="button" onClick={handleTrunkCancel} className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
                     Abbrechen
                   </button>
                 </div>
@@ -588,57 +588,57 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
             </div>
           )}
 
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b">
-              <h2 className="text-lg font-semibold">Leitungen ({trunks.length})</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Leitungen ({trunks.length})</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 dark:bg-gray-700">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Provider</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Server</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Auth-Modus</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aktionen</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Provider</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Server</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Auth-Modus</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Aktionen</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {trunks.map((trunk) => (
-                    <tr key={trunk.id} className="hover:bg-gray-50">
+                    <tr key={trunk.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <Server className="w-4 h-4 text-gray-400" />
-                          <span className="font-medium">{trunk.name}</span>
+                          <Server className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                          <span className="font-medium text-gray-900 dark:text-gray-100">{trunk.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">{providerLabel(trunk.provider, trunk.sip_server)}</td>
+                      <td className="px-6 py-4 text-gray-900 dark:text-gray-100">{providerLabel(trunk.provider, trunk.sip_server)}</td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-1 bg-gray-100 rounded text-sm">{trunk.sip_server}</span>
+                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded text-sm">{trunk.sip_server}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded text-sm ${trunk.auth_mode === 'registration' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
+                        <span className={`px-2 py-1 rounded text-sm ${trunk.auth_mode === 'registration' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' : 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400'}`}>
                           {trunk.auth_mode === 'registration' ? 'Registrierung' : 'Fix-IP'}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         {trunk.enabled ? (
-                          <span className="flex items-center gap-1 text-green-600">
+                          <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
                             <Phone className="w-4 h-4" /> Aktiv
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1 text-gray-400">
+                          <span className="flex items-center gap-1 text-gray-400 dark:text-gray-500">
                             <PhoneOff className="w-4 h-4" /> Deaktiviert
                           </span>
                         )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
-                          <button onClick={() => handleTrunkEdit(trunk)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
+                          <button onClick={() => handleTrunkEdit(trunk)} className="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg">
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handleTrunkDelete(trunk)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                          <button onClick={() => handleTrunkDelete(trunk)} className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -647,7 +647,7 @@ export default function ExtensionsPage({ mode }: ExtensionsPageProps) {
                   ))}
                   {trunks.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                      <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                         Keine Leitungen konfiguriert. Klicken Sie auf "Neue Leitung" um eine anzulegen.
                       </td>
                     </tr>
