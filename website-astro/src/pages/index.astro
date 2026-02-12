@@ -2,7 +2,55 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="GonoPBX - Moderne Open-Source Telefonanlage">
+<Layout title="GonoPBX - Moderne Open-Source Telefonanlage" description="GonoPBX ist eine moderne, webbasierte Verwaltungsoberflaeche fuer Asterisk PBX. Open Source, Docker-basiert, mit SIP-Trunk-Verwaltung, Voicemail und Echtzeit-Dashboard.">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "GonoPBX",
+        "applicationCategory": "CommunicationApplication",
+        "operatingSystem": "Linux",
+        "description": "Moderne Open-Source Web-GUI fuer Asterisk PBX. Nebenstellen, SIP-Trunks, Rufumleitungen, Voicemail und Echtzeit-Dashboard.",
+        "url": "https://gonopbx.de",
+        "image": "https://gonopbx.de/dashboard1.png",
+        "screenshot": "https://gonopbx.de/dashboard1.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Norbert Hengsteler",
+          "url": "https://github.com/ankaios76"
+        },
+        "license": "https://opensource.org/licenses/MIT",
+        "codeRepository": "https://github.com/ankaios76/gonopbx",
+        "programmingLanguage": ["Python", "TypeScript"],
+        "softwareRequirements": "Docker, Docker Compose"
+      },
+      {
+        "@type": "WebSite",
+        "name": "GonoPBX",
+        "url": "https://gonopbx.de",
+        "inLanguage": "de"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Startseite",
+            "item": "https://gonopbx.de/"
+          }
+        ]
+      }
+    ]
+  })} />
 
   <!-- Navigation -->
   <nav class="nav">
@@ -42,17 +90,17 @@ import Layout from '../layouts/Layout.astro';
         schreib mir gerne. Ich setze ihn um, sobald ich die Zeit daf&uuml;r finde.
       </p>
       <div class="hero-buttons">
-        <a href="#installation" class="btn-primary">
+        <a href="https://demo.gonopbx.de" target="_blank" rel="noopener" class="btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Live-Demo testen
+        </a>
+        <a href="#installation" class="btn-secondary">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Jetzt installieren
         </a>
-        <a href="#features" class="btn-secondary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Mehr erfahren
-        </a>
       </div>
       <div class="hero-screenshot">
-        <img src="/dashboard.png" alt="GonoPBX Dashboard" />
+        <img src="/dashboard1.png" alt="GonoPBX Dashboard" />
       </div>
     </div>
   </section>
@@ -66,58 +114,82 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="features-grid">
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#ebf8ff;">&#128222;</div>
           <h3>Nebenstellen</h3>
           <p>SIP-Accounts anlegen, bearbeiten und l&ouml;schen. Jede Nebenstelle mit eigener Caller-ID, Kontext und Aktivierungsstatus.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#f0fff4;">&#128268;</div>
           <h3>SIP-Trunks</h3>
           <p>Verbindung zu SIP-Providern per Registrierung oder IP-Authentifizierung. Unterst&uuml;tzung f&uuml;r Plusnet IPfonie und weitere Anbieter.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#faf5ff;">&#128224;</div>
           <h3>Rufnummern-Zuordnung</h3>
           <p>Eingehende Rufnummern (DIDs) flexibel Nebenstellen zuordnen. Nummernblock-Verwaltung pro Trunk.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#fffaf0;">&#128260;</div>
           <h3>Rufumleitungen</h3>
           <p>Sofort-, Besetzt- und Nichtmelden-Weiterleitungen pro Nebenstelle. Aktivierung per Toggle.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#fff5f5;">&#128233;</div>
           <h3>Voicemail</h3>
           <p>Voicemail-Mailbox pro Nebenstelle mit PIN, E-Mail-Benachrichtigung und integriertem Audio-Player.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#f0fff4;">&#128202;</div>
           <h3>Anrufverlauf</h3>
           <p>Vollst&auml;ndiger Call Detail Record mit Filter nach Quelle, Ziel und Status. Statistiken auf einen Blick.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#ebf8ff;">&#128272;</div>
           <h3>Benutzer &amp; Rollen</h3>
           <p>Mehrbenutzersystem mit Admin- und User-Rollen. JWT-basierte Authentifizierung.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#faf5ff;">&#128225;</div>
           <h3>Live-Dashboard</h3>
           <p>Echtzeit-&Uuml;bersicht: Asterisk-Status, registrierte Endpunkte, aktive Leitungen und letzte Anrufe per WebSocket.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fade-in">
           <div class="feature-icon" style="background:#fffaf0;">&#128051;</div>
           <h3>Docker Deployment</h3>
           <p>Komplettes System per <code>docker compose up</code> in Minuten einsatzbereit. Automatischer Installer inklusive.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="9">0</div>
+          <div class="stat-label">Releases</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="25">0</div>
+          <div class="stat-label">Features</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="8">0</div>
+          <div class="stat-label">Technologien</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="100">0</div>
+          <div class="stat-label">% Open Source</div>
         </div>
       </div>
     </div>
@@ -128,96 +200,114 @@ import Layout from '../layouts/Layout.astro';
     <div class="container">
       <div class="section-header">
         <h2>Ein Blick ins System</h2>
-        <p>Sieh dir GonoPBX in Aktion an &ndash; von der Nebenstellen-Verwaltung bis zum Anrufverlauf.</p>
+        <p>Sieh dir GonoPBX in Aktion an &ndash; vom Live-Dashboard bis zur Server-Verwaltung.</p>
       </div>
 
-      <div class="screenshot-item">
+      <div class="screenshot-item fade-in">
         <div class="screenshot-text">
-          <h3>Extensions verwalten</h3>
+          <h3>Live-Dashboard</h3>
           <p>
-            Alle Nebenstellen und SIP-Trunks auf einen Blick. Neue Extensions
-            in Sekunden anlegen, mit automatischer PJSIP-Konfiguration.
+            Alles Wichtige auf einen Blick: Pers&ouml;nliche Begr&uuml;&szlig;ung, Systemstatus,
+            registrierte Endpunkte und die letzten Anrufe &ndash; live per WebSocket aktualisiert.
           </p>
           <ul>
-            <li>Nebenstellen mit Caller-ID und Kontext</li>
-            <li>Live-Status (registriert/offline)</li>
-            <li>SIP-Trunks mit Provider-Vorlagen</li>
+            <li>Asterisk-Status und Versionsnummer</li>
+            <li>Leitungen und Nebenstellen mit Rufnummern</li>
+            <li>Letzte ein- und ausgehende Anrufe</li>
           </ul>
         </div>
         <div class="screenshot-img">
-          <img src="/extensions.png" alt="Extensions verwalten" />
+          <img src="/dashboard1.png" alt="GonoPBX Live-Dashboard" />
         </div>
       </div>
 
-      <div class="screenshot-item reverse">
+      <div class="screenshot-item reverse fade-in">
         <div class="screenshot-text">
-          <h3>Nebenstellen-Detail</h3>
+          <h3>Zentrale Einstellungen</h3>
           <p>
-            Pro Nebenstelle: Rufnummern zuordnen, Rufumleitungen konfigurieren
-            und Voicemail verwalten &ndash; alles auf einer Seite.
+            Alle Konfigurationsbereiche &uuml;bersichtlich in einem Tab-Layout:
+            Nebenstellen, Leitungen, Benutzer, E-Mail, Audio, Sicherheit und Server.
           </p>
           <ul>
-            <li>Eingehende &amp; ausgehende Rufnummern</li>
-            <li>Sofort-, Besetzt- &amp; Nichtmelden-Umleitung</li>
-            <li>Voicemail mit PIN und E-Mail</li>
+            <li>Nebenstellen mit Status und Caller-ID</li>
+            <li>Neue Nebenstellen in Sekunden anlegen</li>
+            <li>Automatische PJSIP-Konfiguration</li>
           </ul>
         </div>
         <div class="screenshot-img">
-          <img src="/extensions_detail.png" alt="Nebenstellen Detail" />
+          <img src="/settings.png" alt="Einstellungen &Uuml;bersicht" />
         </div>
       </div>
 
-      <div class="screenshot-item">
-        <div class="screenshot-text">
-          <h3>SIP-Trunk Konfiguration</h3>
-          <p>
-            SIP-Trunks in wenigen Klicks einrichten. Vorkonfigurierte
-            Provider-Templates f&uuml;r Plusnet IPfonie Basic, Extended und Connect.
-          </p>
-          <ul>
-            <li>Registrierung oder IP-Authentifizierung</li>
-            <li>Rufnummernblock-Verwaltung</li>
-            <li>Automatische PJSIP-Generierung</li>
-          </ul>
-        </div>
-        <div class="screenshot-img">
-          <img src="/extensions_siptrunk.png" alt="SIP-Trunk Verwaltung" />
-        </div>
-      </div>
-
-      <div class="screenshot-item reverse">
-        <div class="screenshot-text">
-          <h3>Anrufverlauf &amp; Statistiken</h3>
-          <p>
-            Vollst&auml;ndige Anrufhistorie mit Filterm&ouml;glichkeiten. Statistiken zu
-            Gesamt-, Angenommenen und Verpassten Anrufen auf einen Blick.
-          </p>
-          <ul>
-            <li>Filter nach Quelle, Ziel und Status</li>
-            <li>Anrufstatistiken mit Durchschnittsdauer</li>
-            <li>Ein- und ausgehende Anrufe</li>
-          </ul>
-        </div>
-        <div class="screenshot-img">
-          <img src="/anrufverlauf.png" alt="Anrufverlauf" />
-        </div>
-      </div>
-
-      <div class="screenshot-item">
+      <div class="screenshot-item fade-in">
         <div class="screenshot-text">
           <h3>Benutzerverwaltung</h3>
           <p>
-            Mehrbenutzer-System mit Rollenverwaltung. Administratoren und
-            normale Benutzer mit unterschiedlichen Berechtigungen.
+            Neue Benutzer mit Profilbild, Rolle und Nebenstellen-Zuordnung anlegen.
+            Zugangsdaten werden automatisch per E-Mail versendet.
           </p>
           <ul>
             <li>Admin- und User-Rollen</li>
-            <li>Sichere JWT-Authentifizierung</li>
-            <li>Benutzer anlegen und verwalten</li>
+            <li>Profilbild-Upload und Nebenstellen-Zuweisung</li>
+            <li>Willkommens-E-Mail mit Zugangsdaten</li>
           </ul>
         </div>
         <div class="screenshot-img">
-          <img src="/benutzer.png" alt="Benutzerverwaltung" />
+          <img src="/settings_newuser.png" alt="Neuen Benutzer anlegen" />
+        </div>
+      </div>
+
+      <div class="screenshot-item reverse fade-in">
+        <div class="screenshot-text">
+          <h3>E-Mail &amp; Audio</h3>
+          <p>
+            SMTP-Server f&uuml;r Voicemail-Benachrichtigungen konfigurieren und
+            Audio-Codecs global festlegen &ndash; einzelne Nebenstellen k&ouml;nnen die Einstellung &uuml;berschreiben.
+          </p>
+          <ul>
+            <li>SMTP mit TLS und Test-E-Mail-Versand</li>
+            <li>Codecs: G.711, G.722, Opus, G.729, GSM</li>
+            <li>Globale und pro-Nebenstelle Codec-Auswahl</li>
+          </ul>
+        </div>
+        <div class="screenshot-img">
+          <img src="/settings_email.png" alt="E-Mail-Konfiguration" />
+        </div>
+      </div>
+
+      <div class="screenshot-item fade-in">
+        <div class="screenshot-text">
+          <h3>Sicherheit</h3>
+          <p>
+            IP-Whitelist f&uuml;r SIP-Registrierungen, Pr&uuml;fung schwacher Passw&ouml;rter
+            und integriertes Fail2Ban-Management &ndash; alles in einer &Uuml;bersicht.
+          </p>
+          <ul>
+            <li>IP-Whitelist mit CIDR-Unterst&uuml;tzung</li>
+            <li>SIP-Passwort-St&auml;rkepr&uuml;fung</li>
+            <li>Fail2Ban: Jails, aktive Bans und Entbannen per Klick</li>
+          </ul>
+        </div>
+        <div class="screenshot-img">
+          <img src="/settings_security.png" alt="Sicherheitseinstellungen" />
+        </div>
+      </div>
+
+      <div class="screenshot-item reverse fade-in">
+        <div class="screenshot-text">
+          <h3>Server-Verwaltung</h3>
+          <p>
+            Systemstatus mit Versionsnummer, Uptime, Festplatten- und RAM-Auslastung.
+            Updates pr&uuml;fen und installieren &ndash; direkt aus der Weboberfl&auml;che.
+          </p>
+          <ul>
+            <li>Version, Uptime und Ressourcen-Monitor</li>
+            <li>Ein-Klick-Updates aus dem Web-GUI</li>
+            <li>Server-Neustart &uuml;ber die Oberfl&auml;che</li>
+          </ul>
+        </div>
+        <div class="screenshot-img">
+          <img src="/settings_server.png" alt="Server-Verwaltung" />
         </div>
       </div>
     </div>
@@ -232,52 +322,124 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="tech-grid">
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#9734;</div>
           <h4>Asterisk 20 LTS</h4>
           <p>Bew&auml;hrtes Open-Source PBX-System mit PJSIP</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#9889;</div>
           <h4>FastAPI</h4>
           <p>Modernes Python-Backend mit automatischer API-Dokumentation</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#9883;</div>
           <h4>React &amp; TypeScript</h4>
           <p>Schnelles, typsicheres Frontend mit Vite und Tailwind CSS</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#128051;</div>
           <h4>Docker Compose</h4>
           <p>Ein Befehl, alles l&auml;uft: Asterisk, Backend, Frontend, Datenbank</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#128024;</div>
           <h4>PostgreSQL</h4>
           <p>Zuverl&auml;ssige Datenbank f&uuml;r Konfiguration und Anrufhistorie</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#128274;</div>
           <h4>JWT Auth</h4>
           <p>Sichere Authentifizierung mit JSON Web Tokens und bcrypt</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#128268;</div>
           <h4>WebSocket</h4>
           <p>Echtzeit-Updates f&uuml;r Anrufstatus und Asterisk-Events</p>
         </div>
 
-        <div class="tech-card">
+        <div class="tech-card fade-in">
           <div class="tech-logo">&#128274;</div>
           <h4>Let's Encrypt</h4>
           <p>Automatische SSL-Zertifikate f&uuml;r sicheren HTTPS-Zugriff</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Home Assistant Integration -->
+  <section class="ha-section" id="homeassistant">
+    <div class="container">
+      <div class="ha-banner fade-in">
+        <div class="ha-content">
+          <div class="ha-logo-row">
+            <img src="/homeassistant-logo.png" alt="Home Assistant Logo" class="ha-logo" />
+            <span class="ha-works-badge">Works with Home Assistant</span>
+          </div>
+          <h2>Smart Home trifft Telefonanlage</h2>
+          <p>
+            Integriere GonoPBX in dein Home Assistant &ndash; Anrufstatus als Sensor,
+            Echtzeit-Events f&uuml;r Automationen und Anrufe direkt aus dem HA-Dashboard starten.
+          </p>
+          <ul class="ha-features">
+            <li>Nebenstellen &amp; Trunks als Binary Sensors</li>
+            <li>Aktive Anrufe, Anrufverlauf &amp; Voicemail als Sensoren</li>
+            <li>Echtzeit-Events per MQTT (Anruf gestartet, beendet, verpasst)</li>
+            <li>Services: Anruf starten &amp; Rufumleitung schalten</li>
+          </ul>
+          <div class="ha-buttons">
+            <a href="/homeassistant" class="btn-ha">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Anleitung lesen
+            </a>
+            <a href="https://github.com/ankaios76/gonopbx-homeassistant" target="_blank" rel="noopener" class="btn-ha-secondary">
+              GitHub Repository
+            </a>
+          </div>
+        </div>
+        <div class="ha-visual">
+          <div class="ha-entity-preview">
+            <div class="ha-entity-header">
+              <img src="/homeassistant-logo.png" alt="" class="ha-entity-icon" />
+              <span>GonoPBX Entities</span>
+            </div>
+            <div class="ha-entity-row">
+              <span class="ha-dot ha-dot-green"></span>
+              <span class="ha-entity-name">GonoPBX System</span>
+              <span class="ha-entity-state ha-state-on">Connected</span>
+            </div>
+            <div class="ha-entity-row">
+              <span class="ha-dot ha-dot-green"></span>
+              <span class="ha-entity-name">Ext 1001 (B&uuml;ro)</span>
+              <span class="ha-entity-state ha-state-on">Online</span>
+            </div>
+            <div class="ha-entity-row">
+              <span class="ha-dot ha-dot-green"></span>
+              <span class="ha-entity-name">Trunk Plusnet</span>
+              <span class="ha-entity-state ha-state-on">Registered</span>
+            </div>
+            <div class="ha-entity-row">
+              <span class="ha-dot ha-dot-blue"></span>
+              <span class="ha-entity-name">Active Calls</span>
+              <span class="ha-entity-state">1</span>
+            </div>
+            <div class="ha-entity-row">
+              <span class="ha-dot ha-dot-blue"></span>
+              <span class="ha-entity-name">Calls Today</span>
+              <span class="ha-entity-state">12</span>
+            </div>
+            <div class="ha-entity-row">
+              <span class="ha-dot ha-dot-orange"></span>
+              <span class="ha-entity-name">Voicemail Unread</span>
+              <span class="ha-entity-state">3</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -291,8 +453,50 @@ import Layout from '../layouts/Layout.astro';
         <p>GonoPBX l&auml;sst sich in wenigen Minuten auf jedem Linux-Server installieren.</p>
       </div>
 
+      <!-- Supported platforms -->
+      <div class="platform-grid">
+        <div class="platform-item fade-in">
+          <div class="platform-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div>
+            <strong>VPS &amp; Cloud</strong>
+            <span>Hetzner, Netcup, DigitalOcean, AWS, Azure</span>
+          </div>
+        </div>
+        <div class="platform-item fade-in">
+          <div class="platform-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="12" cy="12" r="1"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg>
+          </div>
+          <div>
+            <strong>Raspberry Pi</strong>
+            <span>Pi 4 &amp; Pi 5 (ARM64) &ndash; perfekt f&uuml;rs Homelab</span>
+          </div>
+        </div>
+        <div class="platform-item fade-in">
+          <div class="platform-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <div>
+            <strong>Dedizierter Server</strong>
+            <span>Bare-Metal mit Ubuntu, Debian oder jeder Linux-Distro</span>
+          </div>
+        </div>
+        <div class="platform-item fade-in">
+          <div class="platform-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/></svg>
+          </div>
+          <div>
+            <strong>Proxmox &amp; VM</strong>
+            <span>LXC-Container oder VM &ndash; ideal f&uuml;r Homelabs</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="platform-note">Voraussetzungen: Linux (x86_64 oder ARM64), Docker &amp; Docker Compose. Mindestens 1 GB RAM und 5 GB Speicher.</p>
+
       <div class="install-steps">
-        <div class="install-step">
+        <div class="install-step fade-in">
           <div class="step-number">1</div>
           <div class="step-content">
             <h4>Repository klonen</h4>
@@ -305,7 +509,7 @@ import Layout from '../layouts/Layout.astro';
           </div>
         </div>
 
-        <div class="install-step">
+        <div class="install-step fade-in">
           <div class="step-number">2</div>
           <div class="step-content">
             <h4>Installer starten</h4>
@@ -318,14 +522,14 @@ import Layout from '../layouts/Layout.astro';
           </div>
         </div>
 
-        <div class="install-step">
+        <div class="install-step fade-in">
           <div class="step-number">3</div>
           <div class="step-content">
             <h4>Fertig!</h4>
             <p>GonoPBX startet automatisch. &Ouml;ffne deinen Browser und melde dich mit den generierten Admin-Zugangsdaten an.</p>
             <div class="code-block">
               <span class="comment"># Zugriff &uuml;ber Browser</span><br/>
-              https://ihre-server-ip:3000
+              https://deine-server-ip:3000
             </div>
           </div>
         </div>
@@ -362,18 +566,92 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </footer>
 
-  <!-- Mobile nav toggle script -->
+  <!-- Lightbox -->
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-close" aria-label="Schlie&szlig;en">&times;</button>
+    <img src="" alt="" />
+  </div>
+
+  <!-- Scripts -->
   <script>
+    // Mobile nav toggle
     document.getElementById('navToggle')?.addEventListener('click', () => {
       document.getElementById('navLinks')?.classList.toggle('open');
     });
-
-    // Close nav on link click
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', () => {
         document.getElementById('navLinks')?.classList.remove('open');
       });
     });
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox?.querySelector('img');
+    document.querySelectorAll('.screenshot-img img, .hero-screenshot img').forEach(img => {
+      img.addEventListener('click', () => {
+        if (lightboxImg && lightbox) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+    lightbox?.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Scroll animations (IntersectionObserver)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Stagger animation for grid items
+          const parent = entry.target.parentElement;
+          const siblings = parent ? Array.from(parent.querySelectorAll('.fade-in')) : [];
+          const i = siblings.indexOf(entry.target);
+          const delay = i >= 0 ? i * 80 : 0;
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Animated counters
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counters = entry.target.querySelectorAll('.stat-number');
+          counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target') || '0');
+            const duration = 1500;
+            const start = performance.now();
+            const animate = (now) => {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              counter.textContent = Math.round(target * eased).toString();
+              if (progress < 1) requestAnimationFrame(animate);
+            };
+            requestAnimationFrame(animate);
+          });
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsGrid = document.querySelector('.stats-grid');
+    if (statsGrid) counterObserver.observe(statsGrid);
   </script>
 
 </Layout>

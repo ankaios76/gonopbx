@@ -2,9 +2,18 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  noindex?: boolean;
 }
 
-const { title, description = 'GonoPBX - Die moderne Open-Source Telefonanlage mit Web-GUI. Basierend auf Asterisk, Docker und React.' } = Astro.props;
+const {
+  title,
+  description = 'GonoPBX - Die moderne Open-Source Telefonanlage mit Web-GUI. Basierend auf Asterisk, Docker und React.',
+  ogImage = 'https://gonopbx.de/dashboard1.png',
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://gonopbx.de');
 ---
 
 <!doctype html>
@@ -13,7 +22,26 @@ const { title, description = 'GonoPBX - Die moderne Open-Source Telefonanlage mi
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="author" content="Norbert Hengsteler" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonicalURL.href} />
     <link rel="icon" type="image/png" href="/logo.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="GonoPBX" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <title>{title}</title>
     <script defer src="https://analytics.gonopbx.de/script.js" data-website-id="cc8fa162-1aef-4c89-8e13-4fdbfa9bc6f7"></script>
     <style is:global>
@@ -257,6 +285,7 @@ const { title, description = 'GonoPBX - Die moderne Open-Source Telefonanlage mi
         overflow: hidden;
         box-shadow: 0 24px 64px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08);
         border: 1px solid #e2e8f0;
+        cursor: zoom-in;
       }
 
       @media (max-width: 768px) {
@@ -508,6 +537,76 @@ const { title, description = 'GonoPBX - Die moderne Open-Source Telefonanlage mi
         font-size: 0.95rem;
       }
 
+      .platform-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .platform-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 12px;
+        padding: 16px 18px;
+      }
+
+      .platform-icon {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        background: rgba(49,130,206,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #63b3ed;
+      }
+
+      .platform-icon svg {
+        stroke: #63b3ed;
+      }
+
+      .platform-item strong {
+        display: block;
+        color: #e2e8f0;
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+      }
+
+      .platform-item span {
+        font-size: 0.82rem;
+        color: #a0aec0;
+        line-height: 1.4;
+      }
+
+      .platform-note {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #718096;
+        margin-bottom: 48px;
+        padding: 12px 20px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+
+      @media (max-width: 768px) {
+        .platform-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .platform-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .code-block {
         background: #2d3748;
         border-radius: 8px;
@@ -653,6 +752,464 @@ const { title, description = 'GonoPBX - Die moderne Open-Source Telefonanlage mi
         .release-notes { padding: 48px 0; }
         .release-notes .section-header h1 { font-size: 1.8rem; }
         .release-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      }
+
+      /* ====== STATS ====== */
+      .stats {
+        padding: 60px 0;
+        background: #1a202c;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        text-align: center;
+      }
+
+      .stat-item {
+        padding: 24px;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .stat-label {
+        font-size: 0.95rem;
+        color: #a0aec0;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+        .stat-number { font-size: 2.2rem; }
+      }
+
+      /* ====== LIGHTBOX ====== */
+      .screenshot-img {
+        cursor: zoom-in;
+      }
+
+      .lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        cursor: zoom-out;
+      }
+
+      .lightbox-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .lightbox-overlay img {
+        max-width: 92%;
+        max-height: 92vh;
+        border-radius: 12px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+        transform: scale(0.9);
+        transition: transform 0.3s;
+      }
+
+      .lightbox-overlay.active img {
+        transform: scale(1);
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 28px;
+        color: #fff;
+        font-size: 2rem;
+        cursor: pointer;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        transition: background 0.2s;
+        border: none;
+      }
+
+      .lightbox-close:hover {
+        background: rgba(255,255,255,0.25);
+      }
+
+      /* ====== SCROLL ANIMATIONS ====== */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ====== HOME ASSISTANT SECTION ====== */
+      .ha-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8f4f8 50%, #f0f9ff 100%);
+      }
+
+      .ha-banner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+
+      .ha-logo-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .ha-logo {
+        height: 48px;
+        width: auto;
+      }
+
+      .ha-works-badge {
+        display: inline-block;
+        background: #18bcf2;
+        color: #fff;
+        padding: 6px 16px;
+        border-radius: 24px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .ha-content h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+        color: #1a202c;
+      }
+
+      .ha-content > p {
+        font-size: 1.1rem;
+        color: #4a5568;
+        line-height: 1.7;
+        margin-bottom: 20px;
+      }
+
+      .ha-features {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 28px;
+      }
+
+      .ha-features li {
+        padding: 6px 0;
+        color: #4a5568;
+        font-size: 0.95rem;
+      }
+
+      .ha-features li::before {
+        content: '\2713';
+        color: #18bcf2;
+        font-weight: 700;
+        margin-right: 10px;
+      }
+
+      .ha-buttons {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .btn-ha {
+        background: #18bcf2;
+        color: #fff;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-ha:hover {
+        background: #0da8db;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(24,188,242,0.3);
+      }
+
+      .btn-ha-secondary {
+        background: #fff;
+        color: #4a5568;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: 2px solid #e2e8f0;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-ha-secondary:hover {
+        border-color: #18bcf2;
+        color: #18bcf2;
+      }
+
+      /* HA Entity Preview Card */
+      .ha-visual {
+        display: flex;
+        justify-content: center;
+      }
+
+      .ha-entity-preview {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .ha-entity-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        background: #f7fafc;
+        border-bottom: 1px solid #e2e8f0;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #2d3748;
+      }
+
+      .ha-entity-icon {
+        height: 24px;
+        width: auto;
+      }
+
+      .ha-entity-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 0.9rem;
+      }
+
+      .ha-entity-row:last-child {
+        border-bottom: none;
+      }
+
+      .ha-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .ha-dot-green { background: #38a169; }
+      .ha-dot-blue { background: #3182ce; }
+      .ha-dot-orange { background: #dd6b20; }
+
+      .ha-entity-name {
+        flex: 1;
+        color: #4a5568;
+      }
+
+      .ha-entity-state {
+        font-weight: 600;
+        color: #718096;
+        font-size: 0.85rem;
+      }
+
+      .ha-state-on {
+        color: #38a169;
+      }
+
+      @media (max-width: 768px) {
+        .ha-banner {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .ha-content h2 { font-size: 1.6rem; }
+        .ha-entity-preview { max-width: 100%; }
+      }
+
+      /* ====== HA GUIDE PAGE ====== */
+      .ha-guide {
+        padding: 80px 0;
+      }
+
+      .ha-guide .section-header h1 {
+        font-size: 2.4rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
+
+      .ha-guide-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .ha-guide-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 48px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e2e8f0;
+        color: #1a202c;
+      }
+
+      .ha-guide-content h2:first-child {
+        margin-top: 0;
+      }
+
+      .ha-guide-content h3 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 32px 0 12px;
+        color: #2d3748;
+      }
+
+      .ha-guide-content p {
+        font-size: 1rem;
+        color: #4a5568;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+
+      .ha-guide-content ul, .ha-guide-content ol {
+        margin-bottom: 16px;
+        padding-left: 24px;
+      }
+
+      .ha-guide-content li {
+        padding: 4px 0;
+        color: #4a5568;
+        line-height: 1.6;
+      }
+
+      .ha-guide-content code {
+        background: #edf2f7;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        color: #c53030;
+      }
+
+      .ha-guide-content pre {
+        background: #1a202c;
+        border-radius: 10px;
+        padding: 20px 24px;
+        margin: 16px 0 24px;
+        overflow-x: auto;
+        border: 1px solid #2d3748;
+      }
+
+      .ha-guide-content pre code {
+        background: none;
+        color: #e2e8f0;
+        padding: 0;
+        font-size: 0.88rem;
+        line-height: 1.6;
+      }
+
+      .ha-guide-content .guide-comment {
+        color: #718096;
+      }
+
+      .ha-step-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin: 24px 0;
+      }
+
+      .ha-step-card {
+        padding: 20px 24px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #f7fafc;
+      }
+
+      .ha-step-card strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #1a202c;
+      }
+
+      .ha-step-card p {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+      }
+
+      .ha-guide-content .info-box {
+        background: #ebf8ff;
+        border: 1px solid #bee3f8;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin: 20px 0;
+        font-size: 0.95rem;
+        color: #2c5282;
+        line-height: 1.6;
+      }
+
+      .ha-guide-content .info-box strong {
+        color: #2b6cb0;
+      }
+
+      .ha-guide-content .automation-example {
+        background: #fffaf0;
+        border: 1px solid #feebc8;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin: 16px 0 24px;
+      }
+
+      .ha-guide-content .automation-example h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #c05621;
+      }
+
+      .ha-guide-content .automation-example p {
+        font-size: 0.9rem;
+        color: #744210;
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 768px) {
+        .ha-guide { padding: 48px 0; }
+        .ha-guide .section-header h1 { font-size: 1.8rem; }
+        .ha-step-grid { grid-template-columns: 1fr; }
       }
 
       /* ====== BLOG (index generated by build.py, CSS here for Astro pages linking to /blog/) ====== */
