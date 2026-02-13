@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Wie der Name GonoPBX entstand - GonoPBX Blog" description="Woher kommt der Name GonoPBX? Die Geschichte hinter dem ungewöhnlichen Projektnamen.">
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/logo.png" alt="GonoPBX Logo" />
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#screenshots">Screenshots</a></li>
+        <li><a href="/#techstack">Technologie</a></li>
+        <li><a href="/#installation">Installation</a></li>
+        <li><a href="/release-notes">Release Notes</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="https://github.com/ankaios76/gonopbx" class="nav-cta">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Blog Article -->
+  <section class="blog-article">
+    <div class="container">
+      <a href="/blog/" class="blog-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Zur&uuml;ck zum Blog
+      </a>
+
+      <div class="blog-article-header">
+        <div class="blog-card-meta" style="justify-content:center;">
+          <span class="blog-card-tag">Hintergrund</span>
+          <span>9. Februar 2026</span>
+        </div>
+        <h1>Wie der Name &bdquo;GonoPBX&ldquo; entstand</h1>
+      </div>
+
+      <div class="blog-article-content">
+
+        <p>
+          &bdquo;GonoPBX? Was soll das denn hei&szlig;en?&ldquo; &ndash; das ist meistens die erste Frage,
+          wenn jemand den Namen h&ouml;rt. Klingt nicht gerade nach einem typischen Software-Projekt.
+          Und genau das war auch nicht der Plan. Die Geschichte ist eigentlich ganz einfach.
+        </p>
+
+        <h2>PBX &ndash; der offensichtliche Teil</h2>
+
+        <p>
+          <strong>PBX</strong> steht f&uuml;r <em>Private Branch Exchange</em> &ndash; also eine
+          private Telefonanlage. Das ist der Fachbegriff f&uuml;r das, was GonoPBX im Kern ist:
+          eine Software, die Telefonate vermittelt, Nebenstellen verwaltet und Rufnummern zuordnet.
+          Der Teil des Namens war schnell klar.
+        </p>
+
+        <h2>Gono &ndash; die pers&ouml;nliche Note</h2>
+
+        <p>
+          <strong>Gono</strong> hat mit meinem Vornamen zu tun. Ich hei&szlig;e Norbert &ndash;
+          und wer mich kennt, nennt mich <strong>Nobby</strong>. Das ist ein Spitzname,
+          der mich seit Jahren begleitet. Irgendwann habe ich mir die Domain
+          <strong>gonobby.de</strong> gesichert &ndash; einfach als pers&ouml;nliche Domain,
+          ohne konkreten Plan.
+        </p>
+
+        <p>
+          Als ich dann angefangen habe, an der Telefonanlage zu basteln, brauchte ich einen Namen.
+          Und da lag es nahe: <strong>Go</strong> + <strong>No</strong>bby + <strong>PBX</strong> &ndash;
+          GonoPBX. Kurz, einpr&auml;gsam, und mit einer pers&ouml;nlichen Geschichte dahinter.
+        </p>
+
+        <h2>Kein Marketing-Name</h2>
+
+        <p>
+          GonoPBX ist kein Name, der von einer Branding-Agentur entworfen wurde. Er ist in f&uuml;nf
+          Minuten am K&uuml;chentisch entstanden. Und genau das passt zum Projekt: Es ist ein
+          Freizeitprojekt aus Bremen, kein Startup aus dem Silicon Valley. Der Name darf ruhig
+          ein bisschen unkonventionell sein.
+        </p>
+
+        <p>
+          Au&szlig;erdem hatte <code>gonopbx.de</code> niemand registriert. Das war am Ende
+          vielleicht das beste Argument.
+        </p>
+
+        <div class="blog-info-box">
+          <p>
+            <strong>Fun Fact:</strong> Die Domain <strong>gonobby.de</strong> gibt es immer noch.
+            Und wer wei&szlig; &ndash; vielleicht wird sie irgendwann noch f&uuml;r etwas anderes gebraucht.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="https://github.com/ankaios76/gonopbx">GitHub</a></li>
+        <li><a href="https://demo.gonopbx.de">Live-Demo</a></li>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+      <p>&copy; 2026 Norbert Hengsteler. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('navToggle')?.addEventListener('click', () => {
+      document.getElementById('navLinks')?.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks')?.classList.remove('open');
+      });
+    });
+  </script>
+
+</Layout>

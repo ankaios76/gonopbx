@@ -1,0 +1,160 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Warum ich GonoPBX gestartet habe - GonoPBX Blog" description="Die Geschichte hinter GonoPBX: Warum ein Provider-Mitarbeiter seine eigene Telefonanlagen-Software gebaut hat.">
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/logo.png" alt="GonoPBX Logo" />
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#screenshots">Screenshots</a></li>
+        <li><a href="/#techstack">Technologie</a></li>
+        <li><a href="/#installation">Installation</a></li>
+        <li><a href="/release-notes">Release Notes</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="https://github.com/ankaios76/gonopbx" class="nav-cta">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Blog Article -->
+  <section class="blog-article">
+    <div class="container">
+      <a href="/blog/" class="blog-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Zur&uuml;ck zum Blog
+      </a>
+
+      <div class="blog-article-header">
+        <div class="blog-card-meta" style="justify-content:center;">
+          <span class="blog-card-tag">Hintergrund</span>
+          <span>9. Februar 2026</span>
+        </div>
+        <h1>Warum ich GonoPBX gestartet habe</h1>
+      </div>
+
+      <div class="blog-article-content">
+
+        <p>
+          Ich arbeite bei einem Provider. Jeden Tag sehe ich, wie Kunden an ihren Telefonanlagen
+          verzweifeln. Nicht weil die Technik dahinter so wahnsinnig kompliziert w&auml;re &ndash;
+          sondern weil die Software, die sie bedienen sollen, es unn&ouml;tig schwer macht.
+        </p>
+
+        <h2>Das Problem</h2>
+
+        <p>
+          Die meisten PBX-Oberfl&auml;chen sehen aus, als w&auml;ren sie vor 15 Jahren
+          stehen geblieben. Unz&auml;hlige Men&uuml;punkte, kryptische Fachbegriffe,
+          Einstellungen die kein normaler Mensch jemals braucht &ndash; aber trotzdem prominent
+          angezeigt werden. Um eine Nebenstelle einzurichten, klickt man sich durch f&uuml;nf
+          verschiedene Seiten. Um eine Rufnummer zuzuordnen, braucht man fast schon ein
+          Informatik-Studium.
+        </p>
+
+        <p>
+          Das Ergebnis: Die Leute rufen bei uns im Support an. Nicht weil etwas kaputt ist,
+          sondern weil sie nicht verstehen, was sie einstellen sollen. Und das ist nicht ihre Schuld &ndash;
+          das ist die Schuld der Software.
+        </p>
+
+        <h2>Die Idee</h2>
+
+        <p>
+          Irgendwann habe ich mich gefragt: Warum gibt es eigentlich keine Telefonanlagen-Software,
+          die einfach <strong>verst&auml;ndlich</strong> ist? Eine Oberfl&auml;che, die man &ouml;ffnet
+          und sofort wei&szlig;, was man tun muss. Ohne Handbuch, ohne Schulung.
+        </p>
+
+        <p>
+          Ich wollte etwas bauen, das meine Mutter bedienen k&ouml;nnte. Oder mein Nachbar.
+          Oder ein kleiner Betrieb, der einfach nur telefonieren will und sich nicht mit
+          SIP-Headern und Dialplan-Syntax besch&auml;ftigen m&ouml;chte.
+        </p>
+
+        <h2>Der Ansatz</h2>
+
+        <p>
+          GonoPBX versteckt die Komplexit&auml;t. Unter der Haube l&auml;uft Asterisk &ndash;
+          ein m&auml;chtiges, bew&auml;hrtes Open-Source-PBX-System. Aber die Oberfl&auml;che
+          zeigt nur das, was man wirklich braucht:
+        </p>
+
+        <ul>
+          <li>Nebenstelle anlegen &ndash; Name, Nummer, Passwort, fertig</li>
+          <li>Rufnummer zuordnen &ndash; DID ausw&auml;hlen, Nebenstelle w&auml;hlen, fertig</li>
+          <li>Rufumleitung &ndash; ein Toggle, eine Zielnummer, fertig</li>
+          <li>Voicemail &ndash; aktivieren, PIN setzen, E-Mail eintragen, fertig</li>
+        </ul>
+
+        <p>
+          Keine verschachtelten Men&uuml;s, keine Fachbegriffe wo es nicht sein muss,
+          keine &uuml;berfl&uuml;ssigen Optionen. Und wenn doch mal etwas Technisches
+          n&ouml;tig ist &ndash; wie Codec-Auswahl oder IP-Whitelisting &ndash; dann liegt es
+          in einem eigenen Bereich f&uuml;r Admins.
+        </p>
+
+        <h2>Ein Freizeitprojekt</h2>
+
+        <p>
+          GonoPBX ist kein Startup und kein kommerzielles Produkt. Es ist ein Hobbyprojekt,
+          das ich in meiner Freizeit entwickle. Es w&auml;chst St&uuml;ck f&uuml;r St&uuml;ck,
+          Release f&uuml;r Release. Manchmal kommen in einer Woche drei neue Features dazu,
+          manchmal passiert wochenlang nichts.
+        </p>
+
+        <p>
+          Und genau so soll es sein. Kein Druck, kein Zeitplan &ndash; einfach Spa&szlig;
+          am Bauen von etwas, das ich selbst gerne benutzen m&ouml;chte. Und wenn es anderen
+          auch hilft, umso besser.
+        </p>
+
+        <div class="blog-info-box">
+          <p>
+            <strong>Du hast eine Idee oder einen Vorschlag?</strong>
+            Schreib mir gerne &uuml;ber die <a href="/kontakt" style="color:#2a4365;font-weight:600;">Kontaktseite</a>
+            oder &ouml;ffne ein <a href="https://github.com/ankaios76/gonopbx/issues" style="color:#2a4365;font-weight:600;" target="_blank" rel="noopener">Issue auf GitHub</a>.
+            Ich freue mich &uuml;ber jedes Feedback.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="https://github.com/ankaios76/gonopbx">GitHub</a></li>
+        <li><a href="https://demo.gonopbx.de">Live-Demo</a></li>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+      <p>&copy; 2026 Norbert Hengsteler. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('navToggle')?.addEventListener('click', () => {
+      document.getElementById('navLinks')?.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks')?.classList.remove('open');
+      });
+    });
+  </script>
+
+</Layout>
