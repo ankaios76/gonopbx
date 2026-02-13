@@ -30,7 +30,7 @@
 ---
 
 <p align="center">
-  <img src="https://gonopbx.de/dashboard.png" alt="GonoPBX Dashboard" width="800">
+  <img src="https://gonopbx.de/dashboard1.png" alt="GonoPBX Dashboard" width="800">
 </p>
 
 ## ✨ Features
@@ -38,9 +38,12 @@
 - **📞 Extension Management** – Create, edit, and manage SIP extensions with caller ID, context, and activation status
 - **🔌 SIP Trunk Configuration** – Connect to any SIP provider via registration or IP authentication, with built-in templates for Plusnet IPfonie and support for custom providers
 - **📠 DID Routing** – Flexibly assign incoming phone numbers to extensions with number block management per trunk
+- **📤 Outbound CID Selection** – Choose which assigned DID to use as outbound caller-ID per extension via dropdown
+- **🆔 P-Asserted-Identity (PAI)** – Optional PAI header per extension (e.g. main number of a number block)
 - **🔄 Call Forwarding** – Unconditional, busy, and no-answer forwarding per extension, toggled with one click
 - **📩 Voicemail** – Per-extension voicemail boxes with PIN, email notifications (HTML), configurable ring timeout, and built-in audio player
 - **📧 SMTP Email Configuration** – Configure your mail server for voicemail-to-email delivery, with built-in test email function (Port 465/587 auto-detection)
+- **🏠 Home Assistant Integration** – API-key authentication, MQTT publisher for call events, and click-to-call via originate endpoint
 - **🎵 Music on Hold** – Pre-installed hold music in high-quality g722 format
 - **🎙️ German Voice Prompts** – Built-in German Asterisk sound pack for IVR and voicemail announcements
 - **🔒 IP Whitelist** – Restrict SIP registration to trusted IP addresses and CIDR networks
@@ -52,17 +55,18 @@
 - **🔐 Multi-User & Roles** – Admin and user roles with JWT-based authentication
 - **📡 Real-Time Dashboard** – Live overview via WebSocket: Asterisk status, registered endpoints, active lines, and recent calls
 - **🌙 Dark Mode** – System-wide dark theme with OS preference detection, manual toggle, and localStorage persistence
+- **🔄 One-Click Updates** – Update GonoPBX directly from the web GUI or via command line
 - **🐳 Docker Deployment** – Full system up and running in minutes with `docker compose up`
 
 ## 📸 Screenshots
 
-| Extensions Overview | Extension Detail | SIP Trunk Config |
+| Dashboard | Settings | Security |
 |:---:|:---:|:---:|
-| ![Extensions](https://gonopbx.de/extensions.png) | ![Detail](https://gonopbx.de/extensions_detail.png) | ![Trunk](https://gonopbx.de/extensions_siptrunk.png) |
+| ![Dashboard](https://gonopbx.de/dashboard1.png) | ![Settings](https://gonopbx.de/settings.png) | ![Security](https://gonopbx.de/settings_security.png) |
 
-| Call History | User Management | Live Dashboard |
+| Email Settings | Audio Codecs | Server Management |
 |:---:|:---:|:---:|
-| ![CDR](https://gonopbx.de/anrufverlauf.png) | ![Users](https://gonopbx.de/benutzer.png) | ![Dashboard](https://gonopbx.de/dashboard.png) |
+| ![Email](https://gonopbx.de/settings_email.png) | ![Audio](https://gonopbx.de/settings_audio.png) | ![Server](https://gonopbx.de/settings_server.png) |
 
 ## 🚀 Quick Start
 
@@ -118,7 +122,32 @@ gonopbx/
 └── CHANGELOG.md        # Version history
 ```
 
+## 🔄 Update
+
+### Automatic (via Web GUI)
+
+Go to **Settings → Server → Update** and click **"Update installieren"**. The system will pull the latest version, rebuild containers, and restart automatically.
+
+### Manual
+
+```bash
+cd /root/asterisk-pbx-gui
+git pull origin main
+docker compose up -d --build
+```
+
+Database migrations run automatically on startup — no manual steps required.
+
 ## 📋 Changelog
+
+### v1.6.0 (2026-02-13)
+
+**New Features:**
+- **Outbound CID Selection** – Choose which assigned DID to use as outbound caller-ID per extension (dropdown in extension detail)
+- **P-Asserted-Identity (PAI)** – Optional PAI header per extension, e.g. main number of a number block
+- **Home Assistant Integration** – API-key auth, MQTT publisher for call events, click-to-call via originate endpoint
+- **Home Assistant Settings** – Configure MQTT broker, API key, and test connection from the web GUI
+- Website redesign with updated screenshots
 
 ### v1.5.2 (2026-02-12)
 
