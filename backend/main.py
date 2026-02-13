@@ -25,6 +25,7 @@ from routers import peers, trunks, routes, dashboard, cdr, voicemail, callforwar
 from routers import auth as auth_router, users as users_router
 from routers import settings as settings_router
 from routers import audit as audit_router
+from routers import sip_debug as sip_debug_router
 from auth import get_password_hash, get_current_user
 from database import SessionLocal, User, SIPPeer, VoicemailMailbox, SystemSettings
 from voicemail_config import write_voicemail_config, reload_voicemail
@@ -239,6 +240,7 @@ async def lifespan(app: FastAPI):
     # Set AMI client in dashboard and trunks router
     dashboard.set_ami_client(ami_client)
     trunks.set_ami_client(ami_client)
+    sip_debug_router.set_ami_client(ami_client)
     
     # Set broadcast callback
     ami_client.set_broadcast_callback(manager.broadcast)
@@ -294,6 +296,7 @@ app.include_router(voicemail.router, prefix="/api/voicemail", tags=["Voicemail"]
 app.include_router(callforward.router, prefix="/api/callforward", tags=["Call Forwarding"])
 app.include_router(settings_router.router, prefix="/api/settings", tags=["Settings"])
 app.include_router(audit_router.router, prefix="/api/audit", tags=["Audit"])
+app.include_router(sip_debug_router.router, prefix="/api/sip-debug", tags=["SIP Debug"])
 
 
 # Root endpoint

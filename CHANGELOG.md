@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.7.0] - 2026-02-13
+
+### Neue Features
+
+- **SIP Debug**: Live-Ansicht aller SIP-Nachrichten (INVITE, 200 OK, BYE etc.)
+  direkt in der Web-Oberflaeche. Capture per Toggle aktivieren, Nachrichten nach
+  Call-ID gruppiert anzeigen, expandierbare Roh-SIP-Texte. Basiert auf Asterisks
+  res_pjsip_history-Modul mit automatischem Polling alle 3 Sekunden.
+  Nachrichten werden max. 2 Stunden im Speicher gehalten (Hard-Cap: 10.000).
+  Nur fuer Admins sichtbar.
+
 ## [1.5.1] - 2026-02-12
 
 ### Verbesserungen

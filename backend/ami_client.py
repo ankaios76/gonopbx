@@ -57,7 +57,7 @@ class AsteriskAMIClient:
             
             # Register event handlers
             self.manager.register_event('*', self.handle_event)
-            
+
             # Keep connection alive
             while self.connected:
                 await asyncio.sleep(1)

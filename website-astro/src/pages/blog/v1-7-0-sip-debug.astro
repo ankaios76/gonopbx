@@ -1,0 +1,182 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="v1.7.0 – SIP Debug: Live SIP-Nachrichten im Browser - GonoPBX Blog" description="GonoPBX v1.7.0: Neue SIP Debug Seite zeigt alle SIP-Nachrichten live im Browser. INVITE, BYE, 200 OK – nach Call-ID gruppiert mit expandierbarem Roh-SIP-Text.">
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/logo.png" alt="GonoPBX Logo" />
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#screenshots">Screenshots</a></li>
+        <li><a href="/#techstack">Technologie</a></li>
+        <li><a href="/#installation">Installation</a></li>
+        <li><a href="/release-notes">Release Notes</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="https://github.com/ankaios76/gonopbx" class="nav-cta">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Blog Article -->
+  <section class="blog-article">
+    <div class="container">
+      <a href="/blog/" class="blog-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Zur&uuml;ck zum Blog
+      </a>
+
+      <div class="blog-article-header">
+        <div class="blog-card-meta" style="justify-content:center;">
+          <span class="blog-card-tag">Feature Update</span>
+          <span>13. Februar 2026</span>
+          <span>&middot;</span>
+          <span>v1.7.0</span>
+        </div>
+        <h1>SIP Debug &ndash; Live SIP-Nachrichten im Browser</h1>
+      </div>
+
+      <div class="blog-article-content">
+
+        <p>
+          Wer eine VoIP-Anlage betreibt, kennt das Problem: Ein Anruf klingelt nicht,
+          die Caller-ID stimmt nicht, oder ein Trunk registriert sich nicht.
+          Um die Ursache zu finden, musste man bisher per SSH auf den Server, sich an der
+          Asterisk-CLI anmelden und <code>pjsip set logger on</code> eintippen.
+          Das ist umst&auml;ndlich &ndash; besonders wenn man unterwegs ist oder
+          schnell mal einem Kunden helfen will.
+        </p>
+
+        <p>
+          Ab <strong>GonoPBX v1.7.0</strong> gibt es daf&uuml;r eine eigene Seite:
+          <strong>SIP Debug</strong>. Direkt in der Web-Oberfl&auml;che, ohne SSH, ohne CLI.
+        </p>
+
+        <h2>So funktioniert es</h2>
+
+        <p>
+          Auf der neuen SIP-Debug-Seite (erreichbar &uuml;ber die Navigation, nur f&uuml;r Admins)
+          gibt es einen <strong>Toggle-Schalter</strong>. Aktiviert man das Capture,
+          passiert im Hintergrund Folgendes:
+        </p>
+
+        <ul>
+          <li>Asterisks <code>res_pjsip_history</code>-Modul wird aktiviert</li>
+          <li>Alle ein- und ausgehenden SIP-Nachrichten werden erfasst</li>
+          <li>Das Backend pollt alle 3 Sekunden nach neuen Eintr&auml;gen</li>
+          <li>Die Nachrichten werden nach <strong>Call-ID</strong> gruppiert und im Browser angezeigt</li>
+        </ul>
+
+        <h2>Was man sieht</h2>
+
+        <p>
+          Die Seite zeigt eine <strong>Call-Liste</strong> mit allen erfassten SIP-Dialogen.
+          Jede Zeile zeigt:
+        </p>
+
+        <ul>
+          <li><strong>Zeitstempel</strong> &ndash; wann der Dialog begonnen hat</li>
+          <li><strong>Call-ID</strong> &ndash; gek&uuml;rzt, mit Tooltip f&uuml;r die volle ID</li>
+          <li><strong>Von / Nach</strong> &ndash; extrahiert aus den From/To-Headern</li>
+          <li><strong>Methode</strong> &ndash; INVITE, REGISTER, OPTIONS, BYE etc.</li>
+          <li><strong>Anzahl Nachrichten</strong> &ndash; wie viele SIP-Messages zu diesem Call geh&ouml;ren</li>
+        </ul>
+
+        <p>
+          Klickt man auf einen Call, &ouml;ffnet sich eine <strong>Timeline</strong> mit
+          allen SIP-Nachrichten dieses Dialogs:
+        </p>
+
+        <ul>
+          <li>Richtungspfeil: <span style="color:#3182ce;">&rarr; gesendet</span> (blau) / <span style="color:#38a169;">&larr; empfangen</span> (gr&uuml;n)</li>
+          <li>Methode oder Status-Code &ndash; farblich codiert (200 = gr&uuml;n, 4xx/5xx = rot, 1xx = gelb)</li>
+          <li>CSeq-Header f&uuml;r die Zuordnung</li>
+          <li>Expandierbar: Klick zeigt den <strong>vollen SIP-Text</strong> als Monospace-Block</li>
+        </ul>
+
+        <h2>Speicher und Sicherheit</h2>
+
+        <ul>
+          <li>Nachrichten werden <strong>max. 2 Stunden</strong> im RAM gehalten &ndash; danach automatisch gel&ouml;scht</li>
+          <li>Hard-Cap bei <strong>10.000 Nachrichten</strong> als Sicherheitsgrenze</li>
+          <li>Capture kann jederzeit per Toggle <strong>deaktiviert</strong> werden &ndash; Asterisks History wird dann gestoppt</li>
+          <li>Die Seite ist <strong>nur f&uuml;r Admins</strong> sichtbar &ndash; normale Benutzer sehen den Men&uuml;punkt nicht</li>
+        </ul>
+
+        <h2>Typische Anwendungsf&auml;lle</h2>
+
+        <ul>
+          <li><strong>Trunk registriert sich nicht?</strong> &rarr; REGISTER-Nachrichten pr&uuml;fen, 401/403 Antworten analysieren</li>
+          <li><strong>Eingehender Anruf klingelt nicht?</strong> &rarr; INVITE + 100 Trying/180 Ringing Sequenz nachvollziehen</li>
+          <li><strong>Audio nur in eine Richtung?</strong> &rarr; SDP-Body im INVITE/200 OK pr&uuml;fen (Media-Adressen, Codecs)</li>
+          <li><strong>Caller-ID stimmt nicht?</strong> &rarr; From-Header und P-Asserted-Identity im ausgehenden INVITE checken</li>
+        </ul>
+
+        <h2>Update installieren</h2>
+
+        <h3>Automatisch (empfohlen)</h3>
+        <p>
+          Im GonoPBX-Webinterface unter <strong>Einstellungen &rarr; Server &rarr; Update</strong>
+          auf &bdquo;Update installieren&ldquo; klicken.
+        </p>
+
+        <h3>Manuell</h3>
+        <pre><code>cd /root/asterisk-pbx-gui
+git pull origin main
+docker compose up -d --build</code></pre>
+
+        <div class="blog-info-box">
+          <p>
+            <strong>Hinweis:</strong> Es sind keine Datenbank-Migrationen erforderlich.
+            Das SIP-Debug-Feature arbeitet rein im Arbeitsspeicher &ndash; nach einem Neustart
+            ist der Buffer leer, und das Capture muss erneut aktiviert werden.
+          </p>
+        </div>
+
+        <p>
+          Die vollst&auml;ndigen Release Notes findest du auf der
+          <a href="/release-notes" style="color:#3182ce;font-weight:600;">Release Notes-Seite</a>
+          oder direkt auf
+          <a href="https://github.com/ankaios76/gonopbx/releases/tag/v1.7.0" style="color:#3182ce;font-weight:600;" target="_blank" rel="noopener">GitHub</a>.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="https://github.com/ankaios76/gonopbx">GitHub</a></li>
+        <li><a href="https://demo.gonopbx.de">Live-Demo</a></li>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+      <p>&copy; 2026 Norbert Hengsteler. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <!-- Mobile nav toggle script -->
+  <script>
+    document.getElementById('navToggle')?.addEventListener('click', () => {
+      document.getElementById('navLinks')?.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks')?.classList.remove('open');
+      });
+    });
+  </script>
+
+</Layout>

@@ -55,6 +55,7 @@
 - **🔐 Multi-User & Roles** – Admin and user roles with JWT-based authentication
 - **📡 Real-Time Dashboard** – Live overview via WebSocket: Asterisk status, registered endpoints, active lines, and recent calls
 - **🌙 Dark Mode** – System-wide dark theme with OS preference detection, manual toggle, and localStorage persistence
+- **🔍 SIP Debug** – Live SIP message viewer (INVITE, BYE, 200 OK) with per-call grouping, expandable raw SIP text, and toggle capture (admin-only)
 - **🔄 One-Click Updates** – Update GonoPBX directly from the web GUI or via command line
 - **🐳 Docker Deployment** – Full system up and running in minutes with `docker compose up`
 
@@ -139,6 +140,11 @@ docker compose up -d --build
 Database migrations run automatically on startup — no manual steps required.
 
 ## 📋 Changelog
+
+### v1.7.0 (2026-02-13)
+
+**New Features:**
+- **SIP Debug** – Live SIP message viewer in the web GUI. Toggle capture on/off, messages grouped by Call-ID, expandable raw SIP text with direction arrows and color-coded methods/status codes. Based on Asterisk's `res_pjsip_history` module with 3-second polling. Messages kept for 2 hours (max 10,000). Admin-only
 
 ### v1.6.0 (2026-02-13)
 

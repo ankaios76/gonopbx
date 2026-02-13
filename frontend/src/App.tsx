@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Phone, History, Menu, X, LogOut, Settings, HelpCircle, KeyRound, Moon, Sun } from 'lucide-react'
+import { Phone, History, Menu, X, LogOut, Settings, HelpCircle, KeyRound, Moon, Sun, Bug } from 'lucide-react'
 import Dashboard from './pages/Dashboard'
 import ExtensionDetailPage from './pages/ExtensionDetailPage'
 import TrunkDetailPage from './pages/TrunkDetailPage'
@@ -7,11 +7,12 @@ import CDRPage from './pages/CDRPage'
 import LoginPage from './pages/LoginPage'
 import SettingsPage from './pages/SettingsPage'
 import FAQPage from './pages/FAQPage'
+import SIPDebugPage from './pages/SIPDebugPage'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ThemeProvider, useTheme } from './context/ThemeContext'
 import { api } from './services/api'
 
-type Page = 'dashboard' | 'extension-detail' | 'trunk-detail' | 'cdr' | 'settings' | 'faq'
+type Page = 'dashboard' | 'extension-detail' | 'trunk-detail' | 'cdr' | 'settings' | 'faq' | 'sip-debug'
 
 function AppContent() {
   const { user, isAuthenticated, isLoading, logout } = useAuth()
@@ -93,6 +94,7 @@ function AppContent() {
     { id: 'faq' as Page, name: 'FAQ', icon: HelpCircle },
     ...(user?.role === 'admin'
       ? [
+          { id: 'sip-debug' as Page, name: 'SIP Debug', icon: Bug },
           { id: 'settings' as Page, name: 'Einstellungen', icon: Settings },
         ]
       : []),
@@ -110,6 +112,8 @@ function AppContent() {
         return <CDRPage />
       case 'faq':
         return <FAQPage />
+      case 'sip-debug':
+        return user?.role === 'admin' ? <SIPDebugPage /> : <Dashboard />
       case 'settings':
         return user?.role === 'admin' ? <SettingsPage /> : <Dashboard />
       default:

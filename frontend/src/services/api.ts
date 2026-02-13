@@ -433,6 +433,27 @@ class ApiService {
     })
   }
 
+  // SIP Debug
+  async getSipDebugStatus() {
+    return this.request<any>('/api/sip-debug/status')
+  }
+
+  async enableSipDebug() {
+    return this.request<any>('/api/sip-debug/enable', { method: 'POST' })
+  }
+
+  async disableSipDebug() {
+    return this.request<any>('/api/sip-debug/disable', { method: 'POST' })
+  }
+
+  async getSipDebugCalls() {
+    return this.request<any[]>('/api/sip-debug/calls')
+  }
+
+  async getSipDebugMessages(callId: string) {
+    return this.request<any[]>(`/api/sip-debug/calls/${encodeURIComponent(callId)}`)
+  }
+
   // Fail2Ban
   async getFail2banStatus() {
     return this.request<any>('/api/settings/fail2ban')
