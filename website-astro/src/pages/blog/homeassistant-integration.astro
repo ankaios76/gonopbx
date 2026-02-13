@@ -1,0 +1,194 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Home Assistant Integration - GonoPBX Blog" description="GonoPBX lässt sich mit Home Assistant verbinden: Sensoren für Nebenstellen, MQTT-Events bei Anrufen und Click-to-Call aus dem Smart Home.">
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/logo.png" alt="GonoPBX Logo" />
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#screenshots">Screenshots</a></li>
+        <li><a href="/#techstack">Technologie</a></li>
+        <li><a href="/#installation">Installation</a></li>
+        <li><a href="/release-notes">Release Notes</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="https://github.com/ankaios76/gonopbx" class="nav-cta">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Blog Article -->
+  <section class="blog-article">
+    <div class="container">
+      <a href="/blog/" class="blog-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Zur&uuml;ck zum Blog
+      </a>
+
+      <div class="blog-article-header">
+        <div class="blog-card-meta" style="justify-content:center;">
+          <span class="blog-card-tag">Integration</span>
+          <span>12. Februar 2026</span>
+        </div>
+        <h1>GonoPBX trifft Home Assistant</h1>
+      </div>
+
+      <div class="blog-article-content">
+
+        <p>
+          Wer ein Smart Home mit Home Assistant betreibt, kennt das Gef&uuml;hl: Am liebsten m&ouml;chte man
+          <em>alles</em> in einem Dashboard sehen. Licht, Heizung, Kameras &ndash; und warum nicht auch
+          die Telefonanlage? Genau das ist ab sofort m&ouml;glich.
+        </p>
+
+        <h2>Was kann die Integration?</h2>
+
+        <p>
+          Die Home Assistant-Integration verbindet GonoPBX &uuml;ber zwei Wege mit deinem Smart Home:
+          eine <strong>REST-API</strong> f&uuml;r Sensoren und Aktionen, und <strong>MQTT</strong>
+          f&uuml;r Echtzeit-Events.
+        </p>
+
+        <h3>Sensoren</h3>
+        <p>
+          GonoPBX stellt folgende Informationen als Home Assistant Sensoren bereit:
+        </p>
+        <ul>
+          <li><strong>Nebenstellen</strong> &ndash; Online/Offline-Status jeder Nebenstelle als Binary Sensor</li>
+          <li><strong>Trunks</strong> &ndash; Registrierungsstatus der SIP-Leitungen</li>
+          <li><strong>Aktive Anrufe</strong> &ndash; Anzahl der laufenden Gespr&auml;che</li>
+          <li><strong>Anrufe heute</strong> &ndash; Z&auml;hler der Anrufe des aktuellen Tages</li>
+          <li><strong>Voicemail</strong> &ndash; Anzahl ungelesener Sprachnachrichten</li>
+        </ul>
+
+        <h3>MQTT-Events</h3>
+        <p>
+          Bei jedem Anruf sendet GonoPBX Events &uuml;ber MQTT. Damit lassen sich
+          Automationen ausl&ouml;sen &ndash; zum Beispiel:
+        </p>
+        <ul>
+          <li>Licht blinken lassen wenn das Telefon klingelt</li>
+          <li>TV stumm schalten bei eingehendem Anruf</li>
+          <li>Benachrichtigung aufs Handy bei verpasstem Anruf</li>
+          <li>Anrufer-Info auf einem Display im Flur anzeigen</li>
+        </ul>
+
+        <h3>Click-to-Call</h3>
+        <p>
+          &Uuml;ber den <strong>Originate-Endpoint</strong> k&ouml;nnen Anrufe direkt aus
+          Home Assistant gestartet werden. Das Telefon klingelt zuerst bei dir, und nach dem
+          Abnehmen wird die Zielnummer gew&auml;hlt. Perfekt f&uuml;r:
+        </p>
+        <ul>
+          <li>Ein &bdquo;Anrufen&ldquo;-Button im HA-Dashboard</li>
+          <li>Automatisierte Anrufe bei Alarmen (z.B. Wassersensor)</li>
+          <li>Schnellwahl &uuml;ber ein Tablet an der Wand</li>
+        </ul>
+
+        <h2>Einrichtung in 3 Schritten</h2>
+
+        <h3>1. MQTT-Broker eintragen</h3>
+        <p>
+          Unter <strong>Einstellungen &rarr; Home Assistant</strong> in der GonoPBX-Oberfl&auml;che
+          den MQTT-Broker konfigurieren. Das ist normalerweise die IP deiner Home Assistant-Instanz
+          mit dem Mosquitto-Add-on.
+        </p>
+
+        <h3>2. API-Key generieren</h3>
+        <p>
+          Im selben Bereich einen API-Key generieren. Dieser Key wird in Home Assistant
+          f&uuml;r die Authentifizierung verwendet. Einfach auf &bdquo;Key generieren&ldquo; klicken
+          und den Schl&uuml;ssel kopieren.
+        </p>
+
+        <h3>3. Home Assistant konfigurieren</h3>
+        <p>
+          In der <code>configuration.yaml</code> von Home Assistant die REST-Sensoren und
+          MQTT-Sensoren einrichten. Eine ausf&uuml;hrliche Anleitung mit fertigen YAML-Snippets
+          findest du auf der <a href="/homeassistant" style="color:#3182ce;font-weight:600;">Integrationsseite</a>.
+        </p>
+
+        <h2>Sicherheit</h2>
+
+        <p>
+          Die Kommunikation ist &uuml;ber zwei Mechanismen abgesichert:
+        </p>
+        <ul>
+          <li><strong>API-Key</strong> &ndash; Jeder REST-Request muss einen g&uuml;ltigen Key im Header mitsenden. Ohne Key gibt es keinen Zugriff.</li>
+          <li><strong>MQTT-Auth</strong> &ndash; Der MQTT-Broker wird mit Benutzername und Passwort angesprochen, wie in Mosquitto &uuml;blich.</li>
+        </ul>
+
+        <p>
+          Der API-Key kann jederzeit in der GonoPBX-Oberfl&auml;che neu generiert werden,
+          falls er kompromittiert wurde.
+        </p>
+
+        <h2>Beispiel-Automation</h2>
+
+        <p>
+          Hier ein einfaches Beispiel: Bei eingehendem Anruf das Licht im Flur blinken lassen.
+        </p>
+
+        <pre><code set:html={`automation:
+  - alias: "Telefon klingelt - Licht blinken"
+    trigger:
+      - platform: mqtt
+        topic: "gonopbx/events/call"
+    condition:
+      - condition: template
+        value_template: "{{ trigger.payload_json.event == 'ringing' }}"
+    action:
+      - service: light.turn_on
+        target:
+          entity_id: light.flur
+        data:
+          flash: short`} /></pre>
+
+        <div class="blog-info-box">
+          <p>
+            <strong>Ausf&uuml;hrliche Anleitung:</strong> Alle Details zur Einrichtung, YAML-Konfigurationen
+            und weitere Beispiele findest du auf der
+            <a href="/homeassistant" style="color:#2a4365;font-weight:600;">Home Assistant Integrationsseite</a>.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="https://github.com/ankaios76/gonopbx">GitHub</a></li>
+        <li><a href="https://demo.gonopbx.de">Live-Demo</a></li>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+      <p>&copy; 2026 Norbert Hengsteler. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('navToggle')?.addEventListener('click', () => {
+      document.getElementById('navLinks')?.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks')?.classList.remove('open');
+      });
+    });
+  </script>
+
+</Layout>
