@@ -1,0 +1,245 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Giscus from '../../components/Giscus.astro';
+---
+
+<Layout title="v2.1.0 – Telekom All-IP Privatkundenanschluss Support - GonoPBX Blog" description="GonoPBX v2.1.0 bringt Unterst&uuml;tzung f&uuml;r Telekom All-IP Privatkundenanschl&uuml;sse (MagentaZuhause). P-Preferred-Identity, TCP-Transport und tel.t-online.de Registrar.">
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/logo.png" alt="GonoPBX Logo" />
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#screenshots">Screenshots</a></li>
+        <li><a href="/#techstack">Technologie</a></li>
+        <li><a href="/#installation">Installation</a></li>
+        <li><a href="/release-notes">Release Notes</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="https://github.com/ankaios76/gonopbx" class="nav-cta">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Blog Article -->
+  <section class="blog-article">
+    <div class="container">
+      <a href="/blog/" class="blog-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Zur&uuml;ck zum Blog
+      </a>
+
+      <div class="blog-article-header">
+        <div class="blog-card-meta" style="justify-content:center;">
+          <span class="blog-card-tag">Release</span>
+          <span>18. Februar 2026</span>
+          <span>&middot;</span>
+          <span>v2.1.0</span>
+        </div>
+        <h1>v2.1.0 &ndash; Telekom All-IP Privatkundenanschluss</h1>
+      </div>
+
+      <div class="blog-article-content">
+
+        <p>
+          GonoPBX unterst&uuml;tzt ab sofort <strong>Telekom All-IP Privatkundenanschl&uuml;sse</strong>
+          (MagentaZuhause, MagentaEINS). Bisher funktionierten nur die Business-Produkte
+          (DeutschlandLAN SIP-Trunk, CompanyFlex) &ndash; jetzt k&ouml;nnen auch Privatkunden
+          ihren Telekom-Anschluss mit GonoPBX nutzen.
+        </p>
+
+        <h2>Warum ein eigenes Profil?</h2>
+        <p>
+          Telekom Privat- und Gesch&auml;ftsanschl&uuml;sse unterscheiden sich in mehreren
+          technischen Details. Eine einfache Kopie des DeutschlandLAN-Profils
+          h&auml;tte nicht funktioniert:
+        </p>
+        <table style="width:100%; border-collapse:collapse; margin:1.5em 0;">
+          <thead>
+            <tr style="border-bottom:2px solid #e2e8f0;">
+              <th style="text-align:left; padding:0.5em;">Eigenschaft</th>
+              <th style="text-align:left; padding:0.5em;">DeutschlandLAN (Business)</th>
+              <th style="text-align:left; padding:0.5em;">All-IP (Privat)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Registrar</td>
+              <td style="padding:0.5em;"><code>reg.sip-trunk.telekom.de</code></td>
+              <td style="padding:0.5em;"><code>tel.t-online.de</code></td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">From-Domain</td>
+              <td style="padding:0.5em;"><code>sip-trunk.telekom.de</code></td>
+              <td style="padding:0.5em;"><code>tel.t-online.de</code></td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Benutzername</td>
+              <td style="padding:0.5em;">Trunk-Login</td>
+              <td style="padding:0.5em;">Zugangsnummer (16-stellig)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">From-User</td>
+              <td style="padding:0.5em;">&ndash;</td>
+              <td style="padding:0.5em;">Anschlussnummer E.164</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Outbound-Header</td>
+              <td style="padding:0.5em;">P-Asserted-Identity</td>
+              <td style="padding:0.5em;"><strong>P-Preferred-Identity</strong></td>
+            </tr>
+            <tr>
+              <td style="padding:0.5em;">Transport</td>
+              <td style="padding:0.5em;">TCP</td>
+              <td style="padding:0.5em;">TCP</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Was ist neu?</h2>
+        <ul>
+          <li>
+            <strong>Neuer Provider &bdquo;Telekom All-IP (Privat)&ldquo;</strong><br/>
+            Direkt im Trunk-Dialog ausw&auml;hlbar. Server, Transport und Codecs werden
+            automatisch konfiguriert.
+          </li>
+          <li>
+            <strong>P-Preferred-Identity statt P-Asserted-Identity</strong><br/>
+            Telekom Privatanschl&uuml;sse erfordern einen <code>P-Preferred-Identity</code>
+            Header f&uuml;r ausgehende Anrufe. GonoPBX setzt diesen automatisch im
+            richtigen Format: <code>&lt;sip:+49NUMMER@tel.t-online.de&gt;</code>.
+          </li>
+          <li>
+            <strong>Neues Feld &bdquo;From-User / Anschlussnummer&ldquo;</strong><br/>
+            Die Anschlussnummer im E.164-Format (z.B. <code>+492211234567</code>) wird
+            als From-User im SIP-Endpoint und als Contact-User bei der Registrierung
+            verwendet &ndash; getrennt vom Auth-Benutzernamen (Zugangsnummer).
+          </li>
+        </ul>
+
+        <h2>Einrichtung</h2>
+        <p>
+          Unter <strong>Leitungen &rarr; Neue Leitung</strong> den Provider
+          <strong>&bdquo;Telekom All-IP (Privat)&ldquo;</strong> ausw&auml;hlen und die
+          folgenden Felder ausf&uuml;llen:
+        </p>
+        <table style="width:100%; border-collapse:collapse; margin:1.5em 0;">
+          <thead>
+            <tr style="border-bottom:2px solid #e2e8f0;">
+              <th style="text-align:left; padding:0.5em;">Feld</th>
+              <th style="text-align:left; padding:0.5em;">Wert</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Provider</td>
+              <td style="padding:0.5em;">Telekom All-IP (Privat)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Name</td>
+              <td style="padding:0.5em;">z.B. &bdquo;Telekom Privat&ldquo;</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Benutzername</td>
+              <td style="padding:0.5em;">Telekom Zugangsnummer (16-stellig)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">Passwort</td>
+              <td style="padding:0.5em;">Pers&ouml;nliches Kennwort</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:0.5em;">From-User / Anschlussnummer</td>
+              <td style="padding:0.5em;">E.164 z.B. <code>+492211234567</code></td>
+            </tr>
+            <tr>
+              <td style="padding:0.5em;">Rufnummernblock</td>
+              <td style="padding:0.5em;">Ihre Rufnummer(n)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="blog-info-box">
+          <p>
+            <strong>Tipp:</strong> Die Zugangsnummer und das pers&ouml;nliche Kennwort
+            finden Sie in den Telekom-Zugangsdaten, die Sie per Brief oder im
+            Kundencenter erhalten haben.
+          </p>
+        </div>
+
+        <h2>Technische Details</h2>
+        <p>Folgendes wird automatisch konfiguriert:</p>
+        <ul>
+          <li><strong>Registrierung:</strong> <code>sip:+49NUMMER@tel.t-online.de</code> (Anschlussnummer als Contact)</li>
+          <li><strong>Authentifizierung:</strong> Zugangsnummer + Passwort</li>
+          <li><strong>Ausgehend:</strong> <code>P-Preferred-Identity: &lt;sip:+49NUMMER@tel.t-online.de&gt;</code></li>
+          <li><strong>Transport:</strong> TCP</li>
+          <li><strong>Codecs:</strong> g722, alaw</li>
+        </ul>
+
+        <h2>Update installieren</h2>
+
+        <h3>Automatisch (empfohlen)</h3>
+        <p>
+          Im GonoPBX-Webinterface unter <strong>Einstellungen &rarr; Server &rarr; Update</strong>
+          auf &bdquo;Update installieren&ldquo; klicken.
+        </p>
+
+        <h3>Manuell</h3>
+        <pre><code>cd /root/asterisk-pbx-gui
+git pull origin main
+docker compose up -d --build backend</code></pre>
+
+        <div class="blog-info-box">
+          <p>
+            <strong>Hinweis:</strong> Die Datenbank-Migration (neues Feld <code>from_user</code>)
+            l&auml;uft beim Start automatisch. Kein manueller Eingriff n&ouml;tig.
+          </p>
+        </div>
+
+        <p>
+          Die vollst&auml;ndigen Release Notes findest du auf der
+          <a href="/release-notes" style="color:#3182ce;font-weight:600;">Release Notes-Seite</a>
+          oder direkt auf
+          <a href="https://github.com/ankaios76/gonopbx/releases/tag/v2.1.0" style="color:#3182ce;font-weight:600;" target="_blank" rel="noopener">GitHub</a>.
+        </p>
+
+        <Giscus />
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="https://github.com/ankaios76/gonopbx">GitHub</a></li>
+        <li><a href="https://demo.gonopbx.de">Live-Demo</a></li>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+      <p>&copy; 2026 Norbert Hengsteler. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <!-- Mobile nav toggle script -->
+  <script>
+    document.getElementById('navToggle')?.addEventListener('click', () => {
+      document.getElementById('navLinks')?.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks')?.classList.remove('open');
+      });
+    });
+  </script>
+
+</Layout>
